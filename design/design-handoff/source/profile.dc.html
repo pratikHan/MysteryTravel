@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>My Explorer Profile</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+body{margin:0;background:#F8F3E2}
+a{color:#16325A;text-decoration:none}a:hover{color:#16325A}
+.menurow{display:flex;align-items:center;gap:14px;border:2px solid #EFE2C4;background:#FCF7EA;border-radius:16px;padding:15px 16px;width:100%;box-sizing:border-box;cursor:pointer;font-family:inherit;transition:transform .15s,box-shadow .25s,background .25s}
+.menurow:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(22,50,90,.1);background:#FFFFFF}
+.menurow:active{transform:scale(.98)}
+.backbtn{width:40px;height:40px;border-radius:999px;border:1.5px solid #EFE2C4;background:#FFFFFF;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
+@media (prefers-reduced-motion: reduce){.menurow{transition:none}}
+</style>
+</helmet>
+<div style="width: 390px; min-height: 680px; box-sizing: border-box; background: #F8F3E2; font-family: 'Nunito', system-ui, sans-serif; color: #16325A; display: flex; flex-direction: column; padding: 22px 22px 24px">
+  <div style="display: flex; align-items: center; gap: 8px">
+    <span class="backbtn" aria-hidden="true" style="visibility: hidden"></span>
+    <h1 style="margin: 0; flex: 1; font-size: 23px; font-weight: 800; text-align: center; letter-spacing: -0.3px">My Explorer Profile</h1>
+    <span class="backbtn" aria-hidden="true" style="visibility: hidden"></span>
+  </div>
+  <div style="display: flex; flex-direction: column; align-items: center; margin-top: 18px">
+    <img src="/_blob/e36f727b89ff0e012a64983e95cc84c8" alt="Explorer avatar" style="width: 96px; height: 96px; border-radius: 999px; object-fit: cover; display: block; border: 3px solid #FFFFFF; box-shadow: 0 4px 12px rgba(22,50,90,.15)">
+    <div style="font-size: 20px; font-weight: 800; margin-top: 10px">Alex</div>
+    <div style="font-size: 13px; font-weight: 700; color: #54627E; margin-top: 2px">4 Adventures Completed</div>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 2px solid #EFE2C4; background: #FCF7EA; border-radius: 16px; margin-top: 18px; padding: 14px 0">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 2px"><span style="font-size: 20px; font-weight: 800">12</span><span style="font-size: 11.5px; font-weight: 700; color: #54627E">Locations</span></div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 2px; border-left: 1.5px solid #EFE2C4; border-right: 1.5px solid #EFE2C4"><span style="font-size: 20px; font-weight: 800">8</span><span style="font-size: 11.5px; font-weight: 700; color: #54627E">Stamps</span></div>
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 2px"><span style="font-size: 20px; font-weight: 800">5</span><span style="font-size: 11.5px; font-weight: 700; color: #54627E">Cities</span></div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 18px">
+    <button class="menurow">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16325A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88"></polygon></svg>
+      <span style="flex: 1; text-align: left; font-size: 15px; font-weight: 800">My Adventures</span>
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#54627E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
+    <button class="menurow">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16325A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+      <span style="flex: 1; text-align: left; font-size: 15px; font-weight: 800">Saved Places</span>
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#54627E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
+    <a class="menurow" href="Achievements.dc.html">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16325A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+      <span style="flex: 1; text-align: left; font-size: 15px; font-weight: 800">Achievements</span>
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#54627E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </a>
+    <a class="menurow" href="Settings.dc.html">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16325A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      <span style="flex: 1; text-align: left; font-size: 15px; font-weight: 800">Settings</span>
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#54627E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </a>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":680}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

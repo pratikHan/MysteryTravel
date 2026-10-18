@@ -1,0 +1,10 @@
+# Merge into pubspec.yaml under `flutter:`
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/heroes/
+    - assets/images/cards/
+    - assets/images/expect/
+    - assets/images/stops/
+    - assets/icons/
+    - assets/fixtures/

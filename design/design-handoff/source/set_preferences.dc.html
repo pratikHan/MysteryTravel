@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Set Preferences</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+body{margin:0;background:#F8F3E2}
+a{color:#16325A}a:hover{color:#16325A}
+.tile{border:2px solid #EFE2C4;background:#FBECCD;border-radius:18px;padding:16px 10px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;font-family:inherit;position:relative;transition:transform .2s,border-color .25s,background .25s,box-shadow .25s}
+.tile:hover{transform:translateY(-3px);box-shadow:0 8px 18px rgba(22,50,90,.12)}
+.tile:active{transform:scale(.97)}
+.tile .ticon{transition:transform .25s}
+.tile:hover .ticon{transform:scale(1.08)}
+.badge{position:absolute;top:8px;right:8px;width:22px;height:22px;border-radius:999px;display:flex;align-items:center;justify-content:center;animation:pop .3s ease}
+@keyframes pop{0%{transform:scale(.4)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+.cta{transition:opacity .3s,transform .15s,box-shadow .2s;border:none;cursor:pointer}
+.cta:hover{box-shadow:0 8px 20px rgba(17,44,74,.3)}
+.cta:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){.badge,.tile,.ticon{animation:none;transition:none}}
+</style>
+</helmet>
+<div style="width: 390px; min-height: 660px; box-sizing: border-box; background: #F8F3E2; font-family: 'Nunito', system-ui, sans-serif; color: #16325A; display: flex; flex-direction: column; padding: 26px 22px 24px">
+  <h1 style="margin: 0; font-size: 27px; font-weight: 800; text-align: center; line-height: 1.22; letter-spacing: -0.3px">What Do You<br>Love Exploring?</h1>
+  <p style="margin: 10px 0 0; font-size: 14.5px; font-weight: 600; text-align: center; line-height: 1.4; color: #54627E">Choose a few to personalize your adventures.</p>
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 20px">
+    <sc-for list="{{tiles}}" as="t" hint-placeholder-count="6">
+      <button class="tile" style="{{t.style}}" onClick="{{t.toggle}}" aria-pressed="{{t.on}}">
+        <img class="ticon" src="{{t.img}}" alt="" style="width: 64px; height: 64px; object-fit: contain; display: block">
+        <span style="font-size: 13px; font-weight: 800; color: #16325A">{{t.label}}</span>
+        <sc-if value="{{t.on}}" hint-placeholder-val="{{false}}">
+          <span class="badge" style="background: {{accent}}">
+            <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFF7E6" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          </span>
+        </sc-if>
+      </button>
+    </sc-for>
+  </div>
+  <div style="margin-top: auto; padding-top: 22px">
+    <button class="cta" onClick="{{go}}" style="width: 100%; height: 54px; border-radius: 999px; background: #112C4A; color: #FFF7E6; font-family: inherit; font-size: 16px; font-weight: 800; opacity: {{ctaOpacity}}; display: flex; align-items: center; justify-content: center; gap: 8px">
+      <span>{{ctaLabel}}</span>
+    </button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#16325A","options":["#16325A","#3E8E5B","#E8862B","#D94F4F"]},"$preview":{"width":390,"height":660}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#16325A';
+    const sel = (this.state && this.state.sel) || {};
+    const defs = [
+      { id: 'food', label: 'Food & Drinks', img: '/_blob/454a1e0bae72e3181b2097609b40c259' },
+      { id: 'history', label: 'History', img: '/_blob/208dd6a615b1b397becf8d4eb7bad74c' },
+      { id: 'art', label: 'Art & Culture', img: '/_blob/f20978ad74184f7923be34c3f3a9d928' },
+      { id: 'nature', label: 'Nature', img: '/_blob/6be04a29875086f27c4de4e7077f5b50' },
+      { id: 'gems', label: 'Hidden Gems', img: '/_blob/033ad6f8995c17f806c3dc59622c5c2a' },
+      { id: 'night', label: 'Nightlife', img: '/_blob/be0987b821d0daced5352379f36c8db3' }
+    ];
+    const tiles = defs.map((d) => {
+      const on = !!sel[d.id];
+      return {
+        label: d.label,
+        img: d.img,
+        on: on,
+        style: on ? 'border-color: ' + accent + '; background: #FDF3DA; box-shadow: 0 6px 16px rgba(22,50,90,.14)' : '',
+        toggle: () => {
+          const next = Object.assign({}, sel);
+          if (next[d.id]) { delete next[d.id]; } else { next[d.id] = true; }
+          this.setState({ sel: next });
+        }
+      };
+    });
+    const count = Object.keys(sel).length;
+    return {
+      accent: accent,
+      tiles: tiles,
+      ctaOpacity: count > 0 ? 1 : 0.55,
+      ctaLabel: count > 0 ? 'Continue (' + count + ')' : 'Continue',
+      go: () => this.setState({ sel: sel })
+    };
+  }
+}
+</script>
+</body>
+</html>

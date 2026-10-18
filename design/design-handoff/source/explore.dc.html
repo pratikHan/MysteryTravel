@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Explore Adventures</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+body{margin:0;background:#F7F2E8}
+a{color:#27211A;text-decoration:none}a:hover{color:#27211A}
+.chip{border:1.5px solid #E4DBC9;background:#FFFFFF;color:#27211A;border-radius:999px;padding:8px 16px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .25s,color .25s,border-color .25s,transform .15s}
+.chip:hover{transform:translateY(-1px)}
+.chip.on{background:#211B15;border-color:#211B15;color:#FFF7EA}
+.gcard{display:block;border-radius:18px;overflow:hidden;box-shadow:0 2px 10px rgba(66,50,28,.10);transition:transform .25s,box-shadow .25s}
+.gcard:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(66,50,28,.18)}
+.floaty{animation:floaty 4.5s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.tabbtn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;font-family:inherit;font-size:10px;font-weight:700;color:#6E6459;cursor:pointer;padding:6px 10px;transition:color .2s}
+.tabbtn.on{color:#211B15}
+@media (prefers-reduced-motion: reduce){.floaty{animation:none}}
+</style>
+</helmet>
+<div style="width: 390px; min-height: 1160px; box-sizing: border-box; background: #F7F2E8; font-family: 'Nunito', system-ui, sans-serif; color: #27211A; display: flex; flex-direction: column">
+  <div style="padding: 16px 18px 0; display: flex; align-items: flex-start; gap: 10px">
+    <div class="floaty" style="background: #FFFFFF; border-radius: 18px 18px 18px 4px; padding: 10px 14px; font-size: 13px; font-weight: 700; line-height: 1.35; box-shadow: 0 2px 8px rgba(66,50,28,.12); max-width: 232px">What kind of adventure are you in the mood for?</div>
+    <button aria-label="Settings" style="margin-left: auto; width: 40px; height: 40px; border-radius: 999px; border: 1.5px solid #E4DBC9; background: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#27211A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+    </button>
+  </div>
+  <div class="floaty" style="margin: 12px 18px 0; border-radius: 20px; overflow: hidden; height: 150px; box-shadow: 0 4px 14px rgba(66,50,28,.14)">
+    <img src="/_blob/d2ce9242c9e5956c79a80fe6ccbd9f40" alt="The explorer mascot reading a map on a bridge overlooking the bay" style="width: 100%; height: 100%; object-fit: cover; display: block">
+  </div>
+  <h1 style="margin: 16px 18px 0; font-size: 26px; font-weight: 800; letter-spacing: -0.3px">Explore Adventures</h1>
+  <p style="margin: 4px 18px 0; font-size: 14px; line-height: 1.45; color: #6E6459; font-weight: 600">Different themes, unique experiences, and unforgettable discoveries.</p>
+  <div style="display: flex; gap: 8px; margin: 14px 18px 0; flex-wrap: wrap">
+    <sc-for list="{{chips}}" as="c" hint-placeholder-count="5">
+      <button class="chip {{c.cls}}" onClick="{{c.pick}}">{{c.label}}</button>
+    </sc-for>
+  </div>
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 16px 18px 18px">
+    <sc-for list="{{cards}}" as="card" hint-placeholder-count="8">
+      <sc-if value="{{card.linked}}" hint-placeholder-val="{{true}}">
+        <a class="gcard" href="{{card.href}}" aria-label="{{card.label}}" style="aspect-ratio: 171 / 155">
+          <img src="{{card.img}}" alt="{{card.label}}" style="width: 100%; height: 100%; object-fit: cover; display: block">
+        </a>
+      </sc-if>
+      <sc-if value="{{card.soon}}" hint-placeholder-val="{{false}}">
+        <div class="gcard" style="aspect-ratio: 171 / 155">
+          <img src="{{card.img}}" alt="{{card.label}}" style="width: 100%; height: 100%; object-fit: cover; display: block">
+        </div>
+      </sc-if>
+    </sc-for>
+  </div>
+  <div style="margin-top: auto; background: #FFFFFF; border-top: 1.5px solid #EDE5D6; display: flex; justify-content: space-around; align-items: center; padding: 8px 6px 14px">
+    <button class="tabbtn" aria-label="Home">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+      <span>Home</span>
+    </button>
+    <button class="tabbtn on" aria-current="page" aria-label="Explore">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <span>Explore</span>
+    </button>
+    <button class="tabbtn" aria-label="Adventures">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88"></polygon></svg>
+      <span>Adventures</span>
+    </button>
+    <button class="tabbtn" aria-label="Passport">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"></rect><circle cx="12" cy="10" r="3"></circle><path d="M8 17h8"></path></svg>
+      <span>Passport</span>
+    </button>
+    <button class="tabbtn" aria-label="Profile">
+      <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      <span>Profile</span>
+    </button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1160}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const f = (this.state && this.state.filter) || 'all';
+    const defs = [['all', 'All'], ['popular', 'Popular'], ['food', 'Food'], ['culture', 'Culture'], ['nightlife', 'Nightlife']];
+    const chips = defs.map((d) => ({
+      label: d[1],
+      cls: f === d[0] ? 'on' : '',
+      pick: () => this.setState({ filter: d[0] })
+    }));
+    const cards = [
+      { label: 'Peaceful Retreat — relaxing places, nature, cozy cafes', img: '/_blob/bf194158c0535328bd909e351049e1f9', href: 'PeacefulRetreat.dc.html', cats: ['popular', 'food'] },
+      { label: 'Night Party Quest — bars, games, karaoke, hidden nightlife', img: '/_blob/af049bb50d633195ff3f7f85359e0a2b', href: 'NightParty.dc.html', cats: ['popular', 'nightlife'] },
+      { label: 'Artistic Quest — museums, art, history, creative spaces', img: '/_blob/6bcd2da68516102e825a1615d691352f', href: 'ArtisticQuest.dc.html', cats: ['popular', 'culture'] },
+      { label: 'Real Stories Quest — places with fascinating true stories', img: '/_blob/c5b289ae7e070d866483bfef6def4b1e', href: 'RealStories.dc.html', cats: ['culture'] },
+      { label: 'Foodie Adventure — unique dining, local flavors, hidden gems', img: '/_blob/4f67f0bf587c8a302c00a95357f4b670', href: '', cats: ['popular', 'food'] },
+      { label: 'Family Fun Quest — kid-friendly, interactive and playful stops', img: '/_blob/604c2c21d82bfd67130a3118a2ccdbd2', href: '', cats: [] },
+      { label: 'Couples Escape — romantic spots, scenic views, intimate experiences', img: '/_blob/652c29e677e797aed9d8ea2a7a9e52aa', href: '', cats: ['nightlife'] },
+      { label: 'Local Secrets — offbeat places, unique neighborhoods, hidden gems', img: '/_blob/d40c4f354cda6158bae62b074ff9bc49', href: '', cats: ['culture', 'food'] }
+    ];
+    const vis = cards
+      .filter((c) => f === 'all' || c.cats.indexOf(f) >= 0)
+      .map((c) => ({ label: c.label, img: c.img, href: c.href, linked: c.href !== '', soon: c.href === '' }));
+    return { chips: chips, cards: vis };
+  }
+}
+</script>
+</body>
+</html>

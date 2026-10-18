@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Artistic Quest</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+body{margin:0;background:#F7F2E8}
+a{color:#27211A;text-decoration:none}a:hover{color:#27211A}
+.iconbtn{width:40px;height:40px;border-radius:999px;border:none;background:rgba(24,19,14,.38);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s}
+.iconbtn:hover{transform:scale(1.08)}
+.chip2{border:1.5px solid #E4DBC9;background:#FFFFFF;border-radius:999px;padding:7px 13px;font-size:12px;font-weight:700;color:#27211A}
+.kenburns{animation:kb 10s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.07)}}
+.pop{animation:pop .35s ease}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
+.cta{transition:transform .15s,box-shadow .2s}
+.cta:hover{box-shadow:0 8px 20px rgba(33,27,21,.3)}
+.cta:active{transform:scale(.97)}
+@media (prefers-reduced-motion: reduce){.kenburns,.pop{animation:none}}
+</style>
+</helmet>
+<div style="width: 390px; min-height: 1070px; box-sizing: border-box; background: #F7F2E8; font-family: 'Nunito', system-ui, sans-serif; color: #27211A; display: flex; flex-direction: column">
+  <div style="position: relative; height: 232px; overflow: hidden">
+    <img class="kenburns" src="/_blob/789eb996e5cec53f9bad62bfcf1e480c" alt="The explorer mascot sketching inside a grand gallery" style="width: 100%; height: 100%; object-fit: cover; display: block">
+    <a href="Main.dc.html" aria-label="Back to Explore" class="iconbtn" style="position: absolute; top: 14px; left: 14px">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="M12 19l-7-7 7-7"></path></svg>
+    </a>
+    <button aria-label="Save to favorites" onClick="{{toggleFav}}" class="iconbtn" style="position: absolute; top: 14px; right: 14px">
+      <svg class="{{heartCls}}" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="{{heartFill}}" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+    </button>
+  </div>
+  <div style="margin-top: -26px; background: #F7F2E8; border-radius: 26px 26px 0 0; padding: 22px 18px 24px; position: relative; display: flex; flex-direction: column">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <div style="width: 46px; height: 46px; border-radius: 999px; background: {{accent}}; display: flex; align-items: center; justify-content: center; flex: none">
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 1 1 9-9c0 2-1.5 3-3 3h-2a2 2 0 0 0-2 2c0 1.5 0 4-2 4z"></path><circle cx="7.5" cy="10.5" r="1"></circle><circle cx="12" cy="7.5" r="1"></circle><circle cx="16.5" cy="10.5" r="1"></circle></svg>
+      </div>
+      <h1 style="margin: 0; font-size: 24px; font-weight: 800; letter-spacing: -0.3px">Artistic Quest</h1>
+    </div>
+    <p style="margin: 10px 0 0; font-size: 14px; line-height: 1.45; color: #6E6459; font-weight: 600">Explore art, culture and history through the city&rsquo;s most inspiring places.</p>
+    <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px">
+      <span class="chip2">Museums</span>
+      <span class="chip2">Art Galleries</span>
+      <span class="chip2">Historic Sites</span>
+      <span class="chip2">Creative Spaces</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; gap: 10px; margin-top: 18px">
+      <div style="display: flex; gap: 7px; align-items: flex-start">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#27211A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 1px"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <div><div style="font-size: 12px; font-weight: 800">3&ndash;4 hours</div><div style="font-size: 11px; color: #6E6459; font-weight: 600">4 stops</div></div>
+      </div>
+      <div style="display: flex; gap: 7px; align-items: flex-start">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#27211A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 1px"><path d="M3 16v-3l2.2-5.2A2 2 0 0 1 7 6.5h10a2 2 0 0 1 1.8 1.3L21 13v3"></path><path d="M3 16h18"></path><circle cx="7.5" cy="17.5" r="1.5"></circle><circle cx="16.5" cy="17.5" r="1.5"></circle></svg>
+        <div><div style="font-size: 12px; font-weight: 800">Nearby route</div><div style="font-size: 11px; color: #6E6459; font-weight: 600">5&ndash;10 min between</div></div>
+      </div>
+      <div style="display: flex; gap: 7px; align-items: flex-start">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#27211A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 1px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <div><div style="font-size: 12px; font-weight: 800">All ages</div><div style="font-size: 11px; color: #6E6459; font-weight: 600">Solo, couples or friends</div></div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 22px">
+      <h2 style="margin: 0; font-size: 17px; font-weight: 800">What to expect</h2>
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6E6459" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 12px">
+      <figure style="margin: 0"><img src="/_blob/2013d26ddfcb6a399e32d54bdc70c8ae" alt="World-class art" style="width: 100%; height: 86px; object-fit: cover; border-radius: 14px; display: block"><figcaption style="font-size: 10.5px; font-weight: 700; color: #6E6459; text-align: center; margin-top: 5px">World-class art</figcaption></figure>
+      <figure style="margin: 0"><img src="/_blob/7f37eb4b81b2fb6c78a0b657486edc00" alt="Historic venues" style="width: 100%; height: 86px; object-fit: cover; border-radius: 14px; display: block"><figcaption style="font-size: 10.5px; font-weight: 700; color: #6E6459; text-align: center; margin-top: 5px">Historic venues</figcaption></figure>
+      <figure style="margin: 0"><img src="/_blob/2f3b5ab3655ca9eb10cf98921e80d339" alt="Local artists" style="width: 100%; height: 86px; object-fit: cover; border-radius: 14px; display: block"><figcaption style="font-size: 10.5px; font-weight: 700; color: #6E6459; text-align: center; margin-top: 5px">Local artists</figcaption></figure>
+      <figure style="margin: 0"><img src="/_blob/e94b400281165b3f26893d65e4de6f65" alt="Creative cafes" style="width: 100%; height: 86px; object-fit: cover; border-radius: 14px; display: block"><figcaption style="font-size: 10.5px; font-weight: 700; color: #6E6459; text-align: center; margin-top: 5px">Creative caf&eacute;s</figcaption></figure>
+    </div>
+    <h2 style="margin: 22px 0 0; font-size: 17px; font-weight: 800">Sample stops</h2>
+    <div style="position: relative; margin-top: 14px; display: flex; flex-direction: column; gap: 16px">
+      <div style="position: absolute; left: 12px; top: 24px; bottom: 24px; border-left: 2px dashed color-mix(in srgb, {{accent}} 45%, #F7F2E8)"></div>
+      <div style="display: grid; grid-template-columns: 26px 48px minmax(0, 1fr); gap: 10px; align-items: center; position: relative">
+        <div style="width: 26px; height: 26px; border-radius: 999px; background: color-mix(in srgb, {{accent}} 16%, #FFFFFF); border: 1.5px solid color-mix(in srgb, {{accent}} 45%, #FFFFFF); color: {{accent}}; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-sizing: border-box">1</div>
+        <img src="/_blob/6cb0227a05f398a5dc17904e1e1a197a" alt="" style="width: 48px; height: 48px; border-radius: 12px; object-fit: cover; display: block">
+        <div><div style="font-size: 14px; font-weight: 800">City Art Museum</div><div style="font-size: 12px; color: #6E6459; font-weight: 600; line-height: 1.35">Famous and local exhibits.</div></div>
+      </div>
+      <div style="display: grid; grid-template-columns: 26px 48px minmax(0, 1fr); gap: 10px; align-items: center; position: relative">
+        <div style="width: 26px; height: 26px; border-radius: 999px; background: color-mix(in srgb, {{accent}} 16%, #FFFFFF); border: 1.5px solid color-mix(in srgb, {{accent}} 45%, #FFFFFF); color: {{accent}}; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-sizing: border-box">2</div>
+        <img src="/_blob/704db439210de5f7fed7b6fb524d1187" alt="" style="width: 48px; height: 48px; border-radius: 12px; object-fit: cover; display: block">
+        <div><div style="font-size: 14px; font-weight: 800">Historic Landmark</div><div style="font-size: 12px; color: #6E6459; font-weight: 600; line-height: 1.35">Explore the city&rsquo;s rich history.</div></div>
+      </div>
+      <div style="display: grid; grid-template-columns: 26px 48px minmax(0, 1fr); gap: 10px; align-items: center; position: relative">
+        <div style="width: 26px; height: 26px; border-radius: 999px; background: color-mix(in srgb, {{accent}} 16%, #FFFFFF); border: 1.5px solid color-mix(in srgb, {{accent}} 45%, #FFFFFF); color: {{accent}}; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-sizing: border-box">3</div>
+        <img src="/_blob/e920e940fad76e6580d061b287373c1e" alt="" style="width: 48px; height: 48px; border-radius: 12px; object-fit: cover; display: block">
+        <div><div style="font-size: 14px; font-weight: 800">Independent Gallery</div><div style="font-size: 12px; color: #6E6459; font-weight: 600; line-height: 1.35">Discover local and emerging artists.</div></div>
+      </div>
+      <div style="display: grid; grid-template-columns: 26px 48px minmax(0, 1fr); gap: 10px; align-items: center; position: relative">
+        <div style="width: 26px; height: 26px; border-radius: 999px; background: color-mix(in srgb, {{accent}} 16%, #FFFFFF); border: 1.5px solid color-mix(in srgb, {{accent}} 45%, #FFFFFF); color: {{accent}}; font-size: 13px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-sizing: border-box">4</div>
+        <img src="/_blob/68a3b53697e20ac2e57c19c608f33c64" alt="" style="width: 48px; height: 48px; border-radius: 12px; object-fit: cover; display: block">
+        <div><div style="font-size: 14px; font-weight: 800">Artistic Caf&eacute;</div><div style="font-size: 12px; color: #6E6459; font-weight: 600; line-height: 1.35">A cozy spot with creative vibes.</div></div>
+      </div>
+    </div>
+    <button class="cta" onClick="{{startTap}}" style="margin-top: 24px; height: 54px; border-radius: 999px; border: none; background: #211B15; color: #FFF7EA; font-family: inherit; font-size: 16px; font-weight: 800; cursor: pointer; width: 100%">Start this adventure</button>
+    <sc-if value="{{started}}" hint-placeholder-val="{{false}}">
+      <p style="margin: 10px 0 0; text-align: center; font-size: 12px; font-weight: 700; color: #6E6459">The Adventure Path screen is next on the design list.</p>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#E8862B","options":["#3E8E5B","#8A4FD3","#E8862B","#D94F4F"]},"$preview":{"width":390,"height":1070}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const fav = !!(this.state && this.state.fav);
+    return {
+      accent: this.props.accent ?? '#E8862B',
+      heartFill: fav ? '#FF6B74' : 'none',
+      heartCls: fav ? 'pop' : '',
+      toggleFav: () => this.setState({ fav: !fav }),
+      started: !!(this.state && this.state.started),
+      startTap: () => this.setState({ started: true })
+    };
+  }
+}
+</script>
+</body>
+</html>

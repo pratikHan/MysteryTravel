@@ -1,0 +1,9 @@
+# Merge into pubspec.yaml under `flutter:` (adds to v1/v2 entries)
+flutter:
+  assets:
+    - assets/images/path/
+    - assets/images/chapter/
+    - assets/images/rewards/
+    - assets/images/complete/
+    - assets/images/profile/
+    - assets/icons/

@@ -1,0 +1,12 @@
+# Merge into pubspec.yaml under `flutter:` (add to the v1 entries)
+flutter:
+  assets:
+    - assets/images/mode/
+    - assets/images/preview/
+    - assets/images/customize/
+    - assets/images/foodie/
+    - assets/images/home/
+    - assets/images/interests/
+    - assets/images/cities/
+    - assets/images/onboarding/
+    - assets/icons/
