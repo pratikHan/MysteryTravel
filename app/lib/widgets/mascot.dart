@@ -1,5 +1,8 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
+import '../core/motion.dart';
 import '../theme/tokens.dart';
 import 'motion_widgets.dart';
 
@@ -65,5 +68,70 @@ class Mascot extends StatelessWidget {
       ),
     );
     return float ? Floaty(child: sticker) : sticker;
+  }
+}
+
+/// Miku feeling alive: continuous bob + gentle sway, with a happy
+/// little hop every few seconds. All motion stops under reduced motion.
+class LiveMascot extends StatefulWidget {
+  const LiveMascot(
+    this.state, {
+    super.key,
+    this.size = 84,
+    this.asset,
+  });
+
+  final MascotState state;
+  final double size;
+  final String? asset;
+
+  @override
+  State<LiveMascot> createState() => _LiveMascotState();
+}
+
+class _LiveMascotState extends State<LiveMascot>
+    with SingleTickerProviderStateMixin {
+  // One 6s cycle drives everything: bob and sway run continuously,
+  // the hop fires in a short window once per cycle.
+  late final AnimationController _c = AnimationController(
+      vsync: this, duration: const Duration(seconds: 6));
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && !MotionSettings.reduced(context)) _c.repeat();
+    });
+  }
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final sticker =
+        Mascot(widget.state, size: widget.size, float: false, asset: widget.asset);
+    if (MotionSettings.reduced(context)) return sticker;
+    return AnimatedBuilder(
+      animation: _c,
+      builder: (context, child) {
+        final t = _c.value;
+        final bob = math.sin(t * math.pi * 4) * 2.5;
+        final sway = math.sin(t * math.pi * 2 + 1) * 0.045;
+        // Hop window: a quick up-down between 70% and 80% of the cycle.
+        double hop = 0;
+        if (t > 0.7 && t < 0.8) {
+          hop = -10 * math.sin((t - 0.7) / 0.1 * math.pi);
+        }
+        return Transform.translate(
+          offset: Offset(0, bob + hop),
+          child: Transform.rotate(angle: sway, child: child),
+        );
+      },
+      child: sticker,
+    );
   }
 }

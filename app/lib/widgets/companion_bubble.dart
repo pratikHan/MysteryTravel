@@ -65,8 +65,11 @@ class _CompanionBubbleState extends State<CompanionBubble> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Mascot(widget.mascotState, size: widget.mascotSize),
-        const SizedBox(width: AppSpace.m),
+        // mascotSize 0 renders a bare bubble (caller shows its own mascot).
+        if (widget.mascotSize > 0) ...[
+          Mascot(widget.mascotState, size: widget.mascotSize),
+          const SizedBox(width: AppSpace.m),
+        ],
         Flexible(
           child: Container(
             padding: const EdgeInsets.symmetric(

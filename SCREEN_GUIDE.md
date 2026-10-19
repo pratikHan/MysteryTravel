@@ -103,12 +103,30 @@ fixtures + engine: `app/lib/data/plan_fixtures.dart`.
 | 4 | **Passport** | `/passport` | `passport/passport_screen.dart` |
 | 5 | **Profile** | `/profile` | `profile/profile_screen.dart` |
 
-**Home** — "Good morning, Explorer!" over the hero scene (baked speech
-bubble in the art); **Resume Adventure card** (dark pill: active
-adventure name, progress bar, play button) → **Adventure Trail**;
-"Featured Adventures" header with *See all* → **Explore**; two featured
-cards (The Foodie Trail, Art & Soul) with image, icon badge, blurb, tag
-chips, and heart toggle → tap opens **Quest Detail**.
+**Home** — designed to `design/design1001/home.png` (its bottom tabs
+ignored; the app shell's 5-tab bar stays). Top to bottom:
+- **Miku** (the companion's name) — a `LiveMascot` that never stops
+  moving (continuous bob + sway + a happy hop every few seconds) beside
+  an **animated dialog bubble**: typing dots play, then the line fades
+  in, and the line rotates every ~7s (time-of-day greeting → streak
+  brag → quest nudge)
+- **Hero adventure card** — the MOST RECENT saved adventure, big:
+  animated circular **progress ring** ("n / 4 stops today", fills on
+  entry), 📍 city, title, mode pill (🔮 purple / 🗺️ green), "N more
+  places to discover ›", scenic art fading in from the right
+  (text-free `sceneImage` per playlist). Tap → **Adventure Trail**
+- **Adventure list** — later-dated adventures as compact cards (thumb,
+  title, city, date, mode pill); seeded with 4 dummies (Golden Hour
+  Wander Nov 2, Market Morning Feast Nov 9, Storybook Streets Nov 15,
+  Neon Nights Out Nov 21). **New saves land on top as the hero.** More
+  than 4 total → **"See all (N adventures)"** expands the list inline
+- **Streak bar** — 🔥 3-day streak, Mon✓ Tue✓ Today★(pops) Thu Fri,
+  🎁 "1 more day for a surprise!"
+- **Action cards** — Mystery Adventure (gold-highlighted → Mystery mode
+  Plan Setup), Plan My Day (→ Planned mode Plan Setup), Rewards (→
+  **Passport**); floating emoji art, info pills, arrow buttons
+- CTA **🧭 Start today's quest** (BouncyPressable) → resets progress →
+  **Adventure Trail**.
 
 **Explore** — Mascot speech bubble + settings shortcut (→ **Settings**);
 floating hero banner; title + subtitle; filter chips

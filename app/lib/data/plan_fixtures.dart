@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'fixtures.dart';
 import 'models.dart';
 import 'plan_models.dart';
@@ -120,6 +122,7 @@ abstract final class PlanFixtures {
       title: 'Lazy Sunday Reset',
       tagline: 'A slow loop of green spaces and great coffee.',
       heroImage: 'assets/images/cards/card_peaceful.png',
+      sceneImage: 'assets/images/heroes/hero_peaceful.png',
       categoryIds: const ['nature', 'food', 'wellness'],
       duration: '4–5 hours',
       items: [
@@ -162,6 +165,7 @@ abstract final class PlanFixtures {
       title: 'Canvas & Coffee',
       tagline: 'Small galleries, bold murals, strong espresso.',
       heroImage: 'assets/images/cards/card_artistic.png',
+      sceneImage: 'assets/images/heroes/hero_artistic.png',
       categoryIds: const ['art', 'food', 'learning'],
       duration: '3–4 hours',
       items: [
@@ -223,6 +227,7 @@ abstract final class PlanFixtures {
       title: 'Neon Nights Out',
       tagline: 'Playful bars, retro games and one secret door.',
       heroImage: 'assets/images/cards/card_night.png',
+      sceneImage: 'assets/images/heroes/hero_night.png',
       categoryIds: const ['nightlife', 'entertainment', 'social'],
       duration: '4–5 hours',
       items: [
@@ -283,6 +288,7 @@ abstract final class PlanFixtures {
       title: 'Storybook Streets',
       tagline: 'True tales, old passages and local legends.',
       heroImage: 'assets/images/cards/card_stories.png',
+      sceneImage: 'assets/images/heroes/hero_stories.png',
       categoryIds: const ['hidden', 'learning', 'art'],
       duration: '3–4 hours',
       items: [
@@ -342,6 +348,7 @@ abstract final class PlanFixtures {
       title: 'Market Morning Feast',
       tagline: 'Taste your way from market stalls to dessert.',
       heroImage: 'assets/images/cards/card_foodie.png',
+      sceneImage: 'assets/images/foodie/hero.png',
       categoryIds: const ['food', 'shopping', 'social'],
       duration: '3–4 hours',
       items: [
@@ -418,6 +425,7 @@ abstract final class PlanFixtures {
       title: 'Golden Hour Wander',
       tagline: 'Chase the light from park paths to the skyline.',
       heroImage: 'assets/images/heroes/hero_peaceful.png',
+      sceneImage: 'assets/images/heroes/hero_peaceful.png',
       categoryIds: const ['scenic', 'nature', 'outdoors'],
       duration: '3 hours',
       items: [
@@ -455,6 +463,56 @@ abstract final class PlanFixtures {
         ),
       ],
     ),
+  ];
+
+  /// Home's seeded adventures, most recent first: the active trail
+  /// adventure on top, then upcoming dummies on later dates.
+  static final seedAdventures = <SavedAdventure>[
+    SavedAdventure(
+      playlist: playlists[0], // Lazy Sunday Reset
+      city: 'San Francisco',
+      openOn: DateTime(2026, 10, 25),
+      startTime: const TimeOfDay(hour: 10, minute: 0),
+      mode: ExplorationMode.mystery,
+    ),
+    SavedAdventure(
+      playlist: playlists[5], // Golden Hour Wander
+      city: 'San Francisco',
+      openOn: DateTime(2026, 11, 2),
+      startTime: const TimeOfDay(hour: 16, minute: 0),
+      mode: ExplorationMode.planned,
+    ),
+    SavedAdventure(
+      playlist: playlists[4], // Market Morning Feast
+      city: 'Seattle',
+      openOn: DateTime(2026, 11, 9),
+      startTime: const TimeOfDay(hour: 9, minute: 30),
+      mode: ExplorationMode.planned,
+    ),
+    SavedAdventure(
+      playlist: playlists[3], // Storybook Streets
+      city: 'Portland',
+      openOn: DateTime(2026, 11, 15),
+      startTime: const TimeOfDay(hour: 11, minute: 0),
+      mode: ExplorationMode.mystery,
+    ),
+    SavedAdventure(
+      playlist: playlists[2], // Neon Nights Out
+      city: 'Austin',
+      openOn: DateTime(2026, 11, 21),
+      startTime: const TimeOfDay(hour: 19, minute: 0),
+      mode: ExplorationMode.mystery,
+    ),
+  ];
+
+  /// Streak fixtures for the Home streak bar.
+  static const streakCount = 3;
+  static const streakWeek = [
+    ('Mon', true, false),
+    ('Tue', true, false),
+    ('Today', false, true),
+    ('Thu', false, false),
+    ('Fri', false, false),
   ];
 
   /// The dummy recommendation engine: scores playlists by category

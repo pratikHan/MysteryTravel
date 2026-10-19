@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/fixtures.dart';
 import '../data/models.dart';
+import '../data/plan_fixtures.dart';
 import '../data/plan_models.dart';
 import '../theme/themes.dart';
 import '../theme/tokens.dart';
@@ -104,8 +105,14 @@ class AppState extends ChangeNotifier {
   /// Editable copy of the playlist picked on Curated Adventures.
   AdventurePlaylist? workingPlaylist;
 
-  /// The single saved adventure (stage scope: one at a time).
-  SavedAdventure? savedAdventure;
+  /// Saved adventures, most recent first (seeded with upcoming
+  /// dummies; new saves land on top and drive the Home hero card).
+  final List<SavedAdventure> savedAdventures = [
+    ...PlanFixtures.seedAdventures,
+  ];
+
+  SavedAdventure? get savedAdventure =>
+      savedAdventures.isEmpty ? null : savedAdventures.first;
 
   void setExplorationMode(ExplorationMode mode) {
     plan.mode = mode;
@@ -172,12 +179,15 @@ class AppState extends ChangeNotifier {
   void saveAdventure() {
     final p = workingPlaylist;
     if (p == null) return;
-    savedAdventure = SavedAdventure(
-      playlist: p,
-      city: plan.city,
-      openOn: plan.date ?? DateTime.now(),
-      startTime: plan.startTime ?? const TimeOfDay(hour: 10, minute: 0),
-      mode: plan.mode,
+    savedAdventures.insert(
+      0,
+      SavedAdventure(
+        playlist: p,
+        city: plan.city,
+        openOn: plan.date ?? DateTime.now(),
+        startTime: plan.startTime ?? const TimeOfDay(hour: 10, minute: 0),
+        mode: plan.mode,
+      ),
     );
     notifyListeners();
   }

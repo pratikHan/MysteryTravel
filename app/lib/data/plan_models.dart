@@ -101,6 +101,7 @@ class AdventurePlaylist {
     required this.title,
     required this.tagline,
     required this.heroImage,
+    this.sceneImage,
     required this.categoryIds,
     required this.duration,
     required this.items,
@@ -110,9 +111,15 @@ class AdventurePlaylist {
   final String title;
   final String tagline;
   final String heroImage;
+
+  /// Text-free scenic art for wide hero layouts (falls back to
+  /// [heroImage]).
+  final String? sceneImage;
   final List<String> categoryIds;
   final String duration;
   final List<PlaylistItem> items;
+
+  String get scene => sceneImage ?? heroImage;
 
   AdventurePlaylist copyWithItems(List<PlaylistItem> newItems) =>
       AdventurePlaylist(
@@ -120,6 +127,7 @@ class AdventurePlaylist {
         title: title,
         tagline: tagline,
         heroImage: heroImage,
+        sceneImage: sceneImage,
         categoryIds: categoryIds,
         duration: duration,
         items: newItems,
