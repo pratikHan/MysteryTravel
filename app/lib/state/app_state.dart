@@ -112,6 +112,11 @@ class AppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setMood(String? id) {
+    plan.moodId = (plan.moodId == id) ? null : id;
+    notifyListeners();
+  }
+
   void updatePlan({
     String? city,
     DateTime? date,

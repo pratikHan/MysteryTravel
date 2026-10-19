@@ -19,7 +19,7 @@ final design pending its slice.
 |---|---|---|---|---|
 | 1 | **Splash** | `/splash` | `onboarding/splash_screen.dart` | final |
 | 2 | **Path Choice** | `/path-choice` | `plan/path_choice_screen.dart` | skeleton |
-| 3 | **Plan Setup** | `/plan` | `plan/plan_setup_screen.dart` | skeleton |
+| 3 | **Plan Setup** ("Mood Builder") | `/plan` | `plan/plan_setup_screen.dart` | designed (design1001) |
 | 4 | **Curated Adventures** | `/curated` | `plan/curated_adventures_screen.dart` | skeleton |
 | 5 | **Playlist Editor** | `/playlist` | `plan/playlist_editor_screen.dart` | skeleton |
 
@@ -32,16 +32,30 @@ scene at the bottom. *Get Started* → **Path Choice**.
 you arrive). Choice sets `ExplorationMode` for the whole flow →
 **Plan Setup**.
 
-**Plan Setup** — One scrollable form: free-text **city** field (US
-cities), **date** picker (shows day name), **start time** picker; "What
-would you love to explore?" — **12 categories** (Food & Drinks, Nature &
-Parks, Art & Culture, Scenic & Photography, Shopping & Markets, Social &
-Family, Bars & Nightlife, Adventures & Outdoors, Entertainment, Wellness
-& Relaxation, Hidden Gems & Mystery, Experiences & Learning), max **5**
-selectable (counter, 6th tap bounces with toast); free-text **wish box**
-("a nice park and good coffee for a lazy Sunday…"). CTA *Create My
-Adventures* (enabled when city+date+time+≥1 category) → **Curated
-Adventures**.
+**Plan Setup ("Mood Builder")** — designed to
+`design/design1001/plan_setup.png`. Header: "Mood Builder / Turn your
+mood into a magical day ✨" + gold **step bar** (step 2 of 4) + menu
+sheet (switch mode / start over). One scrollable form:
+- "Where & when are you exploring?" — three picker fields in a row:
+  **city** (bottom sheet: free text + popular US city chips), **date**
+  (native picker, shows "Sun, Oct 25"), **time**
+- "How are you feeling today?" — horizontally scrolling **mood pills**
+  (☀️ Calm, ❤️ Curious, 🍃 Adventurous, ✨ Inspired, 👥 Social);
+  selected pill gets a gold glow ring; mood feeds the companion bubble
+- "What would you love to explore?" + green **n/5 picks** pill (pops on
+  change, turns gold at 5) — 3-column grid of the **12 category cards**
+  (emoji + label; selected = green fill + white popping check); 6th
+  pick bounces with a friendly toast
+- **Bonus banner** — 🎁 "Choose N more categories to unlock a bonus!"
+  with gold n/5 pill; at 5/5 it flips green: "Bonus unlocked! 🎉"
+  (pop + success sound, once)
+- "Anything specific in mind?" (Optional) — **wish textbox**
+- **Companion bubble** (interactions #6): mascot shows typing dots,
+  then reacts to mood+picks ("A slow, cozy day — love it! …"); switches
+  to celebrating at 5 picks
+- CTA **Create My Adventure ✨** — BouncyPressable (interactions #1:
+  press-down + overshoot bounce); enabled when city+date+time+≥1
+  category → **Curated Adventures**.
 
 **Curated Adventures** — "Your Curated Adventures" (echoes the wish
 text); 4–5 playlist cards from the dummy recommendation engine

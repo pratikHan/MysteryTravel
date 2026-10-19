@@ -21,12 +21,22 @@ class AdventureCategory {
   final String emoji;
 }
 
-/// Everything the user enters on the Plan Setup screen.
+/// A selectable mood on the Mood Builder screen.
+class Mood {
+  const Mood({required this.id, required this.label, required this.emoji});
+
+  final String id;
+  final String label;
+  final String emoji;
+}
+
+/// Everything the user enters on the Plan Setup (Mood Builder) screen.
 /// Mutable working state, owned by AppState.
 class PlanRequest {
   String city = '';
   DateTime? date;
   TimeOfDay? startTime;
+  String? moodId;
   final Set<String> categoryIds = {};
   String wishText = '';
   ExplorationMode mode = ExplorationMode.planned;
@@ -43,6 +53,7 @@ class PlanRequest {
     city = '';
     date = null;
     startTime = null;
+    moodId = null;
     categoryIds.clear();
     wishText = '';
     mode = ExplorationMode.planned;

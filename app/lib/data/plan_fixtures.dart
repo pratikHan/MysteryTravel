@@ -24,6 +24,48 @@ abstract final class PlanFixtures {
   static AdventureCategory categoryById(String id) =>
       categories.firstWhere((c) => c.id == id, orElse: () => categories.first);
 
+  static const moods = [
+    Mood(id: 'calm', label: 'Calm', emoji: '☀️'),
+    Mood(id: 'curious', label: 'Curious', emoji: '❤️'),
+    Mood(id: 'adventurous', label: 'Adventurous', emoji: '🍃'),
+    Mood(id: 'inspired', label: 'Inspired', emoji: '✨'),
+    Mood(id: 'social', label: 'Social', emoji: '👥'),
+  ];
+
+  /// Popular US cities offered by the city picker sheet (free text is
+  /// still allowed).
+  static const usCities = [
+    'San Francisco', 'New York', 'Chicago', 'Los Angeles', 'Seattle',
+    'Austin', 'Boston', 'Portland', 'Denver', 'New Orleans',
+    'Nashville', 'Miami',
+  ];
+
+  /// The mascot's canned reaction for the Mood Builder companion bubble.
+  static String companionReaction(PlanRequest plan) {
+    if (plan.categoryIds.isEmpty && plan.moodId == null) {
+      return 'Tell me your vibe and I\'ll build something magical!';
+    }
+    final mood = plan.moodId == null
+        ? null
+        : moods.firstWhere((m) => m.id == plan.moodId).label.toLowerCase();
+    final picks = plan.categoryIds.take(2).map((id) {
+      final c = categoryById(id);
+      return c.label.split(' ').first.toLowerCase();
+    }).toList();
+    final pickText = picks.isEmpty
+        ? 'a few surprises'
+        : '${picks.join(', ')}, and a few surprises';
+    final opener = switch (mood) {
+      'calm' => 'A slow, cozy day — love it!',
+      'curious' => 'Ooh, a day of discoveries!',
+      'adventurous' => 'Now THAT\'s an adventure brewing!',
+      'inspired' => 'Creative energy — my favorite!',
+      'social' => 'A day with your people — the best kind!',
+      _ => 'This sounds like a wonderful day!',
+    };
+    return '$opener $pickText? You\'ve got great taste! 🌿';
+  }
+
   /// Lightweight dummy [Place] builder so every playlist item can open
   /// the rich Place Detail screen.
   static Place _place({

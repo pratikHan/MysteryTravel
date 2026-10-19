@@ -121,6 +121,9 @@ class AppType {
   static const pageTitle = TypeStyle(23, FontWeight.w800, spacing: -0.3);
   static const detailTitle = TypeStyle(24, FontWeight.w800, spacing: -0.3);
   static const sectionHeader = TypeStyle(17, FontWeight.w800);
+
+  /// Bold question headers on form screens (Mood Builder).
+  static const formHeader = TypeStyle(20, FontWeight.w800, spacing: -0.2);
   static const rowTitle = TypeStyle(15, FontWeight.w800);
   static const body = TypeStyle(14, FontWeight.w600, height: 1.45);
   static const itemTitle = TypeStyle(14, FontWeight.w800);
