@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/fixtures.dart';
 import '../data/models.dart';
+import '../data/plan_models.dart';
 import '../theme/themes.dart';
 import '../theme/tokens.dart';
 
@@ -91,6 +92,94 @@ class AppState extends ChangeNotifier {
     currentChapter = 0;
     adventureComplete = false;
     notifyListeners();
+  }
+
+  // -------------------------------------------------------------
+  // Mystery AI planning flow
+  // -------------------------------------------------------------
+
+  /// What the user is entering across Path Choice + Plan Setup.
+  final PlanRequest plan = PlanRequest();
+
+  /// Editable copy of the playlist picked on Curated Adventures.
+  AdventurePlaylist? workingPlaylist;
+
+  /// The single saved adventure (stage scope: one at a time).
+  SavedAdventure? savedAdventure;
+
+  void setExplorationMode(ExplorationMode mode) {
+    plan.mode = mode;
+    notifyListeners();
+  }
+
+  void updatePlan({
+    String? city,
+    DateTime? date,
+    TimeOfDay? startTime,
+    String? wishText,
+  }) {
+    if (city != null) plan.city = city;
+    if (date != null) plan.date = date;
+    if (startTime != null) plan.startTime = startTime;
+    if (wishText != null) plan.wishText = wishText;
+    notifyListeners();
+  }
+
+  /// Returns false when the 5-category cap blocks the toggle.
+  bool togglePlanCategory(String id) {
+    if (plan.categoryIds.contains(id)) {
+      plan.categoryIds.remove(id);
+    } else {
+      if (plan.categoryIds.length >= PlanRequest.maxCategories) return false;
+      plan.categoryIds.add(id);
+    }
+    notifyListeners();
+    return true;
+  }
+
+  void pickPlaylist(AdventurePlaylist playlist) {
+    workingPlaylist = playlist.copyWithItems([...playlist.items]);
+    notifyListeners();
+  }
+
+  /// [to] arrives already adjusted for the removed item
+  /// (ReorderableListView.onReorderItem semantics).
+  void reorderPlaylistItem(int from, int to) {
+    final p = workingPlaylist;
+    if (p == null) return;
+    final items = [...p.items];
+    final item = items.removeAt(from);
+    items.insert(to.clamp(0, items.length), item);
+    workingPlaylist = p.copyWithItems(items);
+    notifyListeners();
+  }
+
+  /// Returns false when removal would empty the playlist (min 1 stop).
+  bool removePlaylistItem(int index) {
+    final p = workingPlaylist;
+    if (p == null || p.items.length <= 1) return false;
+    workingPlaylist =
+        p.copyWithItems([...p.items]..removeAt(index));
+    notifyListeners();
+    return true;
+  }
+
+  void saveAdventure() {
+    final p = workingPlaylist;
+    if (p == null) return;
+    savedAdventure = SavedAdventure(
+      playlist: p,
+      city: plan.city,
+      openOn: plan.date ?? DateTime.now(),
+      startTime: plan.startTime ?? const TimeOfDay(hour: 10, minute: 0),
+      mode: plan.mode,
+    );
+    notifyListeners();
+  }
+
+  /// Demo rule: starting is always allowed; the date is informational.
+  void startSavedAdventure() {
+    resetAdventure();
   }
 }
 

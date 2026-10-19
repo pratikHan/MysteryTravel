@@ -10,49 +10,58 @@ Routes come from `app/lib/navigation/router.dart`. Files live in
 
 ---
 
-## 1. Onboarding screens (run once, in order)
+## 1. Mystery AI flow (current entry flow — branch `mystery-ai`)
 
-| # | Screen name | Route | File |
-|---|---|---|---|
-| 1 | **Splash** | `/splash` | `onboarding/splash_screen.dart` |
-| 2 | **Welcome** | `/welcome` | `onboarding/welcome_screen.dart` |
-| 3 | **Interests** | `/interests` | `onboarding/interests_screen.dart` |
-| 4 | **City Picker** | `/city` | `onboarding/city_screen.dart` |
-| 5 | **Mystery Mode** | `/mode` | `onboarding/mystery_mode_screen.dart` |
-| 6 | **Customize** | `/customize` | `onboarding/customize_screen.dart` |
-| 7 | **Adventure Preview** | `/preview` | `onboarding/preview_screen.dart` |
+Status: **skeleton** = structure + navigation + working dummy data,
+final design pending its slice.
 
-**Splash** — App title "Mystery City Adventures" + tagline over a sky
-gradient; mascot street scene anchored at the bottom (slow Ken Burns
-drift). One button: *Get Started* → **Welcome**.
+| # | Screen name | Route | File | Status |
+|---|---|---|---|---|
+| 1 | **Splash** | `/splash` | `onboarding/splash_screen.dart` | final |
+| 2 | **Path Choice** | `/path-choice` | `plan/path_choice_screen.dart` | skeleton |
+| 3 | **Plan Setup** | `/plan` | `plan/plan_setup_screen.dart` | skeleton |
+| 4 | **Curated Adventures** | `/curated` | `plan/curated_adventures_screen.dart` | skeleton |
+| 5 | **Playlist Editor** | `/playlist` | `plan/playlist_editor_screen.dart` | skeleton |
 
-**Welcome** — Back button, "Welcome Explorer!" headline, 3-line intro
-copy, mascot scene at bottom. *Continue* → **Interests**.
+**Splash** — App title + tagline over a sky gradient; mascot street
+scene at the bottom. *Get Started* → **Path Choice**.
 
-**Interests** — "What Do You Love Exploring?" + 6 multi-select tiles
-(Food & Drinks, History, Art & Culture, Nature, Hidden Gems, Nightlife),
-each with icon, pop-in check badge on select. CTA shows *Continue (n)*
-and is dimmed at 0 selections → **City Picker**.
+**Path Choice** — Mascot greeting + "Choose Your Path": two big cards —
+**Planned Exploration** (everything visible, curate your day) and
+**Mystery Exploration** (places hidden; teasers + distance radii until
+you arrive). Choice sets `ExplorationMode` for the whole flow →
+**Plan Setup**.
 
-**City Picker** — Centered title, live search field (filters the grid,
-empty-state message when no match), 2-column grid of 6 city photo cards
-(Amsterdam, Paris, London, New York, Barcelona, Tokyo); tap selects
-(ring + check), tap again deselects. CTA *Explore {city}* rises in only
-when a city is picked → **Mystery Mode**.
+**Plan Setup** — One scrollable form: free-text **city** field (US
+cities), **date** picker (shows day name), **start time** picker; "What
+would you love to explore?" — **12 categories** (Food & Drinks, Nature &
+Parks, Art & Culture, Scenic & Photography, Shopping & Markets, Social &
+Family, Bars & Nightlife, Adventures & Outdoors, Entertainment, Wellness
+& Relaxation, Hidden Gems & Mystery, Experiences & Learning), max **5**
+selectable (counter, 6th tap bounces with toast); free-text **wish box**
+("a nice park and good coffee for a lazy Sunday…"). CTA *Create My
+Adventures* (enabled when city+date+time+≥1 category) → **Curated
+Adventures**.
 
-**Mystery Mode** — Hero illustration, 3 single-select rows with art +
-colored badge: Full Mystery, Balanced Mystery, Open Explorer. *Continue*
-→ **Customize**. (Pure selection UI — the choice doesn't change
-behavior yet.)
+**Curated Adventures** — "Your Curated Adventures" (echoes the wish
+text); 4–5 playlist cards from the dummy recommendation engine
+(`PlanFixtures.recommendPlaylists` — scores 6 fixture playlists by
+category overlap): hero art, title, tagline, stops/duration chip,
+category chips, stop-name preview (masked teasers in Mystery mode).
+Tap a card → **Playlist Editor**.
 
-**Customize** — Two groups: "Adventure Mode" radio rows
-(Classic/Challenging/Relaxed, animated dot) and "Travel Style" 4 tiles
-with illustrated bird avatars (Solo/Couple/Friends/Family). *Preview
-Adventure* → **Adventure Preview**.
+**Playlist Editor** — The chosen playlist as an editable list: drag
+handle to reorder, ✕ to remove (blocked at 1 stop with toast). Planned
+mode rows: photo, place name, category, time. Mystery mode rows: ?
+placeholder, teaser title ("A café hiding under a living green roof"),
+**~distance in miles**, time. *Save Adventure* → saves (single
+`SavedAdventure`) → **Home**, which now shows an **Upcoming Adventure
+card** ("Opens Sat, 10/25" — demo rule: starting is always allowed) →
+tap → resets progress → **Adventure Trail**.
 
-**Adventure Preview** — Spoiler-safe drifting illustrated journey map
-(single image, Ken Burns). *Start Adventure* → resets trail progress
-and lands on the **Adventure Trail** tab.
+Data models: `app/lib/data/plan_models.dart` (ExplorationMode,
+AdventureCategory, PlanRequest, PlaylistItem wraps Place, …);
+fixtures + engine: `app/lib/data/plan_fixtures.dart`.
 
 ---
 
@@ -184,10 +193,23 @@ next stop → mascot + pulse move there. On the LAST stop: fanfare →
 
 ---
 
-## 4. Legacy chapter screens (built for stage 1, now OFF the main path)
+## 4. Legacy screens (OFF the main path)
 
 Kept in the codebase, reachable only by direct route — candidates to
 modify, repurpose or delete:
+
+**Retired onboarding** (replaced by the Mystery AI flow):
+
+| Screen name | Route | What it was |
+|---|---|---|
+| **Welcome** | `/welcome` | Greeting page (dropped by decision) |
+| **Interests** | `/interests` | 6-tile interest picker (superseded by the 12 categories; still linked from Settings → Preferences) |
+| **City Picker** | `/city` | 6-city photo grid (superseded by the city text field) |
+| **Mystery Mode** | `/mode` | Full/Balanced/Open selector (superseded by Path Choice) |
+| **Customize** | `/customize` | Classic/Challenging/Relaxed + travel style |
+| **Adventure Preview** | `/preview` | Drifting journey map |
+
+**Old chapter flow:**
 
 | Screen name | Route | What it was |
 |---|---|---|
@@ -203,11 +225,14 @@ modify, repurpose or delete:
 
 ```mermaid
 flowchart TD
-    subgraph Onboarding
-        SP[Splash] --> WE[Welcome] --> IN[Interests] --> CI[City Picker]
-        CI --> MM[Mystery Mode] --> CU[Customize] --> PR[Adventure Preview]
+    subgraph Planning["Mystery AI flow"]
+        SP[Splash] --> PC[Path Choice]
+        PC -->|Planned or Mystery| PL[Plan Setup]
+        PL -->|Create My Adventures| CA[Curated Adventures]
+        CA -->|pick playlist| PE[Playlist Editor]
+        PE -->|Save Adventure| HO
     end
-    PR -->|Start Adventure| AT
+    HO -->|Upcoming card: Start| AT
 
     subgraph Tabs["Main shell (tab bar)"]
         HO[Home]
@@ -240,8 +265,10 @@ flowchart TD
     PA -->|stamp tap| ZM[Stamp Zoom dialog]
 ```
 
-Plain-English journey: **Splash → onboarding (pick interests, city,
-mode, style) → preview → Adventure Trail.** On the trail the loop is
+Plain-English journey: **Splash → Path Choice (Planned/Mystery) → Plan
+Setup (city, date, time, up to 5 categories, wish text) → Curated
+Adventures → Playlist Editor (reorder/remove, save) → Home upcoming
+card → Adventure Trail.** On the trail the loop is
 *open place card → read details / play quiz → Mark Done → route travels
 to next stop*, four times. Finishing the last stop triggers **Reward
 Stamp → Adventure Complete → Trip Summary → Passport**. At any time the

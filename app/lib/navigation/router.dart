@@ -26,6 +26,10 @@ import '../screens/onboarding/preview_screen.dart';
 import '../screens/onboarding/splash_screen.dart';
 import '../screens/onboarding/welcome_screen.dart';
 import '../screens/passport/passport_screen.dart';
+import '../screens/plan/curated_adventures_screen.dart';
+import '../screens/plan/path_choice_screen.dart';
+import '../screens/plan/plan_setup_screen.dart';
+import '../screens/plan/playlist_editor_screen.dart';
 import '../screens/profile/achievements_screen.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/profile/settings_screen.dart';
@@ -108,6 +112,27 @@ final appRouter = GoRouter(
       path: '/welcome',
       pageBuilder: (c, s) =>
           appPage(child: const WelcomeScreen(), state: s, motion: PageMotion.fade),
+    ),
+
+    // ---- Mystery AI planning flow ----
+    GoRoute(
+      path: '/path-choice',
+      pageBuilder: (c, s) => appPage(
+          child: const PathChoiceScreen(), state: s, motion: PageMotion.fade),
+    ),
+    GoRoute(
+      path: '/plan',
+      pageBuilder: (c, s) => appPage(child: const PlanSetupScreen(), state: s),
+    ),
+    GoRoute(
+      path: '/curated',
+      pageBuilder: (c, s) =>
+          appPage(child: const CuratedAdventuresScreen(), state: s),
+    ),
+    GoRoute(
+      path: '/playlist',
+      pageBuilder: (c, s) =>
+          appPage(child: const PlaylistEditorScreen(), state: s),
     ),
     GoRoute(
       path: '/interests',

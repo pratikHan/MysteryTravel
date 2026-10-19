@@ -68,7 +68,8 @@ class SplashScreen extends StatelessWidget {
                     child: PrimaryButton(
                       label: 'Get Started',
                       trailingArrow: true,
-                      onTap: () => context.go('/welcome'),
+                      // Welcome is retired; splash leads into Path Choice.
+                      onTap: () => context.go('/path-choice'),
                     ),
                   ),
                   const SizedBox(height: AppSpace.xxl),

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/sounds.dart';
 import '../../data/fixtures.dart';
+import '../../data/plan_models.dart';
 import '../../state/app_state.dart';
 import '../../theme/themes.dart';
 import '../../theme/tokens.dart';
@@ -71,9 +72,12 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _ResumeCard(
-                  onTap: () => context.go('/adventure'),
-                ),
+                if (state.savedAdventure != null)
+                  _UpcomingAdventureCard(saved: state.savedAdventure!)
+                else
+                  _ResumeCard(
+                    onTap: () => context.go('/adventure'),
+                  ),
                 const SizedBox(height: AppSpace.xxl),
                 Row(
                   children: [
@@ -110,6 +114,86 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// The saved Mystery AI adventure (demo rule: date shown as countdown
+/// info, but starting is always allowed).
+class _UpcomingAdventureCard extends StatelessWidget {
+  const _UpcomingAdventureCard({required this.saved});
+
+  final SavedAdventure saved;
+
+  static const _weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final d = saved.openOn;
+    final mystery = saved.mode == ExplorationMode.mystery;
+    return Pressable(
+      onTap: () {
+        AppScope.read(context).startSavedAdventure();
+        context.go('/adventure');
+      },
+      sfx: Sfx.success,
+      child: Container(
+        padding: const EdgeInsets.all(AppSpace.l),
+        decoration: BoxDecoration(
+          color: c.pill,
+          borderRadius: BorderRadius.circular(AppRadius.card),
+          boxShadow: [
+            BoxShadow(
+                color: c.shadow(0.25),
+                blurRadius: 16,
+                offset: const Offset(0, 6)),
+          ],
+        ),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(AppRadius.thumb),
+              child: Image.asset(saved.playlist.heroImage,
+                  width: 56, height: 56, fit: BoxFit.cover),
+            ),
+            const SizedBox(width: AppSpace.l),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppText(
+                    saved.opensToday
+                        ? 'Your adventure opens today!'
+                        : 'Opens ${_weekdays[d.weekday - 1]}, ${d.month}/${d.day}',
+                    AppType.caption,
+                    color: c.onDark.withValues(alpha: 0.75),
+                  ),
+                  const SizedBox(height: 3),
+                  AppText(
+                      '${mystery ? '🔮 ' : ''}${saved.playlist.title}',
+                      AppType.rowTitle,
+                      color: c.onDark),
+                  const SizedBox(height: 2),
+                  AppText(
+                      '${saved.city} · ${saved.playlist.items.length} stops',
+                      AppType.metaSub,
+                      color: c.onDark.withValues(alpha: 0.75)),
+                ],
+              ),
+            ),
+            const SizedBox(width: AppSpace.l),
+            Container(
+              width: 34,
+              height: 34,
+              decoration: BoxDecoration(
+                  color: c.onDark.withValues(alpha: 0.15),
+                  shape: BoxShape.circle),
+              child: Icon(Icons.play_arrow_rounded, color: c.onDark, size: 20),
+            ),
+          ],
+        ),
       ),
     );
   }
