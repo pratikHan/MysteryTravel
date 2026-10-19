@@ -1,5 +1,11 @@
 # Mystery City Adventures — Flutter app
 
+**Source of truth for screens: `../SCREEN_GUIDE.md`** — the canonical
+screen names, contents, and user workflow. The user gives change
+commands by those screen names. Whenever a screen is added, removed,
+renamed, or its flow/contents change, update SCREEN_GUIDE.md in the
+same commit.
+
 Stage 1 shell: all 26 screens from `../design/design-handoff/SCREENS.md`
 with dummy data, working navigation, animations, sounds and haptics.
 Runs on iOS and Android. Product plan: `../design/Mystery_City_Adventures_Product_Plan (1).docx`.
