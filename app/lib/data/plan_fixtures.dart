@@ -128,24 +128,32 @@ abstract final class PlanFixtures {
           mysteryTitle: 'A waterside park where herons nest',
           distanceMiles: 0.8,
           suggestedTime: '10:00 AM',
+          points: 60,
+          emoji: '🌳',
         ),
         PlaylistItem(
           place: Fixtures.places[1], // Garden Café
           mysteryTitle: 'A café hiding under a living green roof',
           distanceMiles: 1.2,
           suggestedTime: '11:30 AM',
+          points: 80,
+          emoji: '☕',
         ),
         PlaylistItem(
           place: Fixtures.places[2], // Botanical Garden
           mysteryTitle: 'Summer that never ends, behind iron and glass',
           distanceMiles: 1.9,
           suggestedTime: '1:30 PM',
+          points: 70,
+          emoji: '🦋',
         ),
         PlaylistItem(
           place: Fixtures.places[3], // Sunset Viewpoint
           mysteryTitle: 'The city\'s favorite goodbye-to-the-day spot',
           distanceMiles: 2.6,
           suggestedTime: '6:00 PM',
+          points: 90,
+          emoji: '🌇',
         ),
       ],
     ),
@@ -172,6 +180,8 @@ abstract final class PlanFixtures {
           mysteryTitle: 'Six small rooms full of surprising treasures',
           distanceMiles: 0.6,
           suggestedTime: '10:30 AM',
+          points: 70,
+          emoji: '🖼️',
         ),
         PlaylistItem(
           place: _place(
@@ -186,6 +196,8 @@ abstract final class PlanFixtures {
           mysteryTitle: 'An open-air canvas that repaints itself',
           distanceMiles: 1.1,
           suggestedTime: '12:00 PM',
+          points: 60,
+          emoji: '🎨',
         ),
         PlaylistItem(
           place: _place(
@@ -201,6 +213,8 @@ abstract final class PlanFixtures {
           mysteryTitle: 'Where craft comes alive before your eyes',
           distanceMiles: 1.7,
           suggestedTime: '2:00 PM',
+          points: 80,
+          emoji: '🏺',
         ),
       ],
     ),
@@ -225,6 +239,8 @@ abstract final class PlanFixtures {
           mysteryTitle: 'Where 1978 still beats everyone at pinball',
           distanceMiles: 0.9,
           suggestedTime: '7:00 PM',
+          points: 80,
+          emoji: '🕹️',
         ),
         PlaylistItem(
           place: _place(
@@ -240,6 +256,8 @@ abstract final class PlanFixtures {
           mysteryTitle: 'A hidden room built for loud hearts',
           distanceMiles: 1.4,
           suggestedTime: '9:00 PM',
+          points: 70,
+          emoji: '🎤',
         ),
         PlaylistItem(
           place: _place(
@@ -255,6 +273,8 @@ abstract final class PlanFixtures {
           mysteryTitle: 'An unmarked door with no sign — ever',
           distanceMiles: 1.8,
           suggestedTime: '11:00 PM',
+          points: 90,
+          emoji: '🚪',
         ),
       ],
     ),
@@ -279,6 +299,8 @@ abstract final class PlanFixtures {
           mysteryTitle: 'Where one verdict changed everything',
           distanceMiles: 0.7,
           suggestedTime: '11:00 AM',
+          points: 60,
+          emoji: '⚖️',
         ),
         PlaylistItem(
           place: _place(
@@ -293,6 +315,8 @@ abstract final class PlanFixtures {
           mysteryTitle: 'A corridor that carries whispers end to end',
           distanceMiles: 1.3,
           suggestedTime: '12:30 PM',
+          points: 70,
+          emoji: '🤫',
         ),
         PlaylistItem(
           place: _place(
@@ -308,6 +332,8 @@ abstract final class PlanFixtures {
           mysteryTitle: 'The house whose lights nobody lit',
           distanceMiles: 2.1,
           suggestedTime: '2:30 PM',
+          points: 80,
+          emoji: '🏚️',
         ),
       ],
     ),
@@ -332,6 +358,8 @@ abstract final class PlanFixtures {
           mysteryTitle: 'Where the city buys its breakfast',
           distanceMiles: 0.5,
           suggestedTime: '9:30 AM',
+          points: 60,
+          emoji: '🧺',
         ),
         PlaylistItem(
           place: _place(
@@ -347,6 +375,8 @@ abstract final class PlanFixtures {
           mysteryTitle: 'A café where "the usual" is a password',
           distanceMiles: 0.9,
           suggestedTime: '11:00 AM',
+          points: 70,
+          emoji: '☕',
         ),
         PlaylistItem(
           place: _place(
@@ -361,6 +391,8 @@ abstract final class PlanFixtures {
           mysteryTitle: 'Three bites that exist nowhere else',
           distanceMiles: 1.3,
           suggestedTime: '12:30 PM',
+          points: 60,
+          emoji: '🥟',
         ),
         PlaylistItem(
           place: _place(
@@ -376,6 +408,8 @@ abstract final class PlanFixtures {
           mysteryTitle: 'Where cakes are named after regulars',
           distanceMiles: 1.6,
           suggestedTime: '2:00 PM',
+          points: 80,
+          emoji: '🍰',
         ),
       ],
     ),
@@ -392,6 +426,8 @@ abstract final class PlanFixtures {
           mysteryTitle: 'Trails where the water mirrors the sky',
           distanceMiles: 0.8,
           suggestedTime: '4:00 PM',
+          points: 70,
+          emoji: '🌅',
         ),
         PlaylistItem(
           place: _place(
@@ -406,12 +442,16 @@ abstract final class PlanFixtures {
           mysteryTitle: 'Walls that catch fire at six o\'clock',
           distanceMiles: 1.5,
           suggestedTime: '5:30 PM',
+          points: 60,
+          emoji: '🎨',
         ),
         PlaylistItem(
           place: Fixtures.places[3], // Sunset Viewpoint
           mysteryTitle: 'A west-facing deck inside "the amber window"',
           distanceMiles: 2.2,
           suggestedTime: '6:30 PM',
+          points: 90,
+          emoji: '🌇',
         ),
       ],
     ),

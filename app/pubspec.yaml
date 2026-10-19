@@ -37,6 +37,7 @@ dependencies:
   go_router: ^18.1.0
   google_fonts: ^6.3.3
   audioplayers: ^6.8.1
+  lottie: ^3.6.1
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +63,7 @@ flutter:
 
   assets:
     - assets/audio/
+    - assets/lottie/
     - assets/icons/
     - assets/images/cards/
     - assets/images/chapter/

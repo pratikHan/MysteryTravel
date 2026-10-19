@@ -21,7 +21,7 @@ final design pending its slice.
 | 2 | **Path Choice** | `/path-choice` | `plan/path_choice_screen.dart` | skeleton |
 | 3 | **Plan Setup** ("Mood Builder") | `/plan` | `plan/plan_setup_screen.dart` | designed (design1001) |
 | 4 | **Curated Adventures** | `/curated` | `plan/curated_adventures_screen.dart` | skeleton |
-| 5 | **Playlist Editor** | `/playlist` | `plan/playlist_editor_screen.dart` | skeleton |
+| 5 | **Playlist Editor** ("Your Itinerary") | `/playlist` | `plan/playlist_editor_screen.dart` | designed (design1001) |
 
 **Splash** — App title + tagline over a sky gradient; mascot street
 scene at the bottom. *Get Started* → **Path Choice**.
@@ -64,14 +64,29 @@ category overlap): hero art, title, tagline, stops/duration chip,
 category chips, stop-name preview (masked teasers in Mystery mode).
 Tap a card → **Playlist Editor**.
 
-**Playlist Editor** — The chosen playlist as an editable list: drag
-handle to reorder, ✕ to remove (blocked at 1 stop with toast). Planned
-mode rows: photo, place name, category, time. Mystery mode rows: ?
-placeholder, teaser title ("A café hiding under a living green roof"),
-**~distance in miles**, time. *Save Adventure* → saves (single
-`SavedAdventure`) → **Home**, which now shows an **Upcoming Adventure
-card** ("Opens Sat, 10/25" — demo rule: starting is always allowed) →
-tap → resets progress → **Adventure Trail**.
+**Playlist Editor ("Your Itinerary")** — designed to
+`design/design1001/list of adventure places.png`. Postal theme:
+- Header: playlist title + "🔮 Mystery mode · Sun, Oct 25 · 10:00 AM",
+  faint rotated **airmail postmark** (✈️) decoration
+- Rotated **"Your Itinerary" tape label** (handwritten Caveat font) +
+  "Drag ⠿ to reorder" hint
+- Each stop is a **pastel ticket** (rotating green/gold/blue/pink
+  tints) with: colored rail number + dashed connector, **perforated
+  postage-stamp thumbnail** (place photo in Planned mode, spoiler-safe
+  emoji in Mystery), teaser/place title, time + "~x mi" pill, a
+  star-edged **"+N pts" points seal**, and ✕ remove (min 1 stop)
+- **Drag wobble + snap** (interactions #5): the lifted ticket wobbles
+  continuously (±1.3°, scale 1.04, deep shadow) and snaps with a pop
+- Summary card: celebrating mascot + "N stops / ~x mi total" +
+  **stamp-points total** (counts up) + handwritten "Another day of good
+  places awaits!"
+- *Save Adventure 🎒* (BouncyPressable) → **Lottie confetti burst** +
+  fanfare → saves → **Home** shows the **Upcoming Adventure card**
+  ("Opens Sat, 10/25"; demo rule: starting always allowed) → tap →
+  **Adventure Trail**. Caption: "Opens Sunday, Oct 25 — we'll have
+  everything ready."
+Data: `PlaylistItem.points` + `.emoji` (per-stop stamp points feed the
+summary total); Lottie asset at `app/assets/lottie/confetti.json`.
 
 Data models: `app/lib/data/plan_models.dart` (ExplorationMode,
 AdventureCategory, PlanRequest, PlaylistItem wraps Place, …);

@@ -69,6 +69,8 @@ class PlaylistItem {
     required this.mysteryTitle,
     required this.distanceMiles,
     required this.suggestedTime,
+    this.points = 60,
+    this.emoji = '📍',
   });
 
   final Place place;
@@ -79,6 +81,12 @@ class PlaylistItem {
   /// Shown in Mystery mode instead of the address/photo.
   final double distanceMiles;
   final String suggestedTime;
+
+  /// Stamp points this stop earns when completed.
+  final int points;
+
+  /// Spoiler-safe stamp art for Mystery mode thumbnails.
+  final String emoji;
 
   /// What to display for a given mode.
   String titleFor(ExplorationMode mode) =>
