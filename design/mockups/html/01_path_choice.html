@@ -1,0 +1,70 @@
+<!doctype html>
+<html><head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="_tokens.css">
+<style>
+body { height: 844px; display: flex; flex-direction: column;
+  background: linear-gradient(180deg, var(--ground-top) 0%, var(--ground) 240px); }
+.pathcard {
+  position: relative; border-radius: 22px; overflow: hidden; flex: 1;
+  border: 2.5px solid var(--border); background: var(--surface);
+  display: flex; flex-direction: column;
+}
+.pathcard.selected { border-color: var(--gold); box-shadow: 0 10px 24px rgba(22,50,90,.18); }
+.pathcard .art { height: 128px; width: 100%; object-fit: cover; display: block; }
+.pathcard .body { padding: 14px 18px 16px; }
+.badge {
+  position: absolute; top: 12px; right: 12px; background: var(--gold);
+  color: #fff; font-size: 10.5px; font-weight: 800; padding: 5px 10px;
+  border-radius: 999px; box-shadow: 0 2px 6px rgba(0,0,0,.18);
+}
+.feat { display: flex; align-items: center; gap: 7px; font-size: 12.5px;
+  font-weight: 600; color: var(--muted); margin-top: 5px; }
+.dot { width: 5px; height: 5px; border-radius: 99px; background: var(--gold-deep); flex: none; }
+</style></head>
+<body>
+  <div class="statusbar"><span>9:41</span><span>▮▮ ⌁ ▰</span></div>
+
+  <div style="display:flex; align-items:flex-start; gap:12px; padding:18px 22px 0">
+    <img class="mascot" src="../../../app/assets/images/interests/footer_mascot.png" width="86" height="86">
+    <div>
+      <div class="bubble" style="max-width:230px">Welcome, explorer! How do you want to discover your city?</div>
+      <div style="margin-top:8px; font-size:11px; font-weight:700; color:var(--muted); padding-left:4px">You can switch modes anytime later</div>
+    </div>
+  </div>
+
+  <div class="h1" style="text-align:center; margin-top:18px">Choose Your Path</div>
+
+  <div style="flex:1; display:flex; flex-direction:column; gap:14px; padding:18px 22px 0">
+    <div class="pathcard">
+      <img class="art" src="../../../app/assets/images/preview/map_full.png">
+      <div class="body">
+        <div style="display:flex; align-items:center; gap:8px">
+          <span style="font-size:20px">🗺️</span>
+          <span class="h2">Planned Exploration</span>
+        </div>
+        <div class="feat"><span class="dot"></span>See every stop upfront</div>
+        <div class="feat"><span class="dot"></span>Curate, reorder & schedule your day</div>
+      </div>
+    </div>
+
+    <div class="pathcard selected">
+      <span class="badge">★ MOST FUN</span>
+      <img class="art" src="../../../app/assets/images/mode/full_mystery.png">
+      <div class="body">
+        <div style="display:flex; align-items:center; gap:8px">
+          <span style="font-size:20px">🔮</span>
+          <span class="h2">Mystery Exploration</span>
+          <span style="margin-left:auto; width:24px; height:24px; border-radius:99px; background:var(--gold); color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800">✓</span>
+        </div>
+        <div class="feat"><span class="dot"></span>Places stay hidden until you arrive</div>
+        <div class="feat"><span class="dot"></span>Teasers & distances guide you</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:18px 22px 28px">
+    <div class="cta">Continue <span style="font-size:18px">→</span></div>
+  </div>
+</body></html>

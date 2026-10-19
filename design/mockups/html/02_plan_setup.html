@@ -1,0 +1,85 @@
+<!doctype html>
+<html><head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="_tokens.css">
+<style>
+body { min-height: 1120px; padding-bottom: 26px; }
+.field {
+  display: flex; align-items: center; gap: 10px; background: var(--surface);
+  border: 1.5px solid var(--border); border-radius: 16px; padding: 13px 16px;
+  font-size: 14px; font-weight: 600;
+}
+.field .ph { color: #8A94A8; }
+.counter {
+  font-size: 12px; font-weight: 800; color: #fff; background: var(--peaceful);
+  border-radius: 999px; padding: 4px 11px;
+}
+.wish {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 16px; padding: 14px 16px; font-size: 14px; font-weight: 600;
+  color: #8A94A8; line-height: 1.5; min-height: 84px;
+}
+.capnote {
+  display:flex; align-items:center; gap:8px; margin-top:10px;
+  background: #EAF4EC; border: 1.5px solid #BFDFC8; border-radius: 12px;
+  padding: 9px 13px; font-size: 12.5px; font-weight: 700; color: var(--peaceful);
+}
+</style></head>
+<body>
+  <div class="statusbar"><span>9:41</span><span>▮▮ ⌁ ▰</span></div>
+
+  <div style="display:flex; align-items:center; gap:10px; padding:14px 22px 0">
+    <div class="backbtn">‹</div>
+    <div style="flex:1; text-align:center; margin-right:40px">
+      <div style="font-size:23px; font-weight:800; letter-spacing:-0.3px">Plan Your Day</div>
+      <div class="caption" style="margin-top:2px">🔮 Mystery exploration</div>
+    </div>
+  </div>
+
+  <div style="padding:22px 22px 0">
+    <div class="h2">Where &amp; when</div>
+    <div class="field" style="margin-top:12px"><span>🏙️</span><span>San Francisco</span></div>
+    <div style="display:flex; gap:10px; margin-top:10px">
+      <div class="field" style="flex:1.3"><span>📅</span><span>Sun, Oct 25</span></div>
+      <div class="field" style="flex:1"><span>🕙</span><span>10:00 AM</span></div>
+    </div>
+  </div>
+
+  <div style="padding:26px 22px 0">
+    <div style="display:flex; align-items:center">
+      <div class="h2" style="flex:1">What would you love to explore?</div>
+      <span class="counter">4 / 5</span>
+    </div>
+    <div class="sub" style="margin-top:4px; font-size:12.5px">Pick up to 5 for one perfect day</div>
+    <div style="display:flex; flex-wrap:wrap; gap:9px; margin-top:14px">
+      <span class="chip on">🌳 Nature &amp; Parks</span>
+      <span class="chip on">🍜 Food &amp; Drinks</span>
+      <span class="chip">🎨 Art &amp; Culture</span>
+      <span class="chip on">📸 Scenic &amp; Photography</span>
+      <span class="chip">🛍️ Shopping &amp; Markets</span>
+      <span class="chip">👨‍👩‍👧 Social &amp; Family</span>
+      <span class="chip">🍸 Bars &amp; Nightlife</span>
+      <span class="chip">🥾 Adventures &amp; Outdoors</span>
+      <span class="chip">🎭 Entertainment</span>
+      <span class="chip on">🧘 Wellness &amp; Relaxation</span>
+      <span class="chip">🗝️ Hidden Gems &amp; Mystery</span>
+      <span class="chip">🔬 Experiences &amp; Learning</span>
+    </div>
+    <div class="capnote">✨ Nice mix! One more pick and your day is full.</div>
+  </div>
+
+  <div style="padding:26px 22px 0">
+    <div class="h2">Anything specific in mind?</div>
+    <div class="wish" style="margin-top:12px">"I want a nice park and a good coffee shop today for a lazy Sunday…"</div>
+  </div>
+
+  <div style="display:flex; align-items:center; gap:12px; padding:22px 22px 0">
+    <img class="mascot" src="../../../app/assets/images/chapter/quiz_mascot.png" width="58" height="58">
+    <div class="bubble" style="flex:1; border-radius:4px 18px 18px 18px">I'll mix these into a few perfect day plans for you!</div>
+  </div>
+
+  <div style="padding:18px 22px 0">
+    <div class="cta">Create My Adventures ✨</div>
+  </div>
+</body></html>

@@ -1,0 +1,123 @@
+<!doctype html>
+<html><head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap">
+<link rel="stylesheet" href="_tokens.css">
+<style>
+body { height: 980px; position: relative; overflow: hidden;
+  background: linear-gradient(180deg,
+    var(--ground-top) 0%, #E3EDDE 30%, #E9EFD9 55%, #F2EBD3 78%, #EFE9F1 100%); }
+.hill { position: absolute; width: 130%; left: -15%; border-radius: 50%; }
+svg.trail { position: absolute; inset: 0; }
+.node {
+  position: absolute; width: 54px; height: 54px; border-radius: 999px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 800; border: 3.5px solid #fff;
+  box-shadow: 0 4px 10px rgba(22,50,90,.18);
+}
+.node.done { background: var(--success); color: #fff; }
+.node.current { background: var(--gold); color: #fff; width: 62px; height: 62px;
+  box-shadow: 0 0 0 7px rgba(232,167,60,.3), 0 0 26px rgba(232,167,60,.55); }
+.node.next { background: #fff; color: var(--peaceful); border-color: #CFE4D5; }
+.pcard {
+  position: absolute; width: 196px; background: rgba(255,255,255,.97);
+  border-radius: 16px; border: 2px solid var(--gold); padding: 10px 11px;
+  box-shadow: 0 6px 16px rgba(22,50,90,.15);
+}
+.pcard.quiet { border-color: var(--border); border-width: 1.5px; }
+.pcard .t { font-size: 13px; font-weight: 800; line-height: 1.25; }
+.pcard .m { font-size: 10.5px; font-weight: 700; color: var(--muted); margin-top: 3px; }
+.because { font-family: 'Caveat', cursive; font-size: 15px; color: var(--gold-deep);
+  transform: rotate(-2deg); margin-top: 4px; }
+.donebtn { margin-top: 7px; height: 28px; border-radius: 999px; background: var(--peaceful);
+  color: #fff; font-size: 11.5px; font-weight: 800; display: flex;
+  align-items: center; justify-content: center; gap: 4px; }
+.chest { position: absolute; font-size: 30px; filter: drop-shadow(0 3px 5px rgba(0,0,0,.2)); }
+.tree { position: absolute; font-size: 26px; opacity: .85; }
+.cloud { position: absolute; color: #fff; font-size: 34px; opacity: .8; }
+.hdr { position: absolute; top: 0; left: 0; right: 0; padding: 12px 16px 26px;
+  background: linear-gradient(180deg, rgba(217,231,241,.96) 55%, rgba(217,231,241,0));
+  display: flex; align-items: flex-start; gap: 10px; z-index: 5; }
+.stamp-goal { position: absolute; text-align: center; }
+.stamp-goal .coin { width: 52px; height: 52px; border-radius: 99px; background: #fff;
+  border: 3px solid var(--gold); display: flex; align-items: center;
+  justify-content: center; font-size: 24px; margin: 0 auto;
+  box-shadow: 0 0 18px rgba(232,167,60,.45); }
+</style></head>
+<body>
+  <!-- status bar + header -->
+  <div class="hdr">
+    <div class="backbtn" style="margin-top:26px">‹</div>
+    <div style="flex:1; text-align:center; margin-top:22px">
+      <div style="font-size:21px; font-weight:800; letter-spacing:-0.3px">Lazy Sunday Reset</div>
+      <div class="caption" style="margin-top:1px">San Francisco · 🔮 Mystery · stop 2 of 4</div>
+      <div style="margin:7px auto 0; width:150px; height:7px; border-radius:99px; background:#fff">
+        <div style="width:38%; height:100%; border-radius:99px; background:var(--gold)"></div>
+      </div>
+    </div>
+    <div class="backbtn" style="margin-top:26px">≡</div>
+  </div>
+
+  <!-- scenery -->
+  <span class="cloud" style="top:120px; left:30px">☁️</span>
+  <span class="cloud" style="top:170px; right:40px">☁️</span>
+  <span class="tree" style="top:300px; left:16px">🌳</span>
+  <span class="tree" style="top:420px; right:18px">🌲</span>
+  <span class="tree" style="top:600px; left:22px">🌳</span>
+  <span class="tree" style="top:760px; right:26px">🌲</span>
+  <span class="tree" style="top:860px; left:40px">🌲</span>
+
+  <!-- winding trail -->
+  <svg class="trail" width="390" height="980" viewBox="0 0 390 980" fill="none">
+    <path d="M 110 180 C 60 260, 150 300, 120 360 C 95 415, 250 430, 275 500
+             C 297 560, 140 590, 115 660 C 95 715, 250 740, 272 810 C 288 858, 210 890, 195 925"
+          stroke="#E9DFC8" stroke-width="30" stroke-linecap="round"/>
+    <path d="M 110 180 C 60 260, 150 300, 120 360 C 95 415, 250 430, 275 500"
+          stroke="#8FBF9A" stroke-width="22" stroke-linecap="round" opacity=".75"/>
+    <path d="M 110 180 C 60 260, 150 300, 120 360 C 95 415, 250 430, 275 500
+             C 297 560, 140 590, 115 660 C 95 715, 250 740, 272 810 C 288 858, 210 890, 195 925"
+          stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 16" opacity=".9"/>
+  </svg>
+
+  <!-- stop 1: done -->
+  <div class="node done" style="left:84px; top:154px">✓</div>
+  <div class="pcard quiet" style="left:160px; top:144px; width:180px; opacity:.88">
+    <div class="t">Lakeside Park 🌳</div>
+    <div class="m">Visited 10:12 AM · ★ 4.8</div>
+  </div>
+
+  <!-- bonus chest between stops -->
+  <span class="chest" style="left:104px; top:338px">🎁</span>
+  <div class="caption" style="position:absolute; left:84px; top:374px; width:100px; text-align:center">surprise bonus</div>
+
+  <!-- stop 2: current -->
+  <div class="node current" style="left:244px; top:470px">2</div>
+  <img class="mascot" src="../../../app/assets/images/preview/mascot_corner.png" width="72" height="72" style="position:absolute; left:296px; top:420px">
+  <div class="pcard" style="left:30px; top:448px">
+    <div class="t">A café hiding under a living green roof ☕</div>
+    <div class="m">📍 ~1.2 mi away · 11:30 AM</div>
+    <div class="because">↳ because you picked 🍜 Food</div>
+    <div class="donebtn">✓ &nbsp;I'm here — reveal it!</div>
+  </div>
+
+  <!-- stop 3: upcoming -->
+  <div class="node next" style="left:88px; top:632px">3</div>
+  <div class="pcard quiet" style="left:160px; top:626px; width:186px">
+    <div class="t">Summer that never ends… 🦋</div>
+    <div class="m">📍 ~1.9 mi · 1:30 PM · reveals on arrival</div>
+  </div>
+
+  <!-- stop 4: upcoming -->
+  <div class="node next" style="left:246px; top:782px">4</div>
+  <div class="pcard quiet" style="left:40px; top:776px; width:190px">
+    <div class="t">The city's goodbye-to-the-day spot 🌇</div>
+    <div class="m">📍 ~2.6 mi · 6:00 PM · reveals on arrival</div>
+  </div>
+
+  <!-- stamp goal -->
+  <div class="stamp-goal" style="left:158px; top:900px; width:80px">
+    <div class="coin">🏅</div>
+    <div class="caption" style="margin-top:4px">your stamp</div>
+  </div>
+</body></html>
