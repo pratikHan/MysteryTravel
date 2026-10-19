@@ -32,30 +32,25 @@ scene at the bottom. *Get Started* → **Path Choice**.
 you arrive). Choice sets `ExplorationMode` for the whole flow →
 **Plan Setup**.
 
-**Plan Setup ("Mood Builder")** — designed to
-`design/design1001/plan_setup.png`. Header: "Mood Builder / Turn your
-mood into a magical day ✨" + gold **step bar** (step 2 of 4) + menu
-sheet (switch mode / start over). One scrollable form:
-- "Where & when are you exploring?" — three picker fields in a row:
-  **city** (bottom sheet: free text + popular US city chips), **date**
-  (native picker, shows "Sun, Oct 25"), **time**
-- "How are you feeling today?" — horizontally scrolling **mood pills**
-  (☀️ Calm, ❤️ Curious, 🍃 Adventurous, ✨ Inspired, 👥 Social);
-  selected pill gets a gold glow ring; mood feeds the companion bubble
-- "What would you love to explore?" + green **n/5 picks** pill (pops on
-  change, turns gold at 5) — 3-column grid of the **12 category cards**
-  (emoji + label; selected = green fill + white popping check); 6th
-  pick bounces with a friendly toast
-- **Bonus banner** — 🎁 "Choose N more categories to unlock a bonus!"
-  with gold n/5 pill; at 5/5 it flips green: "Bonus unlocked! 🎉"
-  (pop + success sound, once)
-- "Anything specific in mind?" (Optional) — **wish textbox**
-- **Companion bubble** (interactions #6): mascot shows typing dots,
-  then reacts to mood+picks ("A slow, cozy day — love it! …"); switches
-  to celebrating at 5 picks
-- CTA **Create My Adventure ✨** — BouncyPressable (interactions #1:
-  press-down + overshoot bounce); enabled when city+date+time+≥1
-  category → **Curated Adventures**.
+**Plan Setup ("Plan Your Day")** — layout per
+`design/mockups/02_plan_setup.png` (user decision 2026-10-19; the
+design1001 Mood Builder layout was superseded, its interactions kept).
+Header: back + "Plan Your Day" + mode caption (🔮 Mystery / 🗺️ Planned).
+One scrollable form:
+- "Where & when" — full-width **city** field (bottom sheet: free text +
+  popular US city chips) above a **date + time** row (native pickers)
+- "What would you love to explore?" + green **n/5** pill (pops on
+  change, turns gold at 5) — the **12 categories as emoji chip Wrap**
+  (selected = filled green); 6th pick bounces with a friendly toast
+- **Cap note** under the chips: "✨ Nice mix! N more picks and your day
+  is full." → at 5/5 flips gold "🎉 All 5 picked — sounds like a great
+  day!" (pop + success sound, once)
+- "Anything specific in mind?" — **wish textbox**
+- **Companion bubble** (interactions #6): mascot types (bouncing dots),
+  then reacts to picks/mood; celebrates at 5 picks
+- CTA **Create My Adventures ✨** — BouncyPressable (interactions #1);
+  enabled when city+date+time+≥1 category → **Curated Adventures**.
+(The mood field remains in `PlanRequest` but has no UI on this layout.)
 
 **Curated Adventures** — "Your Curated Adventures" (echoes the wish
 text); 4–5 playlist cards from the dummy recommendation engine

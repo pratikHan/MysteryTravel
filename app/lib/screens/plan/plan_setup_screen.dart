@@ -14,11 +14,9 @@ import '../../widgets/mascot.dart';
 import '../../widgets/motion_widgets.dart';
 import '../../widgets/toast.dart';
 
-/// Plan Setup — the "Mood Builder" (reference: design1001/plan_setup.png).
-///
-/// Where & when pickers, a mood row, the 12-category grid with the
-/// 5-pick cap and bonus banner, the wish box, and the companion bubble
-/// that reacts (with typing dots) to every choice.
+/// Plan Setup — layout per design/mockups/02_plan_setup.png, keeping
+/// the Mood Builder micro-interactions (typing companion bubble,
+/// bouncy CTA, counter pops, 5/5 celebration).
 class PlanSetupScreen extends StatefulWidget {
   const PlanSetupScreen({super.key});
 
@@ -28,7 +26,7 @@ class PlanSetupScreen extends StatefulWidget {
 
 class _PlanSetupScreenState extends State<PlanSetupScreen> {
   late final TextEditingController _wish;
-  bool _bonusCelebrated = false;
+  bool _capCelebrated = false;
 
   @override
   void initState() {
@@ -102,8 +100,8 @@ class _PlanSetupScreenState extends State<PlanSetupScreen> {
     SoundService.instance.play(Sfx.pop, haptic: Haptic.light);
     final isFullNow =
         state.plan.categoryIds.length >= PlanRequest.maxCategories;
-    if (isFullNow && !hadFull && !_bonusCelebrated) {
-      _bonusCelebrated = true;
+    if (isFullNow && !hadFull && !_capCelebrated) {
+      _capCelebrated = true;
       SoundService.instance.play(Sfx.success, haptic: Haptic.success);
     }
   }
@@ -115,317 +113,196 @@ class _PlanSetupScreenState extends State<PlanSetupScreen> {
     final plan = state.plan;
     final picks = plan.categoryIds.length;
     final full = picks >= PlanRequest.maxCategories;
+    final mystery = plan.mode == ExplorationMode.mystery;
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: const [0, 0.3],
-            colors: [c.groundTop, c.ground],
-          ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              // ---- Header ----
-              Padding(
-                padding: const EdgeInsets.fromLTRB(
-                    AppSpace.screenGutter, AppSpace.s, AppSpace.screenGutter, 0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CircleIconButton(
-                      icon: Icons.chevron_left_rounded,
-                      semanticLabel: 'Back to Path Choice',
-                      onTap: () => context.go('/path-choice'),
-                    ),
-                    Expanded(
-                      child: Column(
-                        children: [
-                          AppText('Mood Builder', AppType.screenTitle),
-                          const SizedBox(height: 2),
-                          AppText('Turn your mood into a magical day ✨',
-                              AppType.chip,
-                              color: c.muted),
-                          const SizedBox(height: AppSpace.m),
-                          const _StepBar(step: 2, total: 4),
-                        ],
-                      ),
-                    ),
-                    CircleIconButton(
-                      icon: Icons.menu_rounded,
-                      semanticLabel: 'Options',
-                      onTap: () => _openMenu(context),
-                    ),
-                  ],
-                ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // ---- Header ----
+            Padding(
+              padding: const EdgeInsets.fromLTRB(AppSpace.prefsGutter,
+                  AppSpace.s, AppSpace.prefsGutter, 0),
+              child: ScreenHeader(
+                title: 'Plan Your Day',
+                subtitle: mystery
+                    ? '🔮 Mystery exploration'
+                    : '🗺️ Planned exploration',
+                onBack: () => context.go('/path-choice'),
               ),
-              // ---- Form ----
-              Expanded(
-                child: ListView(
-                  padding: const EdgeInsets.fromLTRB(AppSpace.screenGutter,
-                      AppSpace.xl, AppSpace.screenGutter, AppSpace.xl),
-                  physics: const BouncingScrollPhysics(),
-                  children: [
-                    AppText('Where & when are you exploring?',
-                        AppType.formHeader),
-                    const SizedBox(height: AppSpace.m),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 13,
-                          child: _PickerField(
-                            emoji: '🏙️',
-                            label: plan.city.isEmpty ? 'City' : plan.city,
-                            placeholder: plan.city.isEmpty,
-                            onTap: _pickCity,
-                          ),
-                        ),
-                        const SizedBox(width: AppSpace.s),
-                        Expanded(
-                          flex: 12,
-                          child: _PickerField(
-                            emoji: '📅',
-                            label: plan.date == null
-                                ? 'Date'
-                                : '${_wd[plan.date!.weekday - 1]}, ${_mo[plan.date!.month - 1]} ${plan.date!.day}',
-                            placeholder: plan.date == null,
-                            onTap: _pickDate,
-                          ),
-                        ),
-                        const SizedBox(width: AppSpace.s),
-                        Expanded(
-                          flex: 10,
-                          child: _PickerField(
-                            emoji: '🕙',
-                            label: plan.startTime == null
-                                ? 'Time'
-                                : plan.startTime!.format(context),
-                            placeholder: plan.startTime == null,
-                            onTap: _pickTime,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: AppSpace.xxl + 4),
-                    AppText('How are you feeling today?', AppType.formHeader),
-                    const SizedBox(height: AppSpace.xs),
-                    AppText('Pick a mood to set the vibe for your day.',
-                        AppType.body,
-                        color: c.muted),
-                    const SizedBox(height: AppSpace.m),
-                    SizedBox(
-                      height: 46,
-                      child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: PlanFixtures.moods.length,
-                        separatorBuilder: (_, i) =>
-                            const SizedBox(width: AppSpace.s + 1),
-                        itemBuilder: (context, i) {
-                          final mood = PlanFixtures.moods[i];
-                          return _MoodPill(
-                            mood: mood,
-                            selected: plan.moodId == mood.id,
-                            onTap: () {
-                              SoundService.instance
-                                  .play(Sfx.pop, haptic: Haptic.light);
-                              state.setMood(mood.id);
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: AppSpace.xxl + 4),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: AppText('What would you love to explore?',
-                              AppType.formHeader),
-                        ),
-                        const SizedBox(width: AppSpace.s),
-                        PopIn(
-                          key: ValueKey('picks-$picks'),
-                          peak: 1.18,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: AppSpace.m,
-                                vertical: AppSpace.xs + 2),
-                            decoration: BoxDecoration(
-                              color: full ? c.gold : context.accents.peaceful,
-                              borderRadius:
-                                  BorderRadius.circular(AppRadius.pill),
-                            ),
-                            child: AppText(
-                                '$picks / ${PlanRequest.maxCategories} picks',
-                                AppType.chip,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: AppSpace.xs),
-                    AppText(
-                        'Pick up to ${PlanRequest.maxCategories} categories for your perfect day.',
-                        AppType.body,
-                        color: c.muted),
-                    const SizedBox(height: AppSpace.l),
-                    GridView.count(
-                      crossAxisCount: 3,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      mainAxisSpacing: AppSpace.s + 2,
-                      crossAxisSpacing: AppSpace.s + 2,
-                      childAspectRatio: 1.26,
-                      children: [
-                        for (final cat in PlanFixtures.categories)
-                          _CategoryCard(
-                            category: cat,
-                            selected: plan.categoryIds.contains(cat.id),
-                            onTap: () => _onCategoryTap(cat.id),
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: AppSpace.l),
-                    _BonusBanner(picks: picks),
-                    const SizedBox(height: AppSpace.xxl + 4),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: AppText(
-                              'Anything specific in mind?', AppType.formHeader),
-                        ),
-                        AppText('Optional', AppType.chip, color: c.muted),
-                      ],
-                    ),
-                    const SizedBox(height: AppSpace.m),
-                    TextField(
-                      controller: _wish,
-                      onChanged: (v) => state.updatePlan(wishText: v),
-                      maxLines: 3,
-                      style: AppType.body.style(c.ink),
-                      decoration: InputDecoration(
-                        hintText:
-                            '"I want a peaceful park, great coffee, and some hidden gems…"',
-                        hintStyle:
-                            AppType.body.style(c.muted.withValues(alpha: 0.65)),
-                        suffixIcon: Icon(Icons.edit_outlined,
-                            color: c.muted, size: 18),
-                        filled: true,
-                        fillColor: c.surface,
-                        contentPadding: const EdgeInsets.all(AppSpace.l),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(AppRadius.card),
-                          borderSide:
-                              BorderSide(color: c.border, width: 1.5),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius:
-                              BorderRadius.circular(AppRadius.card),
-                          borderSide: BorderSide(color: c.ink, width: 1.5),
+            ),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(AppSpace.prefsGutter,
+                    AppSpace.xl, AppSpace.prefsGutter, AppSpace.xl),
+                physics: const BouncingScrollPhysics(),
+                children: [
+                  AppText('Where & when', AppType.sectionHeader),
+                  const SizedBox(height: AppSpace.m),
+                  _PickerField(
+                    emoji: '🏙️',
+                    label: plan.city.isEmpty
+                        ? 'City (e.g. San Francisco)'
+                        : plan.city,
+                    placeholder: plan.city.isEmpty,
+                    onTap: _pickCity,
+                  ),
+                  const SizedBox(height: AppSpace.s + 2),
+                  Row(
+                    children: [
+                      Expanded(
+                        flex: 13,
+                        child: _PickerField(
+                          emoji: '📅',
+                          label: plan.date == null
+                              ? 'Pick a date'
+                              : '${_wd[plan.date!.weekday - 1]}, ${_mo[plan.date!.month - 1]} ${plan.date!.day}',
+                          placeholder: plan.date == null,
+                          onTap: _pickDate,
                         ),
                       ),
-                    ),
-                    const SizedBox(height: AppSpace.xl),
-                    CompanionBubble(
-                      message: PlanFixtures.companionReaction(plan),
-                      mascotState: full
-                          ? MascotState.celebrating
-                          : MascotState.idle,
-                    ),
-                    const SizedBox(height: AppSpace.xl),
-                    BouncyPressable(
-                      enabled: plan.isComplete,
-                      sfx: Sfx.success,
-                      haptic: Haptic.medium,
-                      onTap: () => context.go('/curated'),
-                      child: AnimatedOpacity(
-                        duration: AppMotion.base,
-                        opacity: plan.isComplete ? 1 : 0.55,
+                      const SizedBox(width: AppSpace.s + 2),
+                      Expanded(
+                        flex: 10,
+                        child: _PickerField(
+                          emoji: '🕙',
+                          label: plan.startTime == null
+                              ? 'Start time'
+                              : plan.startTime!.format(context),
+                          placeholder: plan.startTime == null,
+                          onTap: _pickTime,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpace.xxl + 4),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: AppText('What would you love to explore?',
+                            AppType.sectionHeader),
+                      ),
+                      const SizedBox(width: AppSpace.s),
+                      PopIn(
+                        key: ValueKey('picks-$picks'),
+                        peak: 1.18,
                         child: Container(
-                          height: AppSize.cta,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpace.m,
+                              vertical: AppSpace.xs + 2),
                           decoration: BoxDecoration(
-                            color: c.pill,
+                            color:
+                                full ? c.gold : context.accents.peaceful,
                             borderRadius:
                                 BorderRadius.circular(AppRadius.pill),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: c.shadow(0.25),
-                                  blurRadius: 14,
-                                  offset: const Offset(0, 6)),
-                            ],
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              AppText('Create My Adventure ✨', AppType.cta,
-                                  color: c.onDark),
-                              const SizedBox(width: AppSpace.s),
-                              Icon(Icons.arrow_forward_rounded,
-                                  color: c.onDark, size: 20),
-                            ],
-                          ),
+                          child: AppText(
+                              '$picks / ${PlanRequest.maxCategories}',
+                              AppType.chip,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpace.xs),
+                  AppText(
+                      'Pick up to ${PlanRequest.maxCategories} for one perfect day',
+                      AppType.body,
+                      color: c.muted),
+                  const SizedBox(height: AppSpace.l),
+                  Wrap(
+                    spacing: AppSpace.s + 1,
+                    runSpacing: AppSpace.s + 1,
+                    children: [
+                      for (final cat in PlanFixtures.categories)
+                        _CategoryChip(
+                          category: cat,
+                          selected: plan.categoryIds.contains(cat.id),
+                          onTap: () => _onCategoryTap(cat.id),
+                        ),
+                    ],
+                  ),
+                  AnimatedSize(
+                    duration: AppMotion.base,
+                    curve: AppMotion.easeOut,
+                    child: picks > 0
+                        ? Padding(
+                            padding:
+                                const EdgeInsets.only(top: AppSpace.m),
+                            child: _CapNote(picks: picks, full: full),
+                          )
+                        : const SizedBox(width: double.infinity),
+                  ),
+                  const SizedBox(height: AppSpace.xxl + 4),
+                  AppText('Anything specific in mind?',
+                      AppType.sectionHeader),
+                  const SizedBox(height: AppSpace.m),
+                  TextField(
+                    controller: _wish,
+                    onChanged: (v) => state.updatePlan(wishText: v),
+                    maxLines: 3,
+                    style: AppType.body.style(c.ink),
+                    decoration: InputDecoration(
+                      hintText:
+                          '"I want a nice park and a good coffee shop for a lazy Sunday…"',
+                      hintStyle: AppType.body
+                          .style(c.muted.withValues(alpha: 0.65)),
+                      filled: true,
+                      fillColor: c.surface,
+                      contentPadding: const EdgeInsets.all(AppSpace.l),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(AppRadius.card),
+                        borderSide:
+                            BorderSide(color: c.border, width: 1.5),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.circular(AppRadius.card),
+                        borderSide: BorderSide(color: c.ink, width: 1.5),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpace.xl),
+                  CompanionBubble(
+                    message: PlanFixtures.companionReaction(plan),
+                    mascotState:
+                        full ? MascotState.celebrating : MascotState.curious,
+                  ),
+                  const SizedBox(height: AppSpace.xl),
+                  BouncyPressable(
+                    enabled: plan.isComplete,
+                    sfx: Sfx.success,
+                    haptic: Haptic.medium,
+                    onTap: () => context.go('/curated'),
+                    child: AnimatedOpacity(
+                      duration: AppMotion.base,
+                      opacity: plan.isComplete ? 1 : 0.55,
+                      child: Container(
+                        height: AppSize.cta,
+                        decoration: BoxDecoration(
+                          color: c.pill,
+                          borderRadius:
+                              BorderRadius.circular(AppRadius.pill),
+                          boxShadow: [
+                            BoxShadow(
+                                color: c.shadow(0.25),
+                                blurRadius: 14,
+                                offset: const Offset(0, 6)),
+                          ],
+                        ),
+                        child: Center(
+                          child: AppText(
+                              'Create My Adventures ✨', AppType.cta,
+                              color: c.onDark),
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _openMenu(BuildContext context) {
-    final c = context.colors;
-    showModalBottomSheet<void>(
-      context: context,
-      backgroundColor: c.ground,
-      shape: const RoundedRectangleBorder(
-        borderRadius:
-            BorderRadius.vertical(top: Radius.circular(AppRadius.sheet)),
-      ),
-      builder: (sheetContext) => SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpace.screenGutter),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              for (final (icon, label, action) in [
-                (Icons.swap_horiz_rounded, 'Switch exploration mode', () {
-                  context.go('/path-choice');
-                }),
-                (Icons.restart_alt_rounded, 'Start over', () {
-                  AppScope.read(context).plan.reset();
-                  AppScope.read(context).updatePlan();
-                  _wish.clear();
-                  setState(() => _bonusCelebrated = false);
-                }),
-              ])
-                Pressable(
-                  onTap: () {
-                    Navigator.of(sheetContext).pop();
-                    action();
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: AppSpace.m, horizontal: AppSpace.s),
-                    child: Row(
-                      children: [
-                        Icon(icon, size: 21, color: c.ink),
-                        const SizedBox(width: AppSpace.l),
-                        AppText(label, AppType.rowTitle),
-                      ],
-                    ),
                   ),
-                ),
-            ],
-          ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -433,35 +310,6 @@ class _PlanSetupScreenState extends State<PlanSetupScreen> {
 }
 
 // ---------------------------------------------------------------------------
-
-/// Gold step-progress segments under the title.
-class _StepBar extends StatelessWidget {
-  const _StepBar({required this.step, required this.total});
-
-  final int step;
-  final int total;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        for (var i = 0; i < total; i++)
-          AnimatedContainer(
-            duration: AppMotion.base,
-            width: 44,
-            height: 8,
-            margin: EdgeInsets.only(right: i == total - 1 ? 0 : AppSpace.xs + 2),
-            decoration: BoxDecoration(
-              color: i < step ? c.gold : c.surface,
-              borderRadius: BorderRadius.circular(AppRadius.pill),
-            ),
-          ),
-      ],
-    );
-  }
-}
 
 class _PickerField extends StatelessWidget {
   const _PickerField({
@@ -482,8 +330,9 @@ class _PickerField extends StatelessWidget {
     return Pressable(
       onTap: onTap,
       child: Container(
-        height: 48,
-        padding: const EdgeInsets.symmetric(horizontal: AppSpace.m - 2),
+        height: 50,
+        padding:
+            const EdgeInsets.symmetric(horizontal: AppSpace.l),
         decoration: BoxDecoration(
           color: c.surface,
           borderRadius: BorderRadius.circular(AppRadius.row),
@@ -491,19 +340,21 @@ class _PickerField extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Text(emoji, style: const TextStyle(fontSize: 15)),
-            const SizedBox(width: AppSpace.xs + 2),
+            Text(emoji, style: const TextStyle(fontSize: 16)),
+            const SizedBox(width: AppSpace.s + 2),
             Expanded(
               child: AppText(
                 label,
-                AppType.chip,
-                color: placeholder ? c.muted.withValues(alpha: 0.7) : c.ink,
+                AppType.body,
+                color: placeholder
+                    ? c.muted.withValues(alpha: 0.7)
+                    : c.ink,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
             Icon(Icons.keyboard_arrow_down_rounded,
-                size: 16, color: c.muted),
+                size: 18, color: c.muted),
           ],
         ),
       ),
@@ -511,59 +362,9 @@ class _PickerField extends StatelessWidget {
   }
 }
 
-class _MoodPill extends StatelessWidget {
-  const _MoodPill({
-    required this.mood,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final Mood mood;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return Pressable(
-      onTap: onTap,
-      sfx: null,
-      haptic: null,
-      child: AnimatedContainer(
-        duration: AppMotion.base,
-        curve: AppMotion.easeOut,
-        padding: const EdgeInsets.symmetric(horizontal: AppSpace.xl - 2),
-        decoration: BoxDecoration(
-          color: selected ? c.gold.softFill : c.surface,
-          borderRadius: BorderRadius.circular(AppRadius.pill),
-          border: Border.all(
-            color: selected ? c.gold : c.border,
-            width: selected ? 2.5 : 1.5,
-          ),
-          boxShadow: selected
-              ? [
-                  BoxShadow(
-                      color: c.gold.withValues(alpha: 0.4),
-                      blurRadius: 14,
-                      spreadRadius: 1),
-                ]
-              : null,
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(mood.emoji, style: const TextStyle(fontSize: 16)),
-            const SizedBox(width: AppSpace.xs + 2),
-            AppText(mood.label, AppType.itemTitle),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _CategoryCard extends StatelessWidget {
-  const _CategoryCard({
+/// Emoji chip per the mockup: outlined pill, filled accent when selected.
+class _CategoryChip extends StatelessWidget {
+  const _CategoryChip({
     required this.category,
     required this.selected,
     required this.onTap,
@@ -581,90 +382,61 @@ class _CategoryCard extends StatelessWidget {
       onTap: onTap,
       sfx: null,
       haptic: null,
-      child: Stack(
-        children: [
-          AnimatedContainer(
-            duration: AppMotion.base,
-            curve: AppMotion.easeOut,
-            padding: const EdgeInsets.symmetric(
-                horizontal: AppSpace.s, vertical: AppSpace.s),
-            decoration: BoxDecoration(
-              color: selected ? accent : c.surface,
-              borderRadius: BorderRadius.circular(AppRadius.row),
-              border: Border.all(
-                color: selected ? accent : c.border,
-                width: 1.5,
-              ),
-              boxShadow: selected
-                  ? [
-                      BoxShadow(
-                          color: accent.withValues(alpha: 0.35),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4)),
-                    ]
-                  : null,
-            ),
-            child: SizedBox.expand(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(category.emoji,
-                      style: const TextStyle(fontSize: 22)),
-                  const SizedBox(height: AppSpace.xs),
-                  AppText(
-                    category.label,
-                    AppType.caption,
-                    color: selected ? Colors.white : c.ink,
-                    align: TextAlign.center,
-                    maxLines: 2,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          if (selected)
-            Positioned(
-              top: AppSpace.xs,
-              right: AppSpace.xs,
-              child: PopIn(
-                child: Container(
-                  width: 18,
-                  height: 18,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(Icons.check_rounded,
-                      size: 13, color: accent),
-                ),
-              ),
-            ),
-        ],
+      child: AnimatedContainer(
+        duration: AppMotion.base,
+        curve: AppMotion.easeOut,
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppSpace.l, vertical: AppSpace.s + 1),
+        decoration: BoxDecoration(
+          color: selected ? accent : c.surface,
+          borderRadius: BorderRadius.circular(AppRadius.pill),
+          border: Border.all(
+              color: selected ? accent : c.border, width: 1.5),
+          boxShadow: selected
+              ? [
+                  BoxShadow(
+                      color: accent.withValues(alpha: 0.3),
+                      blurRadius: 8,
+                      offset: const Offset(0, 3)),
+                ]
+              : null,
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(category.emoji, style: const TextStyle(fontSize: 14)),
+            const SizedBox(width: AppSpace.xs + 2),
+            AppText(category.label, AppType.chip,
+                color: selected ? Colors.white : c.ink),
+          ],
+        ),
       ),
     );
   }
 }
 
-/// Gamified nudge toward 5 picks; celebrates when the bonus unlocks.
-class _BonusBanner extends StatelessWidget {
-  const _BonusBanner({required this.picks});
+/// The mockup's green note under the chips; copy tracks progress and
+/// celebrates the full mix.
+class _CapNote extends StatelessWidget {
+  const _CapNote({required this.picks, required this.full});
 
   final int picks;
+  final bool full;
 
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    final full = picks >= PlanRequest.maxCategories;
     final remaining = PlanRequest.maxCategories - picks;
     return AnimatedContainer(
       duration: AppMotion.base,
+      width: double.infinity,
       padding: const EdgeInsets.symmetric(
-          horizontal: AppSpace.l, vertical: AppSpace.m + 2),
+          horizontal: AppSpace.l, vertical: AppSpace.m - 2),
       decoration: BoxDecoration(
-        color: full ? c.success.softFill : c.card,
-        borderRadius: BorderRadius.circular(AppRadius.card),
+        color: full ? c.gold.softFill : c.success.softFill,
+        borderRadius: BorderRadius.circular(AppRadius.small),
         border: Border.all(
-          color: full ? c.success.softBorder : c.border,
+          color: full ? c.gold.softBorder : c.success.softBorder,
           width: 1.5,
         ),
       ),
@@ -672,47 +444,24 @@ class _BonusBanner extends StatelessWidget {
         children: [
           full
               ? PopIn(
-                  key: const ValueKey('unlocked'),
-                  peak: 1.4,
+                  key: const ValueKey('full'),
+                  peak: 1.35,
                   withRotation: true,
-                  child: const Text('🎉', style: TextStyle(fontSize: 30)),
-                )
-              : Floaty(
                   child:
-                      const Text('🎁', style: TextStyle(fontSize: 30))),
-          const SizedBox(width: AppSpace.m),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppText(
-                  full
-                      ? 'Bonus unlocked!'
-                      : 'Choose $remaining more ${remaining == 1 ? 'category' : 'categories'} to unlock a bonus!',
-                  AppType.itemTitle,
-                ),
-                const SizedBox(height: 2),
-                AppText(
-                  full
-                      ? 'A special surprise is hiding in your day plan 🎉'
-                      : 'Get a special surprise in your day plan ✨',
-                  AppType.chip,
-                  color: c.muted,
-                ),
-              ],
-            ),
-          ),
+                      const Text('🎉', style: TextStyle(fontSize: 16)),
+                )
+              : const Text('✨', style: TextStyle(fontSize: 16)),
           const SizedBox(width: AppSpace.s),
-          Container(
-            padding: const EdgeInsets.symmetric(
-                horizontal: AppSpace.m, vertical: AppSpace.xs + 2),
-            decoration: BoxDecoration(
-              color: full ? c.success : c.gold,
-              borderRadius: BorderRadius.circular(AppRadius.pill),
+          Expanded(
+            child: AppText(
+              full
+                  ? 'All 5 picked — sounds like a great day!'
+                  : remaining == 1
+                      ? 'Nice mix! One more pick and your day is full.'
+                      : 'Nice mix! $remaining more picks and your day is full.',
+              AppType.chip,
+              color: full ? c.goldDeep : c.success,
             ),
-            child: AppText('$picks / ${PlanRequest.maxCategories}',
-                AppType.meta,
-                color: Colors.white),
           ),
         ],
       ),
@@ -756,8 +505,8 @@ class _CitySheetState extends State<_CitySheet> {
             city.toLowerCase().contains(_query.trim().toLowerCase()))
         .toList();
     return Padding(
-      padding: EdgeInsets.only(
-          bottom: MediaQuery.viewInsetsOf(context).bottom),
+      padding:
+          EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
       child: Padding(
         padding: const EdgeInsets.all(AppSpace.screenGutter),
         child: Column(
@@ -804,10 +553,12 @@ class _CitySheetState extends State<_CitySheet> {
                     sfx: Sfx.pop,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: AppSpace.l, vertical: AppSpace.s + 1),
+                          horizontal: AppSpace.l,
+                          vertical: AppSpace.s + 1),
                       decoration: BoxDecoration(
                         color: c.surface,
-                        borderRadius: BorderRadius.circular(AppRadius.pill),
+                        borderRadius:
+                            BorderRadius.circular(AppRadius.pill),
                         border: Border.all(color: c.border, width: 1.5),
                       ),
                       child: AppText(city, AppType.chip),
