@@ -167,10 +167,11 @@ settings shortcut (→ **Settings**), with ☰ (→ **Side Menu**) left of
 the bubble, ride on the scene (the old static
 hero banner image was replaced by it). Then title + subtitle; filter chips
 (All/Popular/Food/Culture/Nightlife) that re-flow the grid; 2-column
-grid of 8 quest art cards. 4 are live (Peaceful Retreat, Night Party
-Quest, Artistic Quest, Real Stories Quest) → **Quest Detail**; 4 show a
-"coming soon" toast (Foodie Adventure, Family Fun, Couples Escape,
-Local Secrets).
+grid of 8 quest art cards — **all 8 are live** → **Quest Detail**
+(Peaceful Retreat, Night Party, Artistic, Real Stories, Foodie
+Adventure, Family Fun, Couples Escape, Local Secrets). The "coming
+soon" toast path remains in code for future quests with
+`available: false`.
 
 **Quest Detail** (`/explore/quest/:id`, `explore/quest_detail_screen.dart`)
 — ONE parameterized screen reskinned per quest theme (accent color:
@@ -206,8 +207,26 @@ scene on open):
   - **Family Fun — "Fair day"** ✅: turning Ferris wheel with upright
     swinging cabins and chasing lights, striped carousel with bobbing
     horses, waving bunting, rising balloons, cotton-candy clouds,
-    confetti showers. (Quest is still "coming soon" on Explore, so the
-    scene is only reachable via `INITIAL_ROUTE=/explore/quest/family`.)
+    confetti showers.
+  - **Couples Escape — "Sunset by the water"** ✅: rose-to-gold sunset
+    with a breathing low sun and reflection, pink clouds, first stars,
+    twin birds, far city skyline with flickering windows, a rowboat with
+    two figures drifting across as hearts rise, promenade railing with
+    lamp posts and twinkling string lights, a bench, fireflies.
+  - **Local Secrets — "The hidden alley at dusk"** ✅: perspective
+    cobbled alley under a purple→peach sky with a crescent moon, an
+    ivy archway glowing at the far end, swaying/flickering lanterns,
+    string lights, a little door that creaks open (warm light spill)
+    twice per loop, a cat that walks the arch, sits and swishes its
+    tail, rustling ivy, fireflies, a fluttering map and "hidden gem"
+    glints at secret spots. Light status-bar icons on this scene.
+
+  Foodie, Family Fun, Couples Escape and Local Secrets now carry full
+  content (description, tags, "What to expect" ×4, 4 sample stops),
+  reusing existing artwork that fits each theme (no dedicated photos
+  exist yet for Family/Couples/Secrets). The badge icon is per quest
+  (foodie 🍴, family 👪, couples ♥, secrets 💎) since several quests
+  share a colour theme.
  icon badge + title + description; tag chips; 3-item meta row
 (duration/stops, route, audience); "What to expect" 4-thumb strip;
 "Sample stops" numbered timeline with dashed accent line; *Start this

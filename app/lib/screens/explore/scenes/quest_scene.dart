@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../../core/motion.dart';
 import 'artistic_scene.dart';
+import 'couples_scene.dart';
 import 'family_scene.dart';
 import 'foodie_scene.dart';
 import 'night_scene.dart';
 import 'peaceful_scene.dart';
+import 'secrets_scene.dart';
 import 'stories_scene.dart';
 
 /// Animated header backgrounds for Quest Detail, one painter per quest.
@@ -18,11 +20,14 @@ Widget? questSceneFor(String questId) => switch (questId) {
   'stories' => const LoopingScene(painter: StoriesScenePainter.new),
   'foodie' => const LoopingScene(painter: FoodieScenePainter.new),
   'family' => const LoopingScene(painter: FamilyScenePainter.new),
+  'couples' => const LoopingScene(painter: CouplesScenePainter.new),
+  'secrets' => const LoopingScene(painter: SecretsScenePainter.new),
   _ => null,
 };
 
 /// Scenes dark enough that the status bar needs light icons.
-bool questSceneIsDark(String questId) => questId == 'night';
+bool questSceneIsDark(String questId) =>
+    questId == 'night' || (questId == 'secrets' && secretsSceneIsDark);
 
 typedef ScenePainterBuilder = CustomPainter Function(
   double t,

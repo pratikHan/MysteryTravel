@@ -142,7 +142,7 @@ class QuestDetailScreen extends StatelessWidget {
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
-                          _themeIcon(quest.theme),
+                          _questIcon(quest),
                           color: Colors.white,
                           size: 22,
                         ),
@@ -243,11 +243,19 @@ class QuestDetailScreen extends StatelessWidget {
     );
   }
 
-  IconData _themeIcon(QuestTheme theme) => switch (theme) {
-    QuestTheme.peaceful => Icons.spa_rounded,
-    QuestTheme.night => Icons.nightlife_rounded,
-    QuestTheme.artistic => Icons.palette_rounded,
-    QuestTheme.stories => Icons.auto_stories_rounded,
+  /// Quests that share a colour theme still get their own badge icon
+  /// (matching their Explore card art).
+  IconData _questIcon(Quest quest) => switch (quest.id) {
+    'foodie' => Icons.restaurant_rounded,
+    'family' => Icons.family_restroom_rounded,
+    'couples' => Icons.favorite_rounded,
+    'secrets' => Icons.diamond_rounded,
+    _ => switch (quest.theme) {
+      QuestTheme.peaceful => Icons.spa_rounded,
+      QuestTheme.night => Icons.nightlife_rounded,
+      QuestTheme.artistic => Icons.palette_rounded,
+      QuestTheme.stories => Icons.auto_stories_rounded,
+    },
   };
 }
 
