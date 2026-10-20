@@ -154,8 +154,13 @@ grouped rows. Contents are placeholders (user will refine). Top to bottom:
 - **Subscription** — Mystery Plus "None", Restore purchase (toasts).
 - **Support** — Settings (→ Settings), Help center (toast), About (toast).
 
-**Explore** — Mascot speech bubble + settings shortcut (→ **Settings**);
-floating hero banner; title + subtitle; filter chips
+**Explore** — full-bleed **animated city scene** at the top
+(`explore/city_scene.dart`, the city sibling of Home's sky): golden-hour
+sky with a low glowing sun, drifting clouds, birds flapping across, a
+two-layer skyline whose windows twinkle, and a red suspension bridge
+over a shimmering river with a little boat crossing. The speech bubble +
+settings shortcut (→ **Settings**) ride on the scene (the old static
+hero banner image was replaced by it). Then title + subtitle; filter chips
 (All/Popular/Food/Culture/Nightlife) that re-flow the grid; 2-column
 grid of 8 quest art cards. 4 are live (Peaceful Retreat, Night Party
 Quest, Artistic Quest, Real Stories Quest) → **Quest Detail**; 4 show a

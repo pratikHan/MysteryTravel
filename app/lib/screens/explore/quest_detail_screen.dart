@@ -37,8 +37,7 @@ class QuestDetailScreen extends StatelessWidget {
                 KenBurns(
                   child: Hero(
                     tag: 'quest-${quest.id}',
-                    child:
-                        Image.asset(quest.heroImage, fit: BoxFit.cover),
+                    child: Image.asset(quest.heroImage, fit: BoxFit.cover),
                   ),
                 ),
                 Positioned(
@@ -62,16 +61,23 @@ class QuestDetailScreen extends StatelessWidget {
                       width: AppSize.iconButton,
                       height: AppSize.iconButton,
                       decoration: BoxDecoration(
-                          color: c.ink.withValues(alpha: 0.38),
-                          shape: BoxShape.circle),
+                        color: c.ink.withValues(alpha: 0.38),
+                        shape: BoxShape.circle,
+                      ),
                       child: favorite
                           ? PopIn(
                               peak: AppMotion.heartPeakScale,
-                              child: Icon(Icons.favorite_rounded,
-                                  color: c.heart, size: 20),
+                              child: Icon(
+                                Icons.favorite_rounded,
+                                color: c.heart,
+                                size: 20,
+                              ),
                             )
-                          : const Icon(Icons.favorite_border_rounded,
-                              color: Colors.white, size: 20),
+                          : const Icon(
+                              Icons.favorite_border_rounded,
+                              color: Colors.white,
+                              size: 20,
+                            ),
                     ),
                   ),
                 ),
@@ -83,10 +89,15 @@ class QuestDetailScreen extends StatelessWidget {
             decoration: BoxDecoration(
               color: c.ground,
               borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(AppRadius.sheet)),
+                top: Radius.circular(AppRadius.sheet),
+              ),
             ),
-            padding: const EdgeInsets.fromLTRB(AppSpace.screenGutter,
-                AppSpace.xxl, AppSpace.screenGutter, AppSpace.xl),
+            padding: const EdgeInsets.fromLTRB(
+              AppSpace.screenGutter,
+              AppSpace.xxl,
+              AppSpace.screenGutter,
+              AppSpace.xl,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -96,13 +107,17 @@ class QuestDetailScreen extends StatelessWidget {
                       width: AppSize.badge,
                       height: AppSize.badge,
                       decoration: BoxDecoration(
-                          color: accent, shape: BoxShape.circle),
-                      child: Icon(_themeIcon(quest.theme),
-                          color: Colors.white, size: 22),
+                        color: accent,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        _themeIcon(quest.theme),
+                        color: Colors.white,
+                        size: 22,
+                      ),
                     ),
                     const SizedBox(width: AppSpace.m),
-                    Expanded(
-                        child: AppText(quest.title, AppType.detailTitle)),
+                    Expanded(child: AppText(quest.title, AppType.detailTitle)),
                   ],
                 ),
                 const SizedBox(height: AppSpace.m - 2),
@@ -118,17 +133,20 @@ class QuestDetailScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     _MetaItem(
-                        icon: Icons.schedule_rounded,
-                        title: quest.duration,
-                        sub: quest.stopsLabel),
+                      icon: Icons.schedule_rounded,
+                      title: quest.duration,
+                      sub: quest.stopsLabel,
+                    ),
                     _MetaItem(
-                        icon: Icons.directions_walk_rounded,
-                        title: quest.travelLabel,
-                        sub: quest.travelSub),
+                      icon: Icons.directions_walk_rounded,
+                      title: quest.travelLabel,
+                      sub: quest.travelSub,
+                    ),
                     _MetaItem(
-                        icon: Icons.groups_rounded,
-                        title: quest.audienceLabel,
-                        sub: quest.audienceSub),
+                      icon: Icons.groups_rounded,
+                      title: quest.audienceLabel,
+                      sub: quest.audienceSub,
+                    ),
                   ],
                 ),
                 const SizedBox(height: AppSpace.xxl),
@@ -145,16 +163,22 @@ class QuestDetailScreen extends StatelessWidget {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(
-                                    AppRadius.thumb),
-                                child: Image.asset(item.image,
-                                    height: AppSize.expectThumb,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover),
+                                  AppRadius.thumb,
+                                ),
+                                child: Image.asset(
+                                  item.image,
+                                  height: AppSize.expectThumb,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                               const SizedBox(height: AppSpace.xs + 1),
-                              AppText(item.label, AppType.caption,
-                                  color: c.muted,
-                                  align: TextAlign.center),
+                              AppText(
+                                item.label,
+                                AppType.caption,
+                                color: c.muted,
+                                align: TextAlign.center,
+                              ),
                             ],
                           ),
                         ),
@@ -186,11 +210,11 @@ class QuestDetailScreen extends StatelessWidget {
   }
 
   IconData _themeIcon(QuestTheme theme) => switch (theme) {
-        QuestTheme.peaceful => Icons.spa_rounded,
-        QuestTheme.night => Icons.nightlife_rounded,
-        QuestTheme.artistic => Icons.palette_rounded,
-        QuestTheme.stories => Icons.auto_stories_rounded,
-      };
+    QuestTheme.peaceful => Icons.spa_rounded,
+    QuestTheme.night => Icons.nightlife_rounded,
+    QuestTheme.artistic => Icons.palette_rounded,
+    QuestTheme.stories => Icons.auto_stories_rounded,
+  };
 }
 
 class _MetaItem extends StatelessWidget {
@@ -237,7 +261,8 @@ class _StopsTimeline extends StatelessWidget {
           bottom: AppSpace.xl,
           child: CustomPaint(
             painter: _DashedLinePainter(
-                color: Color.lerp(c.ground, accent, 0.45)!),
+              color: Color.lerp(c.ground, accent, 0.45)!,
+            ),
             size: const Size(2, double.infinity),
           ),
         ),
@@ -252,20 +277,21 @@ class _StopsTimeline extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: accent.softFill,
                       shape: BoxShape.circle,
-                      border:
-                          Border.all(color: accent.softBorder, width: 1.5),
+                      border: Border.all(color: accent.softBorder, width: 1.5),
                     ),
                     child: Center(
-                        child: AppText('${i + 1}', AppType.chip,
-                            color: accent)),
+                      child: AppText('${i + 1}', AppType.chip, color: accent),
+                    ),
                   ),
                   const SizedBox(width: AppSpace.m - 2),
                   ClipRRect(
                     borderRadius: BorderRadius.circular(AppRadius.small),
-                    child: Image.asset(stop.image,
-                        width: AppSize.stopThumb,
-                        height: AppSize.stopThumb,
-                        fit: BoxFit.cover),
+                    child: Image.asset(
+                      stop.image,
+                      width: AppSize.stopThumb,
+                      height: AppSize.stopThumb,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                   const SizedBox(width: AppSpace.m - 2),
                   Expanded(
@@ -273,8 +299,7 @@ class _StopsTimeline extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         AppText(stop.title, AppType.itemTitle),
-                        AppText(stop.subtitle, AppType.chip,
-                            color: c.muted),
+                        AppText(stop.subtitle, AppType.chip, color: c.muted),
                       ],
                     ),
                   ),
