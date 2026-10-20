@@ -27,6 +27,20 @@ class SideMenuScreen extends StatefulWidget {
 class _SideMenuScreenState extends State<SideMenuScreen> {
   static const _explorerCode = 'MCA7Q2KMIKU';
 
+  /// Survives the route being popped, so reopening the menu lands where
+  /// the user left it (for the app session).
+  static double _savedOffset = 0;
+
+  late final ScrollController _scroll =
+      ScrollController(initialScrollOffset: _savedOffset)
+        ..addListener(() => _savedOffset = _scroll.offset);
+
+  @override
+  void dispose() {
+    _scroll.dispose();
+    super.dispose();
+  }
+
   void _close() {
     if (context.canPop()) {
       context.pop();
@@ -50,6 +64,7 @@ class _SideMenuScreenState extends State<SideMenuScreen> {
       body: SafeArea(
         bottom: false,
         child: ListView(
+          controller: _scroll,
           padding: const EdgeInsets.fromLTRB(AppSpace.screenGutter,
               AppSpace.s, AppSpace.screenGutter, AppSpace.xxl * 2),
           physics: const BouncingScrollPhysics(),
