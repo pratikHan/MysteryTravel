@@ -9,6 +9,7 @@ import '../../widgets/app_text.dart';
 import '../../widgets/buttons.dart';
 import '../../widgets/motion_widgets.dart';
 import '../../widgets/toast.dart';
+import '../../widgets/menu_button.dart';
 import 'city_scene.dart';
 
 /// Explore grid with chip filters (source: explore.dc.html), under an
@@ -48,6 +49,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const MenuButton(),
+                  const SizedBox(width: AppSpace.s),
                   const SpeechBubble(
                     'What kind of adventure are you in the mood for?',
                   ),

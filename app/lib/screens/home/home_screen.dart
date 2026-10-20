@@ -13,6 +13,7 @@ import '../../widgets/app_text.dart';
 import '../../widgets/companion_bubble.dart';
 import '../../widgets/mascot.dart';
 import '../../widgets/motion_widgets.dart';
+import '../../widgets/menu_button.dart';
 
 /// Home (reference: design1001/home.png, bottom tabs ignored — the app
 /// shell provides ours).
@@ -293,26 +294,9 @@ class _SkySceneState extends State<_SkyScene>
           ),
           // Side Menu entry (design1001/side_menu1.png).
           Positioned(
-            left: AppSpace.screenGutter - AppSpace.xs,
+            left: AppSpace.screenGutter,
             top: top + AppSpace.s,
-            child: Pressable(
-              onTap: () => context.push('/menu'),
-              child: Container(
-                width: AppSize.iconButton,
-                height: AppSize.iconButton,
-                decoration: BoxDecoration(
-                  color: c.surface.withValues(alpha: 0.85),
-                  shape: BoxShape.circle,
-                  boxShadow: [
-                    BoxShadow(
-                        color: c.shadow(0.12),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2)),
-                  ],
-                ),
-                child: Icon(Icons.menu_rounded, size: 22, color: c.ink),
-              ),
-            ),
+            child: const MenuButton(),
           ),
           Positioned(
             left: AppSpace.screenGutter,

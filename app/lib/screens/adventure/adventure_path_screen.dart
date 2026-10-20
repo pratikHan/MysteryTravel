@@ -15,6 +15,7 @@ import '../../widgets/buttons.dart';
 import '../../widgets/confetti.dart';
 import '../../widgets/mascot.dart';
 import '../../widgets/motion_widgets.dart';
+import '../../widgets/menu_button.dart';
 import 'pause_dialog.dart';
 
 /// The adventure trail (reference: design/new_adv_path.png).
@@ -382,11 +383,7 @@ class _Header extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CircleIconButton(
-            icon: Icons.arrow_back_rounded,
-            semanticLabel: 'Back to Home',
-            onTap: () => context.go('/home'),
-          ),
+          const MenuButton(),
           Expanded(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -402,8 +399,8 @@ class _Header extends StatelessWidget {
             ),
           ),
           CircleIconButton(
-            icon: Icons.menu_rounded,
-            semanticLabel: 'Adventure menu',
+            icon: Icons.more_horiz_rounded,
+            semanticLabel: 'Adventure options',
             onTap: onMenu,
           ),
         ],

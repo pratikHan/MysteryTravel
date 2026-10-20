@@ -95,6 +95,10 @@ fixtures + engine: `app/lib/data/plan_fixtures.dart`.
 (Home · Explore · Adventure · Passport · Profile). The bar auto-hides on
 **Quest Detail**, **Settings**, and **Achievements**.
 
+**☰ = Side Menu, everywhere in the shell.** Every tab screen carries the
+same ☰ button (`widgets/menu_button.dart`) at its top-left, opening the
+**Side Menu**. ☰ means only that; screen-local option sheets use ⋯.
+
 | Tab | Screen name | Route | File |
 |---|---|---|---|
 | 1 | **Home** | `/home` | `home/home_screen.dart` |
@@ -159,7 +163,8 @@ grouped rows. Contents are placeholders (user will refine). Top to bottom:
 sky with a low glowing sun, drifting clouds, birds flapping across, a
 two-layer skyline whose windows twinkle, and a red suspension bridge
 over a shimmering river with a little boat crossing. The speech bubble +
-settings shortcut (→ **Settings**) ride on the scene (the old static
+settings shortcut (→ **Settings**), with ☰ (→ **Side Menu**) left of
+the bubble, ride on the scene (the old static
 hero banner image was replaced by it). Then title + subtitle; filter chips
 (All/Popular/Food/Culture/Nightlife) that re-flow the grid; 2-column
 grid of 8 quest art cards. 4 are live (Peaceful Retreat, Night Party
@@ -177,13 +182,13 @@ adventure* → resets progress → **Adventure Trail**.
 
 **Adventure Trail** — the centerpiece (see §3).
 
-**Passport** — "My Passport" title; Stamps/Cities segmented pills.
+**Passport** — ☰ (→ **Side Menu**) + "My Passport" title; Stamps/Cities segmented pills.
 Stamps tab: 3-column grid — 5 earned stamps in colored frames
 (Amsterdam, Paris, London, Barcelona, Tokyo) + 1 dashed "Coming Soon"
 placeholder (New York); tap an earned stamp → zoom dialog; mascot
 "Keep exploring" footer card. Cities tab: 2-column city photo grid.
 
-**Profile** — "My Explorer Profile"; avatar + name (Alex) + "4
+**Profile** — ☰ (→ **Side Menu**) + "My Explorer Profile"; avatar + name (Alex) + "4
 Adventures Completed"; animated XP bar (Level 4, 65%); stats card
 (12 Locations · 8 Stamps · 5 Cities, count-up); menu rows: *My
 Adventures* → **Adventure Trail**, *Saved Places* (toast stub),
@@ -211,8 +216,9 @@ padlock, shake on tap).
 scene (~2.6 screens tall) for the active adventure (fixture: Peaceful
 Retreat, Amsterdam). Contents top→bottom:
 
-- **Header** (pinned): back → **Home**, adventure title + "Amsterdam ·
-  3–4 hours", menu button → bottom sheet (*Pause adventure* →
+- **Header** (pinned): ☰ → **Side Menu** (replaced the old back arrow;
+  Home is in the tab bar), adventure title + "Amsterdam ·
+  3–4 hours", ⋯ options button → bottom sheet (*Pause adventure* →
   **Pause Dialog**, *All stops* → **Stop List**, *Adventure summary* →
   **Adventure So Far**)
 - **Welcome block**: mascot sticker + speech bubble + "4 stops · Nearby
@@ -330,7 +336,7 @@ flowchart TD
     PD -->|Mark Stop as Done| AT
     AT -->|Done on last stop| RS[Reward Stamp]
     RS --> AC[Adventure Complete] --> TS[Trip Summary] --> PA
-    AT -->|menu| MEN{{Menu sheet}}
+    AT -->|⋯| MEN{{Options sheet}}
     MEN --> PAU[Pause Dialog]
     MEN --> SL[Stop List]
     MEN --> SF[Adventure So Far]

@@ -7,6 +7,7 @@ import '../../theme/tokens.dart';
 import '../../widgets/app_text.dart';
 import '../../widgets/motion_widgets.dart';
 import '../../widgets/toast.dart';
+import '../../widgets/menu_button.dart';
 
 /// Profile with animating XP bar, stats, and menu (source: profile.dc.html
 /// plus the richer XP-bar variant from 24_profile.png).
@@ -24,7 +25,14 @@ class ProfileScreen extends StatelessWidget {
               horizontal: AppSpace.prefsGutter, vertical: AppSpace.l),
           physics: const BouncingScrollPhysics(),
           children: [
-            Center(child: AppText('My Explorer Profile', AppType.pageTitle)),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                const Align(
+                    alignment: Alignment.centerLeft, child: MenuButton()),
+                AppText('My Explorer Profile', AppType.pageTitle),
+              ],
+            ),
             const SizedBox(height: AppSpace.xl),
             Center(
               child: Container(
