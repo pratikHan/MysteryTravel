@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/motion.dart';
 import '../../core/sounds.dart';
-import '../../data/plan_fixtures.dart';
 import '../../data/plan_models.dart';
 import '../../state/app_state.dart';
 import '../../theme/tokens.dart';
@@ -61,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
             : 'Good evening, explorer!';
     final lines = [
       '$opener\nA new day and new little surprises are waiting for you. 💛',
-      'Your streak is on fire — ${PlanFixtures.streakCount} days and counting! 🔥',
+      'Every stop you finish earns a stamp for your passport! 🏅',
       'Two taps and today\'s quest begins. Ready when you are! 🧭',
     ];
     return lines[_bubbleIndex % lines.length];
@@ -140,9 +139,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               const SizedBox(height: AppSpace.l),
             ],
-            // ---- Streak bar ----
-            _StreakBar(),
-            const SizedBox(height: AppSpace.l),
             // ---- Action cards ----
             _ActionCard(
               emoji: '🗺️',
@@ -174,14 +170,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     .setExplorationMode(ExplorationMode.planned);
                 context.go('/plan');
               },
-            ),
-            const SizedBox(height: AppSpace.s + 2),
-            _ActionCard(
-              emoji: '🏅',
-              title: 'Rewards',
-              blurb: 'See your stamps, streaks and special surprises.',
-              pills: const ['🎁 5 stamps collected'],
-              onTap: () => context.go('/passport'),
             ),
             const SizedBox(height: AppSpace.xl),
             // ---- CTA ----
@@ -759,86 +747,6 @@ class _CompactAdventureCard extends StatelessWidget {
             Icon(Icons.chevron_right_rounded, size: 18, color: c.muted),
           ],
         ),
-      ),
-    );
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Streak bar
-// ---------------------------------------------------------------------------
-
-class _StreakBar extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final c = context.colors;
-    return Container(
-      padding: const EdgeInsets.symmetric(
-          horizontal: AppSpace.m, vertical: AppSpace.m),
-      decoration: BoxDecoration(
-        color: c.surface,
-        borderRadius: BorderRadius.circular(AppRadius.card),
-        border: Border.all(color: c.border, width: 1.5),
-      ),
-      child: Row(
-        children: [
-          const Text('🔥', style: TextStyle(fontSize: 20)),
-          const SizedBox(width: AppSpace.xs + 2),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppText('${PlanFixtures.streakCount}', AppType.sectionHeader),
-              AppText('day streak', AppType.caption, color: c.muted),
-            ],
-          ),
-          const Spacer(),
-          for (final (label, done, isToday) in PlanFixtures.streakWeek)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 3),
-              child: Column(
-                children: [
-                  isToday
-                      ? PopIn(
-                          peak: 1.3,
-                          child: Container(
-                            width: 26,
-                            height: 26,
-                            decoration: BoxDecoration(
-                              color: c.gold.softFill,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: c.gold, width: 2),
-                            ),
-                            child: Icon(Icons.star_rounded,
-                                size: 14, color: c.goldDeep),
-                          ),
-                        )
-                      : Container(
-                          width: 26,
-                          height: 26,
-                          decoration: BoxDecoration(
-                            color: done ? c.success : c.lockedFill,
-                            shape: BoxShape.circle,
-                          ),
-                          child: done
-                              ? const Icon(Icons.check_rounded,
-                                  size: 14, color: Colors.white)
-                              : null,
-                        ),
-                  const SizedBox(height: 2),
-                  AppText(label, AppType.caption,
-                      color: isToday ? c.goldDeep : c.muted),
-                ],
-              ),
-            ),
-          const Spacer(),
-          const Text('🎁', style: TextStyle(fontSize: 18)),
-          const SizedBox(width: AppSpace.xs),
-          SizedBox(
-            width: 64,
-            child: AppText('1 more day for a surprise!', AppType.caption,
-                color: c.muted),
-          ),
-        ],
       ),
     );
   }

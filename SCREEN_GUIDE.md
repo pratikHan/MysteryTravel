@@ -114,7 +114,7 @@ ignored; the app shell's 5-tab bar stays). Top to bottom:
   name) lives on the hill — a `LiveMascot` that never stops moving
   (continuous bob + sway + a happy hop) — beside the **animated dialog
   bubble**: typing dots play, then the line fades in, rotating every
-  ~7s (time-of-day greeting → streak brag → quest nudge). The content
+  ~7s (time-of-day greeting → stamp tip → quest nudge). The content
   column below rides up over the hill, Finch-style.
 - **Hero adventure card** — the MOST RECENT saved adventure, big:
   animated circular **progress ring** ("n / 4 stops today", fills on
@@ -126,11 +126,10 @@ ignored; the app shell's 5-tab bar stays). Top to bottom:
   Wander Nov 2, Market Morning Feast Nov 9, Storybook Streets Nov 15,
   Neon Nights Out Nov 21). **New saves land on top as the hero.** More
   than 4 total → **"See all (N adventures)"** expands the list inline
-- **Streak bar** — 🔥 3-day streak, Mon✓ Tue✓ Today★(pops) Thu Fri,
-  🎁 "1 more day for a surprise!"
 - **Action cards** — Mystery Adventure (gold-highlighted → Mystery mode
-  Plan Setup), Plan My Day (→ Planned mode Plan Setup), Rewards (→
-  **Passport**); floating emoji art, info pills, arrow buttons
+  Plan Setup) and Plan My Day (→ Planned mode Plan Setup); floating
+  emoji art, info pills, arrow buttons. (Streak bar and Rewards card
+  removed 2026-10-20 by user request.)
 - CTA **🧭 Start today's quest** (BouncyPressable) → resets progress →
   **Adventure Trail**.
 
