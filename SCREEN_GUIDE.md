@@ -105,6 +105,7 @@ fixtures + engine: `app/lib/data/plan_fixtures.dart`.
 
 **Home** — designed to `design/design1001/home.png` (its bottom tabs
 ignored; the app shell's 5-tab bar stays). Top to bottom:
+- **☰ Menu button** (top-left, over the sky) → **Side Menu**.
 - **Miku's world** (finch1.PNG top-of-screen layout; motion from the
   design1001 screen recording) — a full-bleed **animated sky scene**
   behind the status bar: saturated blue sky, sun with breathing halo
@@ -132,6 +133,26 @@ ignored; the app shell's 5-tab bar stays). Top to bottom:
   removed 2026-10-20 by user request.)
 - CTA **🧭 Start today's quest** (BouncyPressable) → resets progress →
   **Adventure Trail**.
+
+**Side Menu** — `/menu`, `home/side_menu_screen.dart`, full screen over
+the shell, slides in from the left; ‹ back returns to **Home**.
+Designed to `design/design1001/side_menu1.PNG` + `side_menu2.PNG`
+(Finch layout) re-coloured to our theme: cream ground, navy promo
+cards with cream lip buttons, gold "Mystery PLUS" card, white tiles and
+grouped rows. Contents are placeholders (user will refine). Top to bottom:
+- **Explorer card** — "Explorer & Miku", explorer code (tap copies) + Miku.
+- **Promo cards** — *Add the widget* (Add) and *Enable notifications*
+  (Enable) → "arrives soon" toasts.
+- **Tile grid (2×3)** — Adventures (→ Adventure Trail), Explore Quests
+  (→ Explore), My Passport (→ Passport), Stamps & Rewards
+  (→ Achievements), Plan My Day (→ Plan Setup), History (toast).
+- **Mystery PLUS card** — *Try free* (toast).
+- **Community** — Invite friends, Explore together (toasts).
+- **Account** — Notifications (toast), Profile (→ Profile), App theme
+  PLUS badge (→ Settings), Preferences (→ Settings), **Sound effects**
+  toggle and **Calm mode** toggle (= reduce motion) — both live.
+- **Subscription** — Mystery Plus "None", Restore purchase (toasts).
+- **Support** — Settings (→ Settings), Help center (toast), About (toast).
 
 **Explore** — Mascot speech bubble + settings shortcut (→ **Settings**);
 floating hero banner; title + subtitle; filter chips
@@ -290,6 +311,11 @@ flowchart TD
     end
 
     HO -->|Resume card| AT
+    HO -->|☰| SM[Side Menu]
+    SM --> AT
+    SM --> EX
+    SM --> PA
+    SM --> SE
     HO -->|Featured card / See all| EX
     EX -->|live quest card| QD[Quest Detail]
     QD -->|Start this adventure| AT
