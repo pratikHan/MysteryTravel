@@ -9,6 +9,7 @@ import '../../theme/tokens.dart';
 import '../../widgets/app_text.dart';
 import '../../widgets/buttons.dart';
 import '../../widgets/motion_widgets.dart';
+import 'scenes/quest_scene.dart';
 
 /// One parameterized quest detail screen; the accent comes from the
 /// quest's theme (source: quest_detail_*.dc.html — never fork this).
@@ -24,6 +25,7 @@ class QuestDetailScreen extends StatelessWidget {
     final quest = Fixtures.questById(questId);
     final accent = quest.theme.accent(context.accents);
     final favorite = state.favorites.contains(quest.id);
+    final scene = questSceneFor(quest.id);
     return Scaffold(
       body: ListView(
         padding: EdgeInsets.zero,
@@ -34,12 +36,35 @@ class QuestDetailScreen extends StatelessWidget {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                KenBurns(
-                  child: Hero(
+                // Animated scene when the quest has one (scenes/), else
+                // the static hero art.
+                if (scene != null)
+                  Hero(
                     tag: 'quest-${quest.id}',
-                    child: Image.asset(quest.heroImage, fit: BoxFit.cover),
+                    // Card art cross-fades into the live scene in flight.
+                    // (Flight animation runs 0→1 on push, 1→0 on pop.)
+                    flightShuttleBuilder: (_, animation, direction, from, to) {
+                      final push = direction == HeroFlightDirection.push;
+                      return Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          (push ? to : from).widget,
+                          FadeTransition(
+                            opacity: ReverseAnimation(animation),
+                            child: (push ? from : to).widget,
+                          ),
+                        ],
+                      );
+                    },
+                    child: scene,
+                  )
+                else
+                  KenBurns(
+                    child: Hero(
+                      tag: 'quest-${quest.id}',
+                      child: Image.asset(quest.heroImage, fit: BoxFit.cover),
+                    ),
                   ),
-                ),
                 Positioned(
                   top: MediaQuery.paddingOf(context).top + AppSpace.m,
                   left: AppSpace.l,

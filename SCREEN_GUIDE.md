@@ -174,8 +174,21 @@ Local Secrets).
 
 **Quest Detail** (`/explore/quest/:id`, `explore/quest_detail_screen.dart`)
 — ONE parameterized screen reskinned per quest theme (accent color:
-green/purple/orange/red). Ken Burns hero with frosted back + heart
-buttons; icon badge + title + description; tag chips; 3-item meta row
+green/purple/orange/red). Header (248pt, height unchanged) with
+frosted back + heart buttons. **Animated header scenes** roll out per
+quest (`explore/scenes/`, picked by quest id; quests without one keep
+the Ken Burns hero image; the Explore card art cross-fades into the
+scene on open):
+  - **Peaceful Retreat — "Morning by the lake"** ✅: dawn sky + rising
+    sun with breathing halo, drifting clouds, layered green hills,
+    swaying round trees, lake with sun-glint streaks and drifting
+    ripples, a duck family (mallard + 3 ducklings) gliding across with
+    V wakes, breathing mist, drifting leaves, swaying reeds/cattails,
+    and a fish jump with expanding rings every ~8s.
+  - Planned (ideas agreed, not built): Night Party (neon street),
+    Artistic (self-painting canvas), Real Stories (sepia old town),
+    Foodie (market morning), Family Fun (fair day).
+ icon badge + title + description; tag chips; 3-item meta row
 (duration/stops, route, audience); "What to expect" 4-thumb strip;
 "Sample stops" numbered timeline with dashed accent line; *Start this
 adventure* → resets progress → **Adventure Trail**.
