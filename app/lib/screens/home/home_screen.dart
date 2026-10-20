@@ -353,7 +353,7 @@ class _HeroAdventureCard extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(
-                    AppSpace.l, AppSpace.l, 68, AppSpace.l),
+                    AppSpace.l, AppSpace.l, 56, AppSpace.l),
                 child: Row(
                   children: [
                     _ProgressRing(done: done, total: total),
@@ -368,8 +368,12 @@ class _HeroAdventureCard extends StatelessWidget {
                               Icon(Icons.place_rounded,
                                   size: 13, color: context.accents.stories),
                               const SizedBox(width: 3),
-                              AppText(saved.city, AppType.chip,
-                                  color: c.muted),
+                              Flexible(
+                                child: AppText(saved.city, AppType.chip,
+                                    color: c.muted,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis),
+                              ),
                             ],
                           ),
                           const SizedBox(height: 3),
@@ -380,11 +384,15 @@ class _HeroAdventureCard extends StatelessWidget {
                           const SizedBox(height: AppSpace.s + 2),
                           Row(
                             children: [
-                              AppText(
-                                remaining > 0
-                                    ? '$remaining more ${remaining == 1 ? 'place' : 'places'} to discover'
-                                    : 'All places discovered!',
-                                AppType.chip,
+                              Flexible(
+                                child: AppText(
+                                  remaining > 0
+                                      ? '$remaining more ${remaining == 1 ? 'place' : 'places'} to discover'
+                                      : 'All places discovered!',
+                                  AppType.chip,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                               Icon(Icons.chevron_right_rounded,
                                   size: 16, color: c.muted),
