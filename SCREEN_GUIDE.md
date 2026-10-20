@@ -105,11 +105,17 @@ fixtures + engine: `app/lib/data/plan_fixtures.dart`.
 
 **Home** — designed to `design/design1001/home.png` (its bottom tabs
 ignored; the app shell's 5-tab bar stays). Top to bottom:
-- **Miku** (the companion's name) — a `LiveMascot` that never stops
-  moving (continuous bob + sway + a happy hop every few seconds) beside
-  an **animated dialog bubble**: typing dots play, then the line fades
-  in, and the line rotates every ~7s (time-of-day greeting → streak
-  brag → quest nudge)
+- **Miku's world** (finch1.PNG top-of-screen layout; motion from the
+  design1001 screen recording) — a full-bleed **animated sky scene**
+  behind the status bar: saturated blue sky, sun with breathing halo
+  rings, a small cloud crossing the whole sky plus two big drifting
+  clouds, layered **mountain ridges**, a deep-blue cumulus bank
+  bottom-left, and a green foreground hill. **Miku** (the companion's
+  name) lives on the hill — a `LiveMascot` that never stops moving
+  (continuous bob + sway + a happy hop) — beside the **animated dialog
+  bubble**: typing dots play, then the line fades in, rotating every
+  ~7s (time-of-day greeting → streak brag → quest nudge). The content
+  column below rides up over the hill, Finch-style.
 - **Hero adventure card** — the MOST RECENT saved adventure, big:
   animated circular **progress ring** ("n / 4 stops today", fills on
   entry), 📍 city, title, mode pill (🔮 purple / 🗺️ green), "N more

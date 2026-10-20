@@ -80,35 +80,24 @@ class _HomeScreenState extends State<HomeScreen> {
         _showAll ? rest : rest.take(_maxVisible - 1).toList();
     final hiddenCount = rest.length - (_maxVisible - 1);
     return Scaffold(
-      body: SafeArea(
-        bottom: false,
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(AppSpace.screenGutter,
-              AppSpace.l, AppSpace.screenGutter, AppSpace.xl),
-          physics: const BouncingScrollPhysics(),
-          children: [
-            // ---- Miku greets ----
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
+        padding: EdgeInsets.zero,
+        physics: const BouncingScrollPhysics(),
+        children: [
+          // ---- Miku's world: animated sky scene (finch1.PNG layout,
+          // mountains + drifting clouds per the screen recording) ----
+          _SkyScene(greeting: _greeting),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(AppSpace.screenGutter, 0,
+                AppSpace.screenGutter, AppSpace.xl),
+            // The whole content column rides up over the scene's hill,
+            // Finch-style.
+            child: Transform.translate(
+              offset: const Offset(0, -AppSpace.xxl),
+              child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Column(
-                  children: [
-                    const LiveMascot(MascotState.idle, size: 80),
-                    const SizedBox(height: 2),
-                    AppText('Miku', AppType.caption, color: c.muted),
-                  ],
-                ),
-                const SizedBox(width: AppSpace.m),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: AppSpace.xs),
-                    child: _MikuBubble(message: _greeting),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppSpace.xl),
-            // ---- Hero: most recent adventure ----
+            // ---- Hero: most recent adventure (overlaps the scene) ----
             if (hero != null) ...[
               _HeroAdventureCard(saved: hero),
               const SizedBox(height: AppSpace.m),
@@ -229,8 +218,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-          ],
-        ),
+              ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -254,6 +246,216 @@ class _MikuBubble extends StatelessWidget {
       mascotSize: 0,
     );
   }
+}
+
+// ---------------------------------------------------------------------------
+// Miku's world — the animated sky scene (finch1.PNG top-of-screen
+// layout; sun/cloud motion from the design1001 screen recording,
+// mountains added per the brief).
+// ---------------------------------------------------------------------------
+
+class _SkyScene extends StatefulWidget {
+  const _SkyScene({required this.greeting});
+
+  final String greeting;
+
+  @override
+  State<_SkyScene> createState() => _SkySceneState();
+}
+
+class _SkySceneState extends State<_SkyScene>
+    with SingleTickerProviderStateMixin {
+  // One slow cycle drives cloud drift; the sun pulse rides a higher
+  // frequency of the same phase.
+  late final AnimationController _c =
+      AnimationController(vsync: this, duration: const Duration(seconds: 36));
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && !MotionSettings.reduced(context)) _c.repeat();
+    });
+  }
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final top = MediaQuery.paddingOf(context).top;
+    return SizedBox(
+      height: top + 316,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          AnimatedBuilder(
+            animation: _c,
+            builder: (context, child) => CustomPaint(
+              painter: _SkyScenePainter(
+                t: MotionSettings.reduced(context) ? 0.3 : _c.value,
+                colors: c,
+                topPadding: top,
+              ),
+            ),
+          ),
+          Positioned(
+            left: AppSpace.screenGutter,
+            right: AppSpace.screenGutter,
+            bottom: AppSpace.xxl + AppSpace.l,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const LiveMascot(MascotState.idle, size: 104),
+                    const SizedBox(height: 2),
+                    AppText('Miku', AppType.caption, color: c.ink),
+                  ],
+                ),
+                const SizedBox(width: AppSpace.m),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: AppSpace.xl),
+                    child: _MikuBubble(message: widget.greeting),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SkyScenePainter extends CustomPainter {
+  _SkyScenePainter({
+    required this.t,
+    required this.colors,
+    required this.topPadding,
+  });
+
+  final double t;
+  final AppColors colors;
+  final double topPadding;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final w = size.width;
+    final h = size.height;
+    // Flat-illustration sunny palette, derived from tokens (groundTop
+    // re-saturated so the sky reads sunny rather than overcast).
+    final skyHsl = HSLColor.fromColor(colors.groundTop);
+    final sky =
+        skyHsl.withSaturation(0.62).withLightness(0.72).toColor();
+    final skyLow =
+        skyHsl.withSaturation(0.5).withLightness(0.85).toColor();
+    final cloudWhite = Colors.white.withValues(alpha: 0.92);
+    final cloudSoft = Colors.white.withValues(alpha: 0.55);
+    final cloudDeep = Color.lerp(colors.pill, Colors.white, 0.42)!;
+    final ridgeFar = Color.lerp(colors.pill, Colors.white, 0.62)!;
+    final ridgeNear = Color.lerp(colors.pill, colors.groundTop, 0.45)!;
+    final hill = Color.lerp(colors.ground, colors.success, 0.38)!;
+
+    // Sky.
+    canvas.drawRect(
+      Offset.zero & size,
+      Paint()
+        ..shader = LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [sky, skyLow],
+        ).createShader(Offset.zero & size),
+    );
+
+    // Sun with breathing halo rings (recording: pulsing glow).
+    final pulse = math.sin(t * math.pi * 2 * 6);
+    final sunCenter = Offset(w * 0.26, topPadding + 74);
+    canvas.drawCircle(sunCenter, 66 + 3 * pulse,
+        Paint()..color = Colors.white.withValues(alpha: 0.22));
+    canvas.drawCircle(sunCenter, 46 + 2 * pulse,
+        Paint()..color = Colors.white.withValues(alpha: 0.3));
+    canvas.drawCircle(sunCenter, 27,
+        Paint()..color = colors.gold.withValues(alpha: 0.55));
+    canvas.drawCircle(sunCenter, 20, Paint()..color = colors.gold);
+
+    // Small cloud crossing the whole sky.
+    final smallX = -70 + ((t * 2) % 1.0) * (w + 140);
+    _cloud(canvas, Offset(smallX, topPadding + 46), 14, cloudSoft);
+
+    // Big soft clouds drifting gently (right mass like the recording).
+    final drift1 = math.sin(t * math.pi * 2) * 14;
+    _cloud(canvas, Offset(w * 0.9 + drift1, topPadding + 120), 52, cloudWhite);
+    final drift2 = math.sin(t * math.pi * 2 + 2.2) * 10;
+    _cloud(canvas, Offset(w * 0.18 + drift2, topPadding + 150), 34, cloudSoft);
+
+    // Mountains: far ridge then near ridge.
+    _ridge(canvas, w, h,
+        base: h - 118,
+        peakH: 74,
+        peaks: const [0.12, 0.42, 0.74, 1.02],
+        color: ridgeFar);
+    _ridge(canvas, w, h,
+        base: h - 96,
+        peakH: 58,
+        peaks: const [-0.06, 0.28, 0.6, 0.92],
+        color: ridgeNear);
+
+    // Deep-blue cumulus bank hugging the bottom-left (recording motif).
+    final bob = math.sin(t * math.pi * 2 + 1) * 5;
+    for (final (dx, dy, r) in [
+      (-10.0, 0.0, 34.0),
+      (34.0, 10.0, 26.0),
+      (72.0 + bob, 18.0, 20.0),
+    ]) {
+      canvas.drawCircle(
+          Offset(dx + bob * 0.4, h - 96 + dy), r, Paint()..color = cloudDeep);
+    }
+
+    // Foreground hill Miku sits on.
+    canvas.drawOval(
+      Rect.fromLTWH(-w * 0.2, h - 64, w * 1.4, 130),
+      Paint()..color = hill,
+    );
+  }
+
+  void _cloud(Canvas canvas, Offset center, double r, Color color) {
+    final paint = Paint()..color = color;
+    canvas.drawCircle(center, r, paint);
+    canvas.drawCircle(center.translate(r * 0.95, r * 0.18), r * 0.78, paint);
+    canvas.drawCircle(center.translate(-r * 0.95, r * 0.22), r * 0.72, paint);
+    canvas.drawCircle(center.translate(r * 0.2, -r * 0.4), r * 0.6, paint);
+  }
+
+  void _ridge(Canvas canvas, double w, double h,
+      {required double base,
+      required double peakH,
+      required List<double> peaks,
+      required Color color}) {
+    final path = Path()..moveTo(-10, base);
+    for (final p in peaks) {
+      final x = w * p;
+      path.quadraticBezierTo(
+          x - w * 0.09, base - peakH, x, base - peakH * 0.35);
+      path.quadraticBezierTo(x + w * 0.07, base - peakH * 0.05, x + w * 0.14, base);
+    }
+    path
+      ..lineTo(w + 10, base)
+      ..lineTo(w + 10, h)
+      ..lineTo(-10, h)
+      ..close();
+    canvas.drawPath(path, Paint()..color = color);
+  }
+
+  @override
+  bool shouldRepaint(_SkyScenePainter old) =>
+      old.t != t || old.colors != colors;
 }
 
 // ---------------------------------------------------------------------------
