@@ -581,12 +581,20 @@ class _Row extends StatelessWidget {
               _Emoji(emoji!, size: AppSize.menuIcon - 6),
               const SizedBox(width: AppSpace.l),
             ],
-            Flexible(child: AppText(label, AppType.rowTitle)),
-            if (badge != null) ...[
-              const SizedBox(width: AppSpace.s),
-              _Badge(badge!, fill: c.gold, text: c.pill),
-            ],
-            const Spacer(),
+            // One Expanded holds label + badge so the trailing chevron
+            // always pins to the same right edge.
+            Expanded(
+              child: Row(
+                children: [
+                  Flexible(child: AppText(label, AppType.rowTitle)),
+                  if (badge != null) ...[
+                    const SizedBox(width: AppSpace.s),
+                    _Badge(badge!, fill: c.gold, text: c.pill),
+                  ],
+                ],
+              ),
+            ),
+            const SizedBox(width: AppSpace.s),
             if (trailingText != null)
               AppText(trailingText!, AppType.body, color: c.muted)
             else
