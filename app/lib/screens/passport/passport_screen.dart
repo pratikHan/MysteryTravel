@@ -7,6 +7,7 @@ import '../../theme/tokens.dart';
 import '../../widgets/app_text.dart';
 import '../../widgets/mascot.dart';
 import '../../widgets/motion_widgets.dart';
+import '../../widgets/menu_button.dart';
 
 /// Passport: Stamps / Cities tabs, earned vs placeholder stamps, stamp
 /// tap zooms (reference: 23_passport.png).
@@ -28,7 +29,18 @@ class _PassportScreenState extends State<PassportScreen> {
         child: Column(
           children: [
             const SizedBox(height: AppSpace.l),
-            AppText('My Passport', AppType.pageTitle),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpace.screenGutter),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  const Align(
+                      alignment: Alignment.centerLeft, child: MenuButton()),
+                  AppText('My Passport', AppType.pageTitle),
+                ],
+              ),
+            ),
             const SizedBox(height: AppSpace.l),
             Padding(
               padding: const EdgeInsets.symmetric(

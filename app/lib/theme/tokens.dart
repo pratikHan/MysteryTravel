@@ -121,6 +121,9 @@ class AppType {
   static const pageTitle = TypeStyle(23, FontWeight.w800, spacing: -0.3);
   static const detailTitle = TypeStyle(24, FontWeight.w800, spacing: -0.3);
   static const sectionHeader = TypeStyle(17, FontWeight.w800);
+
+  /// Bold question headers on form screens (Mood Builder).
+  static const formHeader = TypeStyle(20, FontWeight.w800, spacing: -0.2);
   static const rowTitle = TypeStyle(15, FontWeight.w800);
   static const body = TypeStyle(14, FontWeight.w600, height: 1.45);
   static const itemTitle = TypeStyle(14, FontWeight.w800);
@@ -131,6 +134,12 @@ class AppType {
   static const cta = TypeStyle(16, FontWeight.w800);
   static const tabLabel = TypeStyle(10, FontWeight.w700);
   static const statNumber = TypeStyle(20, FontWeight.w800);
+
+  /// Spaced uppercase group labels (Side Menu "ACCOUNT", "SUPPORT").
+  static const overline = TypeStyle(12, FontWeight.w800, spacing: 1.6);
+
+  /// Side Menu promo-card headline.
+  static const promoTitle = TypeStyle(19, FontWeight.w900, spacing: -0.2);
 }
 
 @immutable
@@ -174,6 +183,10 @@ class AppSize {
   static const double expectThumb = 86;
   static const double touchMin = 44;
   static const double pathNode = 58;
+
+  /// Emoji icon box on Side Menu tiles and rows.
+  static const double menuIcon = 34;
+  static const double menuTile = 76;
 }
 
 @immutable

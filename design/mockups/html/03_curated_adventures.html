@@ -1,0 +1,102 @@
+<!doctype html>
+<html><head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap">
+<link rel="stylesheet" href="_tokens.css">
+<style>
+body { min-height: 1150px; padding-bottom: 26px; }
+.plcard {
+  border-radius: 20px; overflow: hidden; background: var(--surface);
+  border: 1.5px solid var(--border); box-shadow: 0 4px 14px rgba(22,50,90,.08);
+  margin-top: 16px; position: relative;
+}
+.plcard .hero { height: 118px; width: 100%; object-fit: cover; display: block; }
+.plcard .body { padding: 13px 16px 15px; }
+.match {
+  position: absolute; top: 12px; left: 12px; background: rgba(17,44,74,.85);
+  color: var(--on-dark); font-size: 11px; font-weight: 800;
+  padding: 5px 11px; border-radius: 999px;
+}
+.because {
+  font-family: 'Caveat', cursive; font-size: 16px; color: var(--gold-deep);
+  transform: rotate(-1.5deg); margin-top: 7px;
+}
+.meta { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 9px; }
+.meta .chip { padding: 5px 11px; font-size: 11.5px; background: var(--card-alt); }
+.stops { font-size: 11.5px; font-weight: 700; color: var(--muted); margin-top: 9px; line-height: 1.5; }
+.pick { position:absolute; right:14px; bottom:14px; width:34px; height:34px;
+  border-radius:99px; background: var(--pill); color: var(--on-dark);
+  display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:800; }
+</style></head>
+<body>
+  <div class="statusbar"><span>9:41</span><span>▮▮ ⌁ ▰</span></div>
+
+  <div style="display:flex; align-items:center; gap:10px; padding:14px 22px 0">
+    <div class="backbtn">‹</div>
+    <div style="flex:1; text-align:center; margin-right:40px">
+      <div style="font-size:23px; font-weight:800; letter-spacing:-0.3px">Your Curated Adventures</div>
+    </div>
+  </div>
+
+  <div style="display:flex; align-items:center; gap:10px; padding:14px 22px 0">
+    <img class="mascot" src="../../../app/assets/images/interests/footer_mascot.png" width="48" height="48">
+    <div class="bubble" style="flex:1; border-radius:4px 18px 18px 18px; font-size:12.5px">
+      Built from your lazy-Sunday wish — parks, coffee &amp; calm ☕
+    </div>
+  </div>
+
+  <div style="padding:4px 22px 0">
+    <div class="plcard" style="border-color: var(--gold); border-width:2px">
+      <span class="match">92% match</span>
+      <img class="hero" src="../../../app/assets/images/cards/card_peaceful.png">
+      <div class="body">
+        <div class="h2">Lazy Sunday Reset</div>
+        <div class="sub" style="font-size:13px; margin-top:2px">A slow loop of green spaces and great coffee.</div>
+        <div class="because">↳ because you picked 🌳 Nature &amp; 🧘 Wellness</div>
+        <div class="meta">
+          <span class="chip">4 stops · 4–5 hrs</span>
+          <span class="chip">🌳 Nature</span>
+          <span class="chip">🍜 Food</span>
+          <span class="chip">🧘 Wellness</span>
+        </div>
+        <div class="stops">A waterside park where herons nest · A café under a living green roof · +2 mystery stops</div>
+        <span class="pick">→</span>
+      </div>
+    </div>
+
+    <div class="plcard">
+      <span class="match">85% match</span>
+      <img class="hero" src="../../../app/assets/images/heroes/hero_peaceful.png">
+      <div class="body">
+        <div class="h2">Golden Hour Wander</div>
+        <div class="sub" style="font-size:13px; margin-top:2px">Chase the light from park paths to the skyline.</div>
+        <div class="because">↳ because you picked 📸 Scenic &amp; Photography</div>
+        <div class="meta">
+          <span class="chip">3 stops · 3 hrs</span>
+          <span class="chip">📸 Scenic</span>
+          <span class="chip">🌳 Nature</span>
+        </div>
+        <div class="stops">Trails where the water mirrors the sky · Walls that catch fire at six o'clock · +1 more</div>
+        <span class="pick">→</span>
+      </div>
+    </div>
+
+    <div class="plcard">
+      <span class="match">74% match</span>
+      <img class="hero" src="../../../app/assets/images/cards/card_foodie.png">
+      <div class="body">
+        <div class="h2">Market Morning Feast</div>
+        <div class="sub" style="font-size:13px; margin-top:2px">Taste your way from market stalls to dessert.</div>
+        <div class="because">↳ because you picked 🍜 Food &amp; Drinks</div>
+        <div class="meta">
+          <span class="chip">4 stops · 3–4 hrs</span>
+          <span class="chip">🍜 Food</span>
+          <span class="chip">🛍️ Markets</span>
+        </div>
+        <div class="stops">Where the city buys its breakfast · A café where "the usual" is a password · +2 more</div>
+        <span class="pick">→</span>
+      </div>
+    </div>
+  </div>
+</body></html>

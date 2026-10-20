@@ -10,49 +10,82 @@ Routes come from `app/lib/navigation/router.dart`. Files live in
 
 ---
 
-## 1. Onboarding screens (run once, in order)
+## 1. Mystery AI flow (current entry flow — branch `mystery-ai`)
 
-| # | Screen name | Route | File |
-|---|---|---|---|
-| 1 | **Splash** | `/splash` | `onboarding/splash_screen.dart` |
-| 2 | **Welcome** | `/welcome` | `onboarding/welcome_screen.dart` |
-| 3 | **Interests** | `/interests` | `onboarding/interests_screen.dart` |
-| 4 | **City Picker** | `/city` | `onboarding/city_screen.dart` |
-| 5 | **Mystery Mode** | `/mode` | `onboarding/mystery_mode_screen.dart` |
-| 6 | **Customize** | `/customize` | `onboarding/customize_screen.dart` |
-| 7 | **Adventure Preview** | `/preview` | `onboarding/preview_screen.dart` |
+Status: **skeleton** = structure + navigation + working dummy data,
+final design pending its slice.
 
-**Splash** — App title "Mystery City Adventures" + tagline over a sky
-gradient; mascot street scene anchored at the bottom (slow Ken Burns
-drift). One button: *Get Started* → **Welcome**.
+| # | Screen name | Route | File | Status |
+|---|---|---|---|---|
+| 1 | **Splash** | `/splash` | `onboarding/splash_screen.dart` | final |
+| 2 | **Path Choice** | `/path-choice` | `plan/path_choice_screen.dart` | skeleton |
+| 3 | **Plan Setup** ("Mood Builder") | `/plan` | `plan/plan_setup_screen.dart` | designed (design1001) |
+| 4 | **Curated Adventures** | `/curated` | `plan/curated_adventures_screen.dart` | skeleton |
+| 5 | **Playlist Editor** ("Your Itinerary") | `/playlist` | `plan/playlist_editor_screen.dart` | designed (design1001) |
 
-**Welcome** — Back button, "Welcome Explorer!" headline, 3-line intro
-copy, mascot scene at bottom. *Continue* → **Interests**.
+**Splash** — App title + tagline over a sky gradient; mascot street
+scene at the bottom. *Get Started* → **Path Choice**.
 
-**Interests** — "What Do You Love Exploring?" + 6 multi-select tiles
-(Food & Drinks, History, Art & Culture, Nature, Hidden Gems, Nightlife),
-each with icon, pop-in check badge on select. CTA shows *Continue (n)*
-and is dimmed at 0 selections → **City Picker**.
+**Path Choice** — Mascot greeting + "Choose Your Path": two big cards —
+**Planned Exploration** (everything visible, curate your day) and
+**Mystery Exploration** (places hidden; teasers + distance radii until
+you arrive). Choice sets `ExplorationMode` for the whole flow →
+**Plan Setup**.
 
-**City Picker** — Centered title, live search field (filters the grid,
-empty-state message when no match), 2-column grid of 6 city photo cards
-(Amsterdam, Paris, London, New York, Barcelona, Tokyo); tap selects
-(ring + check), tap again deselects. CTA *Explore {city}* rises in only
-when a city is picked → **Mystery Mode**.
+**Plan Setup ("Plan Your Day")** — layout per
+`design/mockups/02_plan_setup.png` (user decision 2026-10-19; the
+design1001 Mood Builder layout was superseded, its interactions kept).
+Header: back + "Plan Your Day" + mode caption (🔮 Mystery / 🗺️ Planned).
+One scrollable form:
+- "Where & when" — full-width **city** field (bottom sheet: free text +
+  popular US city chips) above a **date + time** row (native pickers)
+- "What would you love to explore?" + green **n/5** pill (pops on
+  change, turns gold at 5) — the **12 categories as emoji chip Wrap**
+  (selected = filled green); 6th pick bounces with a friendly toast
+- **Cap note** under the chips: "✨ Nice mix! N more picks and your day
+  is full." → at 5/5 flips gold "🎉 All 5 picked — sounds like a great
+  day!" (pop + success sound, once)
+- "Anything specific in mind?" — **wish textbox**
+- **Companion bubble** (interactions #6): mascot types (bouncing dots),
+  then reacts to picks/mood; celebrates at 5 picks
+- CTA **Create My Adventures ✨** — BouncyPressable (interactions #1);
+  enabled when city+date+time+≥1 category → **Curated Adventures**.
+(The mood field remains in `PlanRequest` but has no UI on this layout.)
 
-**Mystery Mode** — Hero illustration, 3 single-select rows with art +
-colored badge: Full Mystery, Balanced Mystery, Open Explorer. *Continue*
-→ **Customize**. (Pure selection UI — the choice doesn't change
-behavior yet.)
+**Curated Adventures** — "Your Curated Adventures" (echoes the wish
+text); 4–5 playlist cards from the dummy recommendation engine
+(`PlanFixtures.recommendPlaylists` — scores 6 fixture playlists by
+category overlap): hero art, title, tagline, stops/duration chip,
+category chips, stop-name preview (masked teasers in Mystery mode).
+Tap a card → **Playlist Editor**.
 
-**Customize** — Two groups: "Adventure Mode" radio rows
-(Classic/Challenging/Relaxed, animated dot) and "Travel Style" 4 tiles
-with illustrated bird avatars (Solo/Couple/Friends/Family). *Preview
-Adventure* → **Adventure Preview**.
+**Playlist Editor ("Your Itinerary")** — designed to
+`design/design1001/list of adventure places.png`. Postal theme:
+- Header: playlist title + "🔮 Mystery mode · Sun, Oct 25 · 10:00 AM",
+  faint rotated **airmail postmark** (✈️) decoration
+- Rotated **"Your Itinerary" tape label** (handwritten Caveat font) +
+  "Drag ⠿ to reorder" hint
+- Each stop is a **pastel ticket** (rotating green/gold/blue/pink
+  tints) with: colored rail number + dashed connector, **perforated
+  postage-stamp thumbnail** (place photo in Planned mode, spoiler-safe
+  emoji in Mystery), teaser/place title, time + "~x mi" pill, a
+  star-edged **"+N pts" points seal**, and ✕ remove (min 1 stop)
+- **Drag wobble + snap** (interactions #5): the lifted ticket wobbles
+  continuously (±1.3°, scale 1.04, deep shadow) and snaps with a pop
+- Summary card: celebrating mascot + "N stops / ~x mi total" +
+  **stamp-points total** (counts up) + handwritten "Another day of good
+  places awaits!"
+- *Save Adventure 🎒* (BouncyPressable) → **Lottie confetti burst** +
+  fanfare → saves → **Home** shows the **Upcoming Adventure card**
+  ("Opens Sat, 10/25"; demo rule: starting always allowed) → tap →
+  **Adventure Trail**. Caption: "Opens Sunday, Oct 25 — we'll have
+  everything ready."
+Data: `PlaylistItem.points` + `.emoji` (per-stop stamp points feed the
+summary total); Lottie asset at `app/assets/lottie/confetti.json`.
 
-**Adventure Preview** — Spoiler-safe drifting illustrated journey map
-(single image, Ken Burns). *Start Adventure* → resets trail progress
-and lands on the **Adventure Trail** tab.
+Data models: `app/lib/data/plan_models.dart` (ExplorationMode,
+AdventureCategory, PlanRequest, PlaylistItem wraps Place, …);
+fixtures + engine: `app/lib/data/plan_fixtures.dart`.
 
 ---
 
@@ -62,6 +95,10 @@ and lands on the **Adventure Trail** tab.
 (Home · Explore · Adventure · Passport · Profile). The bar auto-hides on
 **Quest Detail**, **Settings**, and **Achievements**.
 
+**☰ = Side Menu, everywhere in the shell.** Every tab screen carries the
+same ☰ button (`widgets/menu_button.dart`) at its top-left, opening the
+**Side Menu**. ☰ means only that; screen-local option sheets use ⋯.
+
 | Tab | Screen name | Route | File |
 |---|---|---|---|
 | 1 | **Home** | `/home` | `home/home_screen.dart` |
@@ -70,38 +107,140 @@ and lands on the **Adventure Trail** tab.
 | 4 | **Passport** | `/passport` | `passport/passport_screen.dart` |
 | 5 | **Profile** | `/profile` | `profile/profile_screen.dart` |
 
-**Home** — "Good morning, Explorer!" over the hero scene (baked speech
-bubble in the art); **Resume Adventure card** (dark pill: active
-adventure name, progress bar, play button) → **Adventure Trail**;
-"Featured Adventures" header with *See all* → **Explore**; two featured
-cards (The Foodie Trail, Art & Soul) with image, icon badge, blurb, tag
-chips, and heart toggle → tap opens **Quest Detail**.
+**Home** — designed to `design/design1001/home.png` (its bottom tabs
+ignored; the app shell's 5-tab bar stays). Top to bottom:
+- **☰ Menu button** (top-left, over the sky) → **Side Menu**.
+- **Miku's world** (finch1.PNG top-of-screen layout; motion from the
+  design1001 screen recording) — a full-bleed **animated sky scene**
+  behind the status bar: saturated blue sky, sun with breathing halo
+  rings, a small cloud crossing the whole sky plus two big drifting
+  clouds, layered **mountain ridges**, a deep-blue cumulus bank
+  bottom-left, and a green foreground hill. **Miku** (the companion's
+  name) lives on the hill — a `LiveMascot` that never stops moving
+  (continuous bob + sway + a happy hop) — beside the **animated dialog
+  bubble**: typing dots play, then the line fades in, rotating every
+  ~7s (time-of-day greeting → stamp tip → quest nudge). The content
+  column below rides up over the hill, Finch-style.
+- **Hero adventure card** — the MOST RECENT saved adventure, big:
+  animated circular **progress ring** ("n / 4 stops today", fills on
+  entry), 📍 city, title, mode pill (🔮 purple / 🗺️ green), "N more
+  places to discover ›", scenic art fading in from the right
+  (text-free `sceneImage` per playlist). Tap → **Adventure Trail**
+- **Adventure list** — later-dated adventures as compact cards (thumb,
+  title, city, date, mode pill); seeded with 4 dummies (Golden Hour
+  Wander Nov 2, Market Morning Feast Nov 9, Storybook Streets Nov 15,
+  Neon Nights Out Nov 21). **New saves land on top as the hero.** More
+  than 4 total → **"See all (N adventures)"** expands the list inline
+- **Action cards** — Mystery Adventure (gold-highlighted → Mystery mode
+  Plan Setup) and Plan My Day (→ Planned mode Plan Setup); floating
+  emoji art, info pills, arrow buttons. (Streak bar and Rewards card
+  removed 2026-10-20 by user request.)
+- CTA **🧭 Start today's quest** (BouncyPressable) → resets progress →
+  **Adventure Trail**.
 
-**Explore** — Mascot speech bubble + settings shortcut (→ **Settings**);
-floating hero banner; title + subtitle; filter chips
+**Side Menu** — `/menu`, `home/side_menu_screen.dart`, full screen over
+the shell, slides in from the left; ‹ back returns to **Home**.
+Designed to `design/design1001/side_menu1.PNG` + `side_menu2.PNG`
+(Finch layout) re-coloured to our theme: cream ground, navy promo
+cards with cream lip buttons, gold "Mystery PLUS" card, white tiles and
+grouped rows. Contents are placeholders (user will refine). Top to bottom:
+- **Explorer card** — "Explorer & Miku", explorer code (tap copies) + Miku.
+- **Promo cards** — *Add the widget* (Add) and *Enable notifications*
+  (Enable) → "arrives soon" toasts.
+- **Tile grid (2×3)** — Adventures (→ Adventure Trail), Explore Quests
+  (→ Explore), My Passport (→ Passport), Stamps & Rewards
+  (→ Achievements), Plan My Day (→ Plan Setup), History (toast).
+- **Mystery PLUS card** — *Try free* (toast).
+- **Community** — Invite friends, Explore together (toasts).
+- **Account** — Notifications (toast), Profile (→ Profile), App theme
+  PLUS badge (→ Settings), Preferences (→ Settings), **Sound effects**
+  toggle and **Calm mode** toggle (= reduce motion) — both live.
+- **Subscription** — Mystery Plus "None", Restore purchase (toasts).
+- **Support** — Settings (→ Settings), Help center (toast), About (toast).
+
+**Explore** — full-bleed **animated city scene** at the top
+(`explore/city_scene.dart`, the city sibling of Home's sky): golden-hour
+sky with a low glowing sun, drifting clouds, birds flapping across, a
+two-layer skyline whose windows twinkle, and a red suspension bridge
+over a shimmering river with a little boat crossing. The speech bubble +
+settings shortcut (→ **Settings**), with ☰ (→ **Side Menu**) left of
+the bubble, ride on the scene (the old static
+hero banner image was replaced by it). Then title + subtitle; filter chips
 (All/Popular/Food/Culture/Nightlife) that re-flow the grid; 2-column
-grid of 8 quest art cards. 4 are live (Peaceful Retreat, Night Party
-Quest, Artistic Quest, Real Stories Quest) → **Quest Detail**; 4 show a
-"coming soon" toast (Foodie Adventure, Family Fun, Couples Escape,
-Local Secrets).
+grid of 8 quest art cards — **all 8 are live** → **Quest Detail**
+(Peaceful Retreat, Night Party, Artistic, Real Stories, Foodie
+Adventure, Family Fun, Couples Escape, Local Secrets). The "coming
+soon" toast path remains in code for future quests with
+`available: false`.
 
 **Quest Detail** (`/explore/quest/:id`, `explore/quest_detail_screen.dart`)
 — ONE parameterized screen reskinned per quest theme (accent color:
-green/purple/orange/red). Ken Burns hero with frosted back + heart
-buttons; icon badge + title + description; tag chips; 3-item meta row
+green/purple/orange/red). Header (248pt, height unchanged) with
+frosted back + heart buttons. **Animated header scenes** roll out per
+quest (`explore/scenes/`, picked by quest id; quests without one keep
+the Ken Burns hero image; the Explore card art cross-fades into the
+scene on open):
+  - **Peaceful Retreat — "Morning by the lake"** ✅: dawn sky + rising
+    sun with breathing halo, drifting clouds, layered green hills,
+    swaying round trees, lake with sun-glint streaks and drifting
+    ripples, a duck family (mallard + 3 ducklings) gliding across with
+    V wakes, breathing mist, drifting leaves, swaying reeds/cattails,
+    and a fish jump with expanding rings every ~8s.
+  - **Night Party — "Neon street at midnight"** ✅: purple night sky,
+    twinkling stars, crescent moon glow, sweeping spotlight beams,
+    buildings with windows pulsing to a beat, flickering neon signs
+    (music note, cocktail, microphone, stuttering OPEN), music notes
+    floating from a club door, wet-street neon reflections. Status bar
+    switches to light icons on this scene.
+  - **Artistic — "A painting that paints itself"** ✅: watercolour city on
+    a cream canvas (sky strokes, sun, colourful buildings, hedges,
+    trees); every ~5s a region fades and a brush sweeps it back in;
+    colour drift, wet sheen, popping paint splats, bobbing palette.
+  - **Real Stories — "Old town in sepia"** ✅: old-photo square with a
+    clock tower (minute hand ticking), columned courthouse, gabled
+    houses, flickering gas lamp, sweeping storyteller spotlight, dust
+    motes, film grain/scratches, a sealed letter tumbling across.
+  - **Foodie — "Market morning"** ✅: striped-awning stalls (bread,
+    fruit, noodles) around a glowing bakery window, swinging lantern
+    strings, rippling fringes, rising steam, pop-up food icons
+    (croissant / noodles / strawberry), a little cart rolling by.
+  - **Family Fun — "Fair day"** ✅: turning Ferris wheel with upright
+    swinging cabins and chasing lights, striped carousel with bobbing
+    horses, waving bunting, rising balloons, cotton-candy clouds,
+    confetti showers.
+  - **Couples Escape — "Sunset by the water"** ✅: rose-to-gold sunset
+    with a breathing low sun and reflection, pink clouds, first stars,
+    twin birds, far city skyline with flickering windows, a rowboat with
+    two figures drifting across as hearts rise, promenade railing with
+    lamp posts and twinkling string lights, a bench, fireflies.
+  - **Local Secrets — "The hidden alley at dusk"** ✅: perspective
+    cobbled alley under a purple→peach sky with a crescent moon, an
+    ivy archway glowing at the far end, swaying/flickering lanterns,
+    string lights, a little door that creaks open (warm light spill)
+    twice per loop, a cat that walks the arch, sits and swishes its
+    tail, rustling ivy, fireflies, a fluttering map and "hidden gem"
+    glints at secret spots. Light status-bar icons on this scene.
+
+  Foodie, Family Fun, Couples Escape and Local Secrets now carry full
+  content (description, tags, "What to expect" ×4, 4 sample stops),
+  reusing existing artwork that fits each theme (no dedicated photos
+  exist yet for Family/Couples/Secrets). The badge icon is per quest
+  (foodie 🍴, family 👪, couples ♥, secrets 💎) since several quests
+  share a colour theme.
+ icon badge + title + description; tag chips; 3-item meta row
 (duration/stops, route, audience); "What to expect" 4-thumb strip;
 "Sample stops" numbered timeline with dashed accent line; *Start this
 adventure* → resets progress → **Adventure Trail**.
 
 **Adventure Trail** — the centerpiece (see §3).
 
-**Passport** — "My Passport" title; Stamps/Cities segmented pills.
+**Passport** — ☰ (→ **Side Menu**) + "My Passport" title; Stamps/Cities segmented pills.
 Stamps tab: 3-column grid — 5 earned stamps in colored frames
 (Amsterdam, Paris, London, Barcelona, Tokyo) + 1 dashed "Coming Soon"
 placeholder (New York); tap an earned stamp → zoom dialog; mascot
 "Keep exploring" footer card. Cities tab: 2-column city photo grid.
 
-**Profile** — "My Explorer Profile"; avatar + name (Alex) + "4
+**Profile** — ☰ (→ **Side Menu**) + "My Explorer Profile"; avatar + name (Alex) + "4
 Adventures Completed"; animated XP bar (Level 4, 65%); stats card
 (12 Locations · 8 Stamps · 5 Cities, count-up); menu rows: *My
 Adventures* → **Adventure Trail**, *Saved Places* (toast stub),
@@ -129,8 +268,9 @@ padlock, shake on tap).
 scene (~2.6 screens tall) for the active adventure (fixture: Peaceful
 Retreat, Amsterdam). Contents top→bottom:
 
-- **Header** (pinned): back → **Home**, adventure title + "Amsterdam ·
-  3–4 hours", menu button → bottom sheet (*Pause adventure* →
+- **Header** (pinned): ☰ → **Side Menu** (replaced the old back arrow;
+  Home is in the tab bar), adventure title + "Amsterdam ·
+  3–4 hours", ⋯ options button → bottom sheet (*Pause adventure* →
   **Pause Dialog**, *All stops* → **Stop List**, *Adventure summary* →
   **Adventure So Far**)
 - **Welcome block**: mascot sticker + speech bubble + "4 stops · Nearby
@@ -184,10 +324,23 @@ next stop → mascot + pulse move there. On the LAST stop: fanfare →
 
 ---
 
-## 4. Legacy chapter screens (built for stage 1, now OFF the main path)
+## 4. Legacy screens (OFF the main path)
 
 Kept in the codebase, reachable only by direct route — candidates to
 modify, repurpose or delete:
+
+**Retired onboarding** (replaced by the Mystery AI flow):
+
+| Screen name | Route | What it was |
+|---|---|---|
+| **Welcome** | `/welcome` | Greeting page (dropped by decision) |
+| **Interests** | `/interests` | 6-tile interest picker (superseded by the 12 categories; still linked from Settings → Preferences) |
+| **City Picker** | `/city` | 6-city photo grid (superseded by the city text field) |
+| **Mystery Mode** | `/mode` | Full/Balanced/Open selector (superseded by Path Choice) |
+| **Customize** | `/customize` | Classic/Challenging/Relaxed + travel style |
+| **Adventure Preview** | `/preview` | Drifting journey map |
+
+**Old chapter flow:**
 
 | Screen name | Route | What it was |
 |---|---|---|
@@ -203,11 +356,14 @@ modify, repurpose or delete:
 
 ```mermaid
 flowchart TD
-    subgraph Onboarding
-        SP[Splash] --> WE[Welcome] --> IN[Interests] --> CI[City Picker]
-        CI --> MM[Mystery Mode] --> CU[Customize] --> PR[Adventure Preview]
+    subgraph Planning["Mystery AI flow"]
+        SP[Splash] --> PC[Path Choice]
+        PC -->|Planned or Mystery| PL[Plan Setup]
+        PL -->|Create My Adventures| CA[Curated Adventures]
+        CA -->|pick playlist| PE[Playlist Editor]
+        PE -->|Save Adventure| HO
     end
-    PR -->|Start Adventure| AT
+    HO -->|Upcoming card: Start| AT
 
     subgraph Tabs["Main shell (tab bar)"]
         HO[Home]
@@ -218,6 +374,11 @@ flowchart TD
     end
 
     HO -->|Resume card| AT
+    HO -->|☰| SM[Side Menu]
+    SM --> AT
+    SM --> EX
+    SM --> PA
+    SM --> SE
     HO -->|Featured card / See all| EX
     EX -->|live quest card| QD[Quest Detail]
     QD -->|Start this adventure| AT
@@ -227,7 +388,7 @@ flowchart TD
     PD -->|Mark Stop as Done| AT
     AT -->|Done on last stop| RS[Reward Stamp]
     RS --> AC[Adventure Complete] --> TS[Trip Summary] --> PA
-    AT -->|menu| MEN{{Menu sheet}}
+    AT -->|⋯| MEN{{Options sheet}}
     MEN --> PAU[Pause Dialog]
     MEN --> SL[Stop List]
     MEN --> SF[Adventure So Far]
@@ -240,8 +401,10 @@ flowchart TD
     PA -->|stamp tap| ZM[Stamp Zoom dialog]
 ```
 
-Plain-English journey: **Splash → onboarding (pick interests, city,
-mode, style) → preview → Adventure Trail.** On the trail the loop is
+Plain-English journey: **Splash → Path Choice (Planned/Mystery) → Plan
+Setup (city, date, time, up to 5 categories, wish text) → Curated
+Adventures → Playlist Editor (reorder/remove, save) → Home upcoming
+card → Adventure Trail.** On the trail the loop is
 *open place card → read details / play quiz → Mark Done → route travels
 to next stop*, four times. Finishing the last stop triggers **Reward
 Stamp → Adventure Complete → Trip Summary → Passport**. At any time the

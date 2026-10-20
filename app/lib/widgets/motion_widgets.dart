@@ -58,6 +58,87 @@ class _PressableState extends State<Pressable> {
   }
 }
 
+/// Press-and-bounce feedback (interactions.png #1): soft press-down,
+/// then a playful overshoot bounce on release before firing the tap.
+class BouncyPressable extends StatefulWidget {
+  const BouncyPressable({
+    super.key,
+    required this.child,
+    this.onTap,
+    this.sfx = Sfx.tap,
+    this.haptic = Haptic.light,
+    this.enabled = true,
+  });
+
+  final Widget child;
+  final VoidCallback? onTap;
+  final Sfx? sfx;
+  final Haptic? haptic;
+  final bool enabled;
+
+  @override
+  State<BouncyPressable> createState() => _BouncyPressableState();
+}
+
+class _BouncyPressableState extends State<BouncyPressable>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 280), value: 1);
+  late final Animation<double> _scale = TweenSequence<double>([
+    TweenSequenceItem(tween: Tween(begin: 0.94, end: 1.06), weight: 55),
+    TweenSequenceItem(
+        tween: Tween(begin: 1.06, end: 1.0)
+            .chain(CurveTween(curve: Curves.easeOut)),
+        weight: 45),
+  ]).animate(_c);
+
+  bool _down = false;
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  void _fire() {
+    if (widget.sfx != null) {
+      SoundService.instance.play(widget.sfx!, haptic: widget.haptic);
+    } else if (widget.haptic != null) {
+      SoundService.instance.feel(widget.haptic!);
+    }
+    widget.onTap?.call();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final reduced = MotionSettings.reduced(context);
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTapDown: widget.enabled ? (_) => setState(() => _down = true) : null,
+      onTapCancel: () => setState(() => _down = false),
+      onTapUp: widget.enabled ? (_) => setState(() => _down = false) : null,
+      onTap: widget.enabled
+          ? () {
+              if (!reduced) _c.forward(from: 0);
+              _fire();
+            }
+          : null,
+      child: AnimatedBuilder(
+        animation: _c,
+        builder: (context, child) => Transform.scale(
+          scale: reduced
+              ? 1.0
+              : _down
+                  ? 0.94
+                  : (_c.isAnimating ? _scale.value : 1.0),
+          child: child,
+        ),
+        child: widget.child,
+      ),
+    );
+  }
+}
+
 /// Gentle vertical float loop (tokens.json motion.float). Stops under
 /// reduced motion.
 class Floaty extends StatefulWidget {

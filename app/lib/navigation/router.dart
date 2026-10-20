@@ -18,6 +18,7 @@ import '../screens/adventure/trip_summary_screen.dart';
 import '../screens/explore/explore_screen.dart';
 import '../screens/explore/quest_detail_screen.dart';
 import '../screens/home/home_screen.dart';
+import '../screens/home/side_menu_screen.dart';
 import '../screens/onboarding/city_screen.dart';
 import '../screens/onboarding/customize_screen.dart';
 import '../screens/onboarding/interests_screen.dart';
@@ -26,12 +27,16 @@ import '../screens/onboarding/preview_screen.dart';
 import '../screens/onboarding/splash_screen.dart';
 import '../screens/onboarding/welcome_screen.dart';
 import '../screens/passport/passport_screen.dart';
+import '../screens/plan/curated_adventures_screen.dart';
+import '../screens/plan/path_choice_screen.dart';
+import '../screens/plan/plan_setup_screen.dart';
+import '../screens/plan/playlist_editor_screen.dart';
 import '../screens/profile/achievements_screen.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/profile/settings_screen.dart';
 import '../screens/shell/app_shell.dart';
 
-enum PageMotion { slide, rise, celebrate, fade }
+enum PageMotion { slide, slideFromLeft, rise, celebrate, fade }
 
 /// Shared transition builder so every route animates per the token table.
 CustomTransitionPage<void> appPage({
@@ -52,6 +57,12 @@ CustomTransitionPage<void> appPage({
         case PageMotion.slide:
           return SlideTransition(
             position: Tween(begin: const Offset(1, 0), end: Offset.zero)
+                .animate(curved),
+            child: child,
+          );
+        case PageMotion.slideFromLeft:
+          return SlideTransition(
+            position: Tween(begin: const Offset(-1, 0), end: Offset.zero)
                 .animate(curved),
             child: child,
           );
@@ -81,7 +92,8 @@ CustomTransitionPage<void> appPage({
 
 abstract final class AppPageDurations {
   static Duration of(PageMotion motion) => switch (motion) {
-        PageMotion.slide => const Duration(milliseconds: 300),
+        PageMotion.slide || PageMotion.slideFromLeft =>
+          const Duration(milliseconds: 300),
         PageMotion.rise => const Duration(milliseconds: 350),
         PageMotion.celebrate => const Duration(milliseconds: 400),
         PageMotion.fade => const Duration(milliseconds: 250),
@@ -108,6 +120,27 @@ final appRouter = GoRouter(
       path: '/welcome',
       pageBuilder: (c, s) =>
           appPage(child: const WelcomeScreen(), state: s, motion: PageMotion.fade),
+    ),
+
+    // ---- Mystery AI planning flow ----
+    GoRoute(
+      path: '/path-choice',
+      pageBuilder: (c, s) => appPage(
+          child: const PathChoiceScreen(), state: s, motion: PageMotion.fade),
+    ),
+    GoRoute(
+      path: '/plan',
+      pageBuilder: (c, s) => appPage(child: const PlanSetupScreen(), state: s),
+    ),
+    GoRoute(
+      path: '/curated',
+      pageBuilder: (c, s) =>
+          appPage(child: const CuratedAdventuresScreen(), state: s),
+    ),
+    GoRoute(
+      path: '/playlist',
+      pageBuilder: (c, s) =>
+          appPage(child: const PlaylistEditorScreen(), state: s),
     ),
     GoRoute(
       path: '/interests',
@@ -194,6 +227,15 @@ final appRouter = GoRouter(
           ),
         ]),
       ],
+    ),
+
+    // ---- Side Menu (design1001/side_menu1+2.png), over the shell ----
+    GoRoute(
+      path: '/menu',
+      pageBuilder: (c, s) => appPage(
+          child: const SideMenuScreen(),
+          state: s,
+          motion: PageMotion.slideFromLeft),
     ),
 
     // ---- Place detail (fullscreen expansion of a trail card) ----

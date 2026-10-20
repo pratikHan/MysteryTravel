@@ -1,0 +1,67 @@
+/* Shared mockup styles — generated from app tokens (Voyage theme) */
+:root {
+  --ink: #16325A;
+  --muted: #54627E;
+  --ground: #F8F3E2;
+  --ground-top: #D9E7F1;
+  --surface: #FFFFFF;
+  --card: #FBECCD;
+  --card-alt: #FCF7EA;
+  --border: #EFE2C4;
+  --pill: #112C4A;
+  --on-dark: #FFF7E6;
+  --success: #5BA85F;
+  --gold: #E8A73C;
+  --gold-deep: #C9872A;
+  --danger: #C8403A;
+  --locked: #EDE4CC;
+  --peaceful: #3E8E5B;
+  --night: #8A4FD3;
+  --artistic: #E8862B;
+  --stories: #D94F4F;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  width: 390px;
+  font-family: 'Nunito', system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--ground);
+  -webkit-font-smoothing: antialiased;
+}
+.statusbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 24px 0; font-size: 15px; font-weight: 800;
+}
+.cta {
+  height: 54px; border-radius: 999px; background: var(--pill);
+  color: var(--on-dark); font-size: 16px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  box-shadow: 0 6px 14px rgba(17,44,74,.25);
+}
+.cta.dim { opacity: .55; box-shadow: none; }
+.mascot {
+  border-radius: 999px; border: 3px solid #fff; object-fit: cover;
+  box-shadow: 0 4px 12px rgba(22,50,90,.18);
+}
+.bubble {
+  background: var(--surface); border-radius: 18px 18px 18px 4px;
+  padding: 10px 14px; font-size: 13px; font-weight: 700; line-height: 1.35;
+  box-shadow: 0 2px 8px rgba(22,50,90,.12);
+}
+.chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  border: 1.5px solid var(--border); background: var(--surface);
+  border-radius: 999px; padding: 8px 14px; font-size: 13px; font-weight: 700;
+}
+.chip.on {
+  background: var(--peaceful); border-color: var(--peaceful); color: #fff;
+}
+.backbtn {
+  width: 40px; height: 40px; border-radius: 999px; background: var(--surface);
+  border: 1.5px solid var(--border); display: flex; align-items: center;
+  justify-content: center; font-size: 17px; font-weight: 800;
+}
+.h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.3px; line-height: 1.22; }
+.h2 { font-size: 17px; font-weight: 800; }
+.sub { font-size: 14px; font-weight: 600; color: var(--muted); line-height: 1.45; }
+.caption { font-size: 10.5px; font-weight: 700; color: var(--muted); }
