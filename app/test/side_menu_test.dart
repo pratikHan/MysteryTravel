@@ -23,5 +23,9 @@ void main() {
     await tester.pump(const Duration(seconds: 1));
     expect(find.text('Calm mode'), findsOneWidget);
     expect(find.text('Restore Mystery Plus purchase'), findsOneWidget);
+
+    // Let staggered entrance timers finish before teardown.
+    await tester.pumpWidget(const SizedBox());
+    await tester.pump(const Duration(seconds: 2));
   });
 }
