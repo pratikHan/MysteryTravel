@@ -1,15 +1,28 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/motion.dart';
+import 'artistic_scene.dart';
+import 'family_scene.dart';
+import 'foodie_scene.dart';
+import 'night_scene.dart';
 import 'peaceful_scene.dart';
+import 'stories_scene.dart';
 
 /// Animated header backgrounds for Quest Detail, one painter per quest.
 /// Returns null when a quest has no scene yet — the header then keeps
 /// its static hero image, so scenes can roll out one at a time.
 Widget? questSceneFor(String questId) => switch (questId) {
   'peaceful' => const LoopingScene(painter: PeacefulScenePainter.new),
+  'night' => const LoopingScene(painter: NightScenePainter.new),
+  'artistic' => const LoopingScene(painter: ArtisticScenePainter.new),
+  'stories' => const LoopingScene(painter: StoriesScenePainter.new),
+  'foodie' => const LoopingScene(painter: FoodieScenePainter.new),
+  'family' => const LoopingScene(painter: FamilyScenePainter.new),
   _ => null,
 };
+
+/// Scenes dark enough that the status bar needs light icons.
+bool questSceneIsDark(String questId) => questId == 'night';
 
 typedef ScenePainterBuilder = CustomPainter Function(
   double t,

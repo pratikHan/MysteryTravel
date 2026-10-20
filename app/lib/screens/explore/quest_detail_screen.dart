@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/sounds.dart';
@@ -26,210 +27,218 @@ class QuestDetailScreen extends StatelessWidget {
     final accent = quest.theme.accent(context.accents);
     final favorite = state.favorites.contains(quest.id);
     final scene = questSceneFor(quest.id);
-    return Scaffold(
-      body: ListView(
-        padding: EdgeInsets.zero,
-        physics: const BouncingScrollPhysics(),
-        children: [
-          SizedBox(
-            height: 248,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                // Animated scene when the quest has one (scenes/), else
-                // the static hero art.
-                if (scene != null)
-                  Hero(
-                    tag: 'quest-${quest.id}',
-                    // Card art cross-fades into the live scene in flight.
-                    // (Flight animation runs 0→1 on push, 1→0 on pop.)
-                    flightShuttleBuilder: (_, animation, direction, from, to) {
-                      final push = direction == HeroFlightDirection.push;
-                      return Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          (push ? to : from).widget,
-                          FadeTransition(
-                            opacity: ReverseAnimation(animation),
-                            child: (push ? from : to).widget,
-                          ),
-                        ],
-                      );
-                    },
-                    child: scene,
-                  )
-                else
-                  KenBurns(
-                    child: Hero(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: questSceneIsDark(quest.id)
+          ? SystemUiOverlayStyle.light
+          : SystemUiOverlayStyle.dark,
+      child: Scaffold(
+        body: ListView(
+          padding: EdgeInsets.zero,
+          physics: const BouncingScrollPhysics(),
+          children: [
+            SizedBox(
+              height: 248,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  // Animated scene when the quest has one (scenes/), else
+                  // the static hero art.
+                  if (scene != null)
+                    Hero(
                       tag: 'quest-${quest.id}',
-                      child: Image.asset(quest.heroImage, fit: BoxFit.cover),
+                      // Card art cross-fades into the live scene in flight.
+                      // (Flight animation runs 0→1 on push, 1→0 on pop.)
+                      flightShuttleBuilder:
+                          (_, animation, direction, from, to) {
+                            final push = direction == HeroFlightDirection.push;
+                            return Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                (push ? to : from).widget,
+                                FadeTransition(
+                                  opacity: ReverseAnimation(animation),
+                                  child: (push ? from : to).widget,
+                                ),
+                              ],
+                            );
+                          },
+                      child: scene,
+                    )
+                  else
+                    KenBurns(
+                      child: Hero(
+                        tag: 'quest-${quest.id}',
+                        child: Image.asset(quest.heroImage, fit: BoxFit.cover),
+                      ),
+                    ),
+                  Positioned(
+                    top: MediaQuery.paddingOf(context).top + AppSpace.m,
+                    left: AppSpace.l,
+                    child: CircleIconButton(
+                      icon: Icons.arrow_back_rounded,
+                      onDark: true,
+                      semanticLabel: 'Back to Explore',
+                      onTap: () => context.go('/explore'),
                     ),
                   ),
-                Positioned(
-                  top: MediaQuery.paddingOf(context).top + AppSpace.m,
-                  left: AppSpace.l,
-                  child: CircleIconButton(
-                    icon: Icons.arrow_back_rounded,
-                    onDark: true,
-                    semanticLabel: 'Back to Explore',
-                    onTap: () => context.go('/explore'),
-                  ),
-                ),
-                Positioned(
-                  top: MediaQuery.paddingOf(context).top + AppSpace.m,
-                  right: AppSpace.l,
-                  child: Pressable(
-                    onTap: () => state.toggleFavorite(quest.id),
-                    sfx: Sfx.pop,
-                    haptic: Haptic.medium,
-                    child: Container(
-                      width: AppSize.iconButton,
-                      height: AppSize.iconButton,
-                      decoration: BoxDecoration(
-                        color: c.ink.withValues(alpha: 0.38),
-                        shape: BoxShape.circle,
-                      ),
-                      child: favorite
-                          ? PopIn(
-                              peak: AppMotion.heartPeakScale,
-                              child: Icon(
-                                Icons.favorite_rounded,
-                                color: c.heart,
+                  Positioned(
+                    top: MediaQuery.paddingOf(context).top + AppSpace.m,
+                    right: AppSpace.l,
+                    child: Pressable(
+                      onTap: () => state.toggleFavorite(quest.id),
+                      sfx: Sfx.pop,
+                      haptic: Haptic.medium,
+                      child: Container(
+                        width: AppSize.iconButton,
+                        height: AppSize.iconButton,
+                        decoration: BoxDecoration(
+                          color: c.ink.withValues(alpha: 0.38),
+                          shape: BoxShape.circle,
+                        ),
+                        child: favorite
+                            ? PopIn(
+                                peak: AppMotion.heartPeakScale,
+                                child: Icon(
+                                  Icons.favorite_rounded,
+                                  color: c.heart,
+                                  size: 20,
+                                ),
+                              )
+                            : const Icon(
+                                Icons.favorite_border_rounded,
+                                color: Colors.white,
                                 size: 20,
                               ),
-                            )
-                          : const Icon(
-                              Icons.favorite_border_rounded,
-                              color: Colors.white,
-                              size: 20,
-                            ),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            transform: Matrix4.translationValues(0, -AppRadius.sheet, 0),
-            decoration: BoxDecoration(
-              color: c.ground,
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(AppRadius.sheet),
+                ],
               ),
             ),
-            padding: const EdgeInsets.fromLTRB(
-              AppSpace.screenGutter,
-              AppSpace.xxl,
-              AppSpace.screenGutter,
-              AppSpace.xl,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: AppSize.badge,
-                      height: AppSize.badge,
-                      decoration: BoxDecoration(
-                        color: accent,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        _themeIcon(quest.theme),
-                        color: Colors.white,
-                        size: 22,
-                      ),
-                    ),
-                    const SizedBox(width: AppSpace.m),
-                    Expanded(child: AppText(quest.title, AppType.detailTitle)),
-                  ],
+            Container(
+              transform: Matrix4.translationValues(0, -AppRadius.sheet, 0),
+              decoration: BoxDecoration(
+                color: c.ground,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(AppRadius.sheet),
                 ),
-                const SizedBox(height: AppSpace.m - 2),
-                AppText(quest.description, AppType.body, color: c.muted),
-                const SizedBox(height: AppSpace.l),
-                Wrap(
-                  spacing: AppSpace.s,
-                  runSpacing: AppSpace.s,
-                  children: [for (final tag in quest.tags) TagChip(tag)],
-                ),
-                const SizedBox(height: AppSpace.xl),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _MetaItem(
-                      icon: Icons.schedule_rounded,
-                      title: quest.duration,
-                      sub: quest.stopsLabel,
-                    ),
-                    _MetaItem(
-                      icon: Icons.directions_walk_rounded,
-                      title: quest.travelLabel,
-                      sub: quest.travelSub,
-                    ),
-                    _MetaItem(
-                      icon: Icons.groups_rounded,
-                      title: quest.audienceLabel,
-                      sub: quest.audienceSub,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppSpace.xxl),
-                AppText('What to expect', AppType.sectionHeader),
-                const SizedBox(height: AppSpace.m),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    for (final (i, item) in quest.expect.indexed) ...[
-                      Expanded(
-                        child: FadeRiseIn(
-                          delay: Duration(milliseconds: 70 * i),
-                          child: Column(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(
-                                  AppRadius.thumb,
-                                ),
-                                child: Image.asset(
-                                  item.image,
-                                  height: AppSize.expectThumb,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(height: AppSpace.xs + 1),
-                              AppText(
-                                item.label,
-                                AppType.caption,
-                                color: c.muted,
-                                align: TextAlign.center,
-                              ),
-                            ],
-                          ),
+              ),
+              padding: const EdgeInsets.fromLTRB(
+                AppSpace.screenGutter,
+                AppSpace.xxl,
+                AppSpace.screenGutter,
+                AppSpace.xl,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: AppSize.badge,
+                        height: AppSize.badge,
+                        decoration: BoxDecoration(
+                          color: accent,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          _themeIcon(quest.theme),
+                          color: Colors.white,
+                          size: 22,
                         ),
                       ),
-                      if (i != quest.expect.length - 1)
-                        const SizedBox(width: AppSpace.s + 2),
+                      const SizedBox(width: AppSpace.m),
+                      Expanded(
+                        child: AppText(quest.title, AppType.detailTitle),
+                      ),
                     ],
-                  ],
-                ),
-                const SizedBox(height: AppSpace.xxl),
-                AppText('Sample stops', AppType.sectionHeader),
-                const SizedBox(height: AppSpace.l),
-                _StopsTimeline(quest: quest, accent: accent),
-                const SizedBox(height: AppSpace.xxl + 2),
-                PrimaryButton(
-                  label: 'Start this adventure',
-                  sfx: Sfx.success,
-                  onTap: () {
-                    AppScope.read(context).resetAdventure();
-                    context.go('/adventure');
-                  },
-                ),
-              ],
+                  ),
+                  const SizedBox(height: AppSpace.m - 2),
+                  AppText(quest.description, AppType.body, color: c.muted),
+                  const SizedBox(height: AppSpace.l),
+                  Wrap(
+                    spacing: AppSpace.s,
+                    runSpacing: AppSpace.s,
+                    children: [for (final tag in quest.tags) TagChip(tag)],
+                  ),
+                  const SizedBox(height: AppSpace.xl),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _MetaItem(
+                        icon: Icons.schedule_rounded,
+                        title: quest.duration,
+                        sub: quest.stopsLabel,
+                      ),
+                      _MetaItem(
+                        icon: Icons.directions_walk_rounded,
+                        title: quest.travelLabel,
+                        sub: quest.travelSub,
+                      ),
+                      _MetaItem(
+                        icon: Icons.groups_rounded,
+                        title: quest.audienceLabel,
+                        sub: quest.audienceSub,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: AppSpace.xxl),
+                  AppText('What to expect', AppType.sectionHeader),
+                  const SizedBox(height: AppSpace.m),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (final (i, item) in quest.expect.indexed) ...[
+                        Expanded(
+                          child: FadeRiseIn(
+                            delay: Duration(milliseconds: 70 * i),
+                            child: Column(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                    AppRadius.thumb,
+                                  ),
+                                  child: Image.asset(
+                                    item.image,
+                                    height: AppSize.expectThumb,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                const SizedBox(height: AppSpace.xs + 1),
+                                AppText(
+                                  item.label,
+                                  AppType.caption,
+                                  color: c.muted,
+                                  align: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        if (i != quest.expect.length - 1)
+                          const SizedBox(width: AppSpace.s + 2),
+                      ],
+                    ],
+                  ),
+                  const SizedBox(height: AppSpace.xxl),
+                  AppText('Sample stops', AppType.sectionHeader),
+                  const SizedBox(height: AppSpace.l),
+                  _StopsTimeline(quest: quest, accent: accent),
+                  const SizedBox(height: AppSpace.xxl + 2),
+                  PrimaryButton(
+                    label: 'Start this adventure',
+                    sfx: Sfx.success,
+                    onTap: () {
+                      AppScope.read(context).resetAdventure();
+                      context.go('/adventure');
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

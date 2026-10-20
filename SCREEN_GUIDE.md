@@ -185,9 +185,29 @@ scene on open):
     ripples, a duck family (mallard + 3 ducklings) gliding across with
     V wakes, breathing mist, drifting leaves, swaying reeds/cattails,
     and a fish jump with expanding rings every ~8s.
-  - Planned (ideas agreed, not built): Night Party (neon street),
-    Artistic (self-painting canvas), Real Stories (sepia old town),
-    Foodie (market morning), Family Fun (fair day).
+  - **Night Party — "Neon street at midnight"** ✅: purple night sky,
+    twinkling stars, crescent moon glow, sweeping spotlight beams,
+    buildings with windows pulsing to a beat, flickering neon signs
+    (music note, cocktail, microphone, stuttering OPEN), music notes
+    floating from a club door, wet-street neon reflections. Status bar
+    switches to light icons on this scene.
+  - **Artistic — "A painting that paints itself"** ✅: watercolour city on
+    a cream canvas (sky strokes, sun, colourful buildings, hedges,
+    trees); every ~5s a region fades and a brush sweeps it back in;
+    colour drift, wet sheen, popping paint splats, bobbing palette.
+  - **Real Stories — "Old town in sepia"** ✅: old-photo square with a
+    clock tower (minute hand ticking), columned courthouse, gabled
+    houses, flickering gas lamp, sweeping storyteller spotlight, dust
+    motes, film grain/scratches, a sealed letter tumbling across.
+  - **Foodie — "Market morning"** ✅: striped-awning stalls (bread,
+    fruit, noodles) around a glowing bakery window, swinging lantern
+    strings, rippling fringes, rising steam, pop-up food icons
+    (croissant / noodles / strawberry), a little cart rolling by.
+  - **Family Fun — "Fair day"** ✅: turning Ferris wheel with upright
+    swinging cabins and chasing lights, striped carousel with bobbing
+    horses, waving bunting, rising balloons, cotton-candy clouds,
+    confetti showers. (Quest is still "coming soon" on Explore, so the
+    scene is only reachable via `INITIAL_ROUTE=/explore/quest/family`.)
  icon badge + title + description; tag chips; 3-item meta row
 (duration/stops, route, audience); "What to expect" 4-thumb strip;
 "Sample stops" numbered timeline with dashed accent line; *Start this
